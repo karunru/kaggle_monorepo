@@ -3,24 +3,18 @@ import os
 import random
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import List, Tuple, Union
 
-import cudf
 import numpy as np
 import pandas as pd
+import polars as pl
 from omegaconf import DictConfig, ListConfig
-from sklearn.model_selection import (
-    KFold,
-    StratifiedGroupKFold,
-    StratifiedKFold,
-    train_test_split,
-)
-from xfeat.utils import is_cudf
+from sklearn.model_selection import KFold, StratifiedKFold
 
 
 def validation_refinement_by_day_of_week(
-    df: pd.DataFrame, config: Union[DictConfig, ListConfig]
-) -> List[Tuple[np.ndarray, np.ndarray]]:
+    df: pd.DataFrame,
+    config: DictConfig | ListConfig,
+) -> list[tuple[np.ndarray, np.ndarray]]:
     pred_day = config["val"]["params"]["pred_day"]
     splits = slide_window_split_by_day(df["date"], config)
 
@@ -40,8 +34,9 @@ def validation_refinement_by_day_of_week(
 # https://eng.uber.com/omphalos/
 # https://www.kaggle.com/harupy/m5-baseline?scriptVersionId=30229819
 def slide_window_split_by_day(
-    day_series: pd.Series, config: Union[DictConfig, ListConfig]
-) -> List[Tuple[np.ndarray, np.ndarray]]:
+    day_series: pd.Series,
+    config: DictConfig | ListConfig,
+) -> list[tuple[np.ndarray, np.ndarray]]:
     params = config["val"]["params"]
 
     max_day = np.max(day_series)
@@ -54,18 +49,12 @@ def slide_window_split_by_day(
         valid_days: int,
         slide_step_days: int,
     ) -> np.datetime64:
-        return max_day - np.timedelta64(
-            (n_split - (i + 1)) * slide_step_days + train_days + valid_days - 1, "D"
-        )
+        return max_day - np.timedelta64((n_split - (i + 1)) * slide_step_days + train_days + valid_days - 1, "D")
 
-    def _valid_first_day(
-        train_first_day: np.datetime64, train_days: int
-    ) -> np.datetime64:
+    def _valid_first_day(train_first_day: np.datetime64, train_days: int) -> np.datetime64:
         return train_first_day + np.timedelta64(train_days, "D")
 
-    def _valid_last_day(
-        valid_first_day: np.datetime64, valid_days: int
-    ) -> np.datetime64:
+    def _valid_last_day(valid_first_day: np.datetime64, valid_days: int) -> np.datetime64:
         return valid_first_day + np.timedelta64(valid_days - 1, "D")
 
     split = []
@@ -79,12 +68,8 @@ def slide_window_split_by_day(
             valid_days=params["valid_days"],
             slide_step_days=params["slide_step_days"],
         )
-        valid_first_day = _valid_first_day(
-            train_first_day, train_days=params["train_days"]
-        )
-        valid_last_day = _valid_last_day(
-            valid_first_day, valid_days=params["valid_days"]
-        )
+        valid_first_day = _valid_first_day(train_first_day, train_days=params["train_days"])
+        valid_last_day = _valid_last_day(valid_first_day, valid_days=params["valid_days"])
 
         is_trn = (day_series >= train_first_day) & (day_series < valid_first_day)
         is_val = (day_series >= valid_first_day) & (day_series <= valid_last_day)
@@ -96,9 +81,7 @@ def slide_window_split_by_day(
     return split
 
 
-def date_hold_out(
-    df: pd.DataFrame, config: Union[DictConfig, ListConfig]
-) -> List[Tuple[np.ndarray, np.ndarray]]:
+def date_hold_out(df: pd.DataFrame, config: DictConfig | ListConfig) -> list[tuple[np.ndarray, np.ndarray]]:
     params = config["val"]["params"]
     date_col = params["date_col"]
     threshold_date = params["threshold_date"]
@@ -118,13 +101,9 @@ def date_hold_out(
     return split
 
 
-def kfold(
-    df: pd.DataFrame, config: Union[DictConfig, ListConfig]
-) -> List[Tuple[np.ndarray, np.ndarray]]:
+def kfold(df: pd.DataFrame, config: DictConfig | ListConfig) -> list[tuple[np.ndarray, np.ndarray]]:
     params = config["val"]["params"]
-    kf = KFold(
-        n_splits=params["n_splits"], random_state=params["random_state"], shuffle=True
-    )
+    kf = KFold(n_splits=params["n_splits"], random_state=params["random_state"], shuffle=True)
     split = []
     for trn_idx, val_idx in kf.split(df):
         split.append((np.asarray(trn_idx), np.asarray(val_idx)))
@@ -132,12 +111,12 @@ def kfold(
 
 
 def group_kfold(
-    df: pd.DataFrame, groups: pd.Series, config: Union[DictConfig, ListConfig]
-) -> List[Tuple[np.ndarray, np.ndarray]]:
+    df: pd.DataFrame,
+    groups: pd.Series,
+    config: DictConfig | ListConfig,
+) -> list[tuple[np.ndarray, np.ndarray]]:
     params = config["val"]["params"]
-    kf = KFold(
-        n_splits=params["n_splits"], random_state=params["random_state"], shuffle=True
-    )
+    kf = KFold(n_splits=params["n_splits"], random_state=params["random_state"], shuffle=True)
     uniq_groups = groups.unique()
     split = []
     for trn_grp_idx, val_grp_idx in kf.split(uniq_groups):
@@ -150,87 +129,128 @@ def group_kfold(
     return split
 
 
-def stratified_kfold(
-    df: pd.DataFrame, config: Union[DictConfig, ListConfig]
-) -> List[Tuple[np.ndarray, np.ndarray]]:
+def stratified_kfold(df: pl.DataFrame, config: DictConfig | ListConfig) -> list[tuple[np.ndarray, np.ndarray]]:
     params = config["val"]["params"]
+    skf = StratifiedKFold(n_splits=params["n_splits"], random_state=params["random_state"], shuffle=True)
 
-    skf = StratifiedKFold(
-        n_splits=params["n_splits"], random_state=params["random_state"], shuffle=True
-    )
+    y = df.get_column(params["target"]).to_numpy()
 
-    y = (
-        df[params["target"]].to_numpy()
-        if is_cudf(df)
-        else np.array(df[params["target"]])
-    )
-    X_col = [col for col in df.columns.to_list() if col is not params["target"]]
+    X_col = [col for col in df.columns if col != params["target"]]
+
     split = []
-    for trn_idx, val_idx in skf.split(df[X_col], y):
+    # skf.splitはデータセットのインデックスを生成するので、特にPolarsに変換は不要
+    for trn_idx, val_idx in skf.split(df.select(X_col), y):
         split.append((np.asarray(trn_idx), np.asarray(val_idx)))
+
     return split
 
 
 def stratified_group_kfold(
-    df: pd.DataFrame, groups: pd.Series, config: Union[DictConfig, ListConfig]
-) -> List[Tuple[np.ndarray, np.ndarray]]:
+    df: pd.DataFrame,
+    groups: pd.Series,
+    config: DictConfig | ListConfig,
+) -> list[tuple[np.ndarray, np.ndarray]]:
     params = config["val"]["params"]
 
-    sgkf = StratifiedGroupKFold(
-        n_splits=params["n_splits"],
-        random_state=params["random_state"],
-        shuffle=True,
-    )
-
+    y = df[params["target"]]
+    X_col = [col for col in df.columns.to_list() if col is not params["target"]]
     split = []
-    for trn_idx, val_idx in sgkf.split(
-        df,
-        y=df[params["target"]],
-        groups=df[params["group"]],
+    for trn_idx, val_idx in _stratified_group_k_fold(
+        df[X_col],
+        y.to_numpy(),
+        groups.to_numpy(),
+        k=params["n_splits"],
+        seed=params["random_state"],
     ):
         split.append((np.asarray(trn_idx), np.asarray(val_idx)))
     return split
 
 
-def get_validation(
-    df: pd.DataFrame, config: Union[DictConfig, ListConfig], is_pseudo_label=False
-) -> List[Tuple[np.ndarray, np.ndarray]]:
-    fold_file_path = Path(config["data_path"]) / (
-        config["val"]["name"]
-        + "_n_splits_"
-        + str(config["val"]["params"]["n_splits"])
-        + "_target_"
-        + str(config["val"]["params"]["target"])
-        + "_random_state_"
-        + str(config["val"]["params"]["random_state"])
-        + f"{'_pseudo_label' if is_pseudo_label else ''}"
-        + ".csv"
-    )
-    _df = df.copy()
+def _stratified_group_k_fold(X, y, groups, k, seed=42):
+    labels_num = np.max(y) + 1
+    y_counts_per_group = defaultdict(lambda: np.zeros(labels_num))
+    y_distr = Counter()
+    for label, g in zip(y, groups, strict=False):
+        y_counts_per_group[g][label] += 1
+        y_distr[label] += 1
 
-    if fold_file_path.exists() and not config["val"]["params"]["force_recreate"]:
+    y_counts_per_fold = defaultdict(lambda: np.zeros(labels_num))
+    groups_per_fold = defaultdict(set)
+
+    def eval_y_counts_per_fold(y_counts, fold):
+        y_counts_per_fold[fold] += y_counts
+        std_per_label = []
+        for label in range(labels_num):
+            label_std = np.std([y_counts_per_fold[i][label] / y_distr[label] for i in range(k)])
+            std_per_label.append(label_std)
+        y_counts_per_fold[fold] -= y_counts
+        return np.mean(std_per_label)
+
+    groups_and_y_counts = list(y_counts_per_group.items())
+    random.Random(seed).shuffle(groups_and_y_counts)
+
+    for g, y_counts in sorted(groups_and_y_counts, key=lambda x: -np.std(x[1])):
+        best_fold = None
+        min_eval = None
+        for i in range(k):
+            fold_eval = eval_y_counts_per_fold(y_counts, i)
+            if min_eval is None or fold_eval < min_eval:
+                min_eval = fold_eval
+                best_fold = i
+        y_counts_per_fold[best_fold] += y_counts
+        groups_per_fold[best_fold].add(g)
+
+    all_groups = set(groups)
+    for i in range(k):
+        train_groups = all_groups - groups_per_fold[i]
+        test_groups = groups_per_fold[i]
+
+        train_indices = [i for i, g in enumerate(groups) if g in train_groups]
+        test_indices = [i for i, g in enumerate(groups) if g in test_groups]
+
+        yield train_indices, test_indices
+
+
+def get_validation(
+    df: pl.DataFrame,
+    config: DictConfig | ListConfig,
+    is_pseudo_label=False,
+) -> list[tuple[np.ndarray, np.ndarray]]:
+    fold_file_path = Path(config["root"]) / (
+        f"{config['val']['name']}"
+        f"_n_splits_{config['val']['params']['n_splits']}"
+        f"_target_{config['val']['params']['target']}"
+        f"_random_state_{config['val']['params']['random_state']}"
+        f"{'_pseudo_label' if is_pseudo_label else ''}"
+        f".csv"
+    )
+
+    _df = df.clone()
+
+    if os.path.exists(fold_file_path) and not config["val"]["params"]["force_recreate"]:
         print(f"load {fold_file_path}")
 
-        fold_df = cudf.read_csv(fold_file_path)
+        fold_df = pl.read_csv(fold_file_path)
 
         split = []
         for fold in range(config["val"]["params"]["n_splits"]):
-            trn_ids = fold_df.loc[
-                fold_df["fold"] != fold, config["val"]["params"]["id"]
-            ]
-            trn_idx = _df[
-                _df[config["val"]["params"]["id"]].isin(trn_ids.to_pandas())
-            ].index.to_numpy()
-            val_ids = fold_df.loc[
-                fold_df["fold"] == fold, config["val"]["params"]["id"]
-            ]
-            val_idx = _df[
-                _df[config["val"]["params"]["id"]].isin(val_ids.to_pandas())
-            ].index.to_numpy()
-            if is_cudf(_df):
-                split.append((np.asarray(trn_idx.get()), np.asarray(val_idx.get())))
-            else:
-                split.append((np.asarray(trn_idx), np.asarray(val_idx)))
+            trn_ids = fold_df.filter(pl.col("fold") != fold).get_column(config["val"]["params"]["id"]).to_list()
+            trn_idx = np.array(
+                df.with_row_index()
+                .filter(pl.col(config["val"]["params"]["id"]).is_in(trn_ids))
+                .get_column("index")
+                .to_list(),
+            )
+
+            val_ids = fold_df.filter(pl.col("fold") == fold).get_column(config["val"]["params"]["id"]).to_list()
+            val_idx = np.array(
+                df.with_row_index()
+                .filter(pl.col(config["val"]["params"]["id"]).is_in(val_ids))
+                .get_column("index")
+                .to_list(),
+            )
+
+            split.append((trn_idx, val_idx))
 
     else:
         print(f"make {fold_file_path}")
@@ -243,22 +263,21 @@ def get_validation(
 
         if "group" in name:
             groups_col = config["val"]["params"]["group"]
-            groups = _df[groups_col]
+            groups = _df.get_column(groups_col).to_list()
             split = func(_df, groups, config)
         else:
             split = func(_df, config)
 
-        _df["fold"] = -1
+        fold_values = [-1] * len(_df)
         for fold, (train_idx, val_idx) in enumerate(split):
-            _df.loc[val_idx, "fold"] = fold
+            for idx in val_idx:
+                fold_values[idx] = fold
+
+        _df = _df.with_columns(pl.Series("fold", fold_values))
 
         if isinstance(config["val"]["params"]["id"], list):
-            _df[config["val"]["params"]["id"] + ["fold"]].to_csv(
-                fold_file_path, index=False
-            )
+            _df.select(config["val"]["params"]["id"] + ["fold"]).write_csv(fold_file_path)
         else:
-            _df[[config["val"]["params"]["id"], "fold"]].to_csv(
-                fold_file_path, index=False
-            )
+            _df.select([config["val"]["params"]["id"], "fold"]).write_csv(fold_file_path)
 
     return split

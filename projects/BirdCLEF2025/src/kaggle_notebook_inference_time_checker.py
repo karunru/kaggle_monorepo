@@ -4,7 +4,6 @@ import datetime
 import json
 import os
 import time
-from datetime import timezone
 
 import requests
 from kaggle.api.kaggle_api_extended import KaggleApi
@@ -24,9 +23,7 @@ def slack_notify(msg="おわったよ"):
     }
     channel = "C02PSAJQYLS"
     data = {"channel": channel, "text": msg}
-    return requests.post(
-        slack_post_url, data=json.dumps(data), proxies=proxies, headers=headers
-    )
+    return requests.post(slack_post_url, data=json.dumps(data), proxies=proxies, headers=headers)
 
 
 api = KaggleApi()
@@ -39,9 +36,7 @@ submit_time = result_.date
 
 status = ""
 
-slack_notify(
-    f"{result_.submittedBy}, {submit_time}, {result_.description}, {result_.url}"
-)
+slack_notify(f"{result_.submittedBy}, {submit_time}, {result_.description}, {result_.url}")
 
 while status != "complete":
     list_of_submission = api.competition_submissions(COMPETITION)
@@ -50,13 +45,11 @@ while status != "complete":
             break
     status = result.status
 
-    now = datetime.datetime.now(timezone.utc).replace(tzinfo=None)
+    now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
     elapsed_time = int((now - submit_time).seconds / 60) + 1
     if status == "complete":
         print("\r", f"run-time: {elapsed_time} min, LB: {result.publicScore}")
-        slack_notify(
-            f"run-time: {elapsed_time} min, LB: {result.publicScore}, {result_.url}"
-        )
+        slack_notify(f"run-time: {elapsed_time} min, LB: {result.publicScore}, {result_.url}")
     else:
         print("\r", f"elapsed time: {elapsed_time} min", end="")
         time.sleep(60)

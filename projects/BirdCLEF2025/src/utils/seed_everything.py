@@ -3,8 +3,8 @@ import random
 from typing import NoReturn
 
 import cupy as cp
-import numpy as np
 import lightning.pytorch as pl
+import numpy as np
 import torch
 
 

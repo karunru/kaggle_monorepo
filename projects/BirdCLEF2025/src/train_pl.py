@@ -6,28 +6,24 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import lightning.pytorch as pl
+import polars as pl
 import torch
-from omegaconf import OmegaConf
-from lightning.pytorch import callbacks
+from dataset import BirdCLEFDataModule  # noqa
+from lightning.pytorch import Trainer, callbacks
 from lightning.pytorch.loggers import WandbLogger
-from lightning.pytorch import Trainer
-from timm import create_model
-
-from dataset import HMSDataModule, HMSConvTranDataModule
-from models import Model, ChrisModel, ConvTranModule, FreezeUnfreezeCallback # noqa
+from lightning.pytorch.utilities.memory import garbage_collection_cuda
+from models import Model  # noqa
+from omegaconf import OmegaConf
 from sampling import get_sampling
+from timm import create_model
 from utils import (
+    birdclef_roc_auc,
     find_exp_num,
     parse_args,
     remove_abnormal_exp,
     seed_everything,
-    kaggle_kl_div_score,
 )
 from validation import get_validation
-from lightning.pytorch.tuner import Tuner
-from torch import nn
-
 
 warnings.filterwarnings("ignore")
 
@@ -66,20 +62,22 @@ def main():
         )
     )
 
-    df = pd.read_csv(Path(config.data_path) / "train.csv")
-    target_cols = df.columns[-6:].tolist()
-    oof_pred_cols = [f"oof_{target_col}" for target_col in target_cols]
-    df[oof_pred_cols] = -1
-    num_features = (
-        create_model(
-            config.model.backbone,
-            pretrained=False,
-            num_classes=0,
-            in_chans=3,
-        ).num_features
+    df = pl.read_csv(
+        Path(config.data_path) / "train.csv",
+        null_values={"latitude": "None", "longitude": "None"},
+        infer_schema_length=10_0000,
     )
-    emb_cols = [f"emb_{i}" for i in range(num_features)]
-    df.loc[:, emb_cols] = -1
+    labels = df["primary_label"].unique().sort().to_list()
+    oof_pred_cols = [f"oof_{target_col}" for target_col in labels]
+    df = df.with_columns([pl.lit(None).alias(col) for col in oof_pred_cols])
+    num_features = create_model(
+        config.model.backbone,
+        pretrained=False,
+        num_classes=0,
+        in_chans=1,
+    ).num_features
+    emb_cols = [f"emb_{i:04}" for i in range(num_features)]
+    df = df.with_columns([pl.lit(None).alias(col) for col in emb_cols])
 
     splits = get_validation(df, config)
 
@@ -88,35 +86,20 @@ def main():
         if fold not in config.train_folds:
             continue
 
-        train_df = df.loc[train_idx].reset_index(drop=True)
+        train_df = df.filter(pl.int_range(len(df)).is_in(train_idx))
         train_df, _ = get_sampling(train_df, train_df[config.val.params.target], config)
         print("sampled:")
-        print(train_df.groupby(config.val.params.target)["eeg_id"].count())
+        print(train_df[config.val.params.target].value_counts(sort=True))
 
-        val_df = df.loc[val_idx].reset_index(drop=True)
-        datamodule = eval(config.datamodule)(
+        val_df = df.filter(pl.int_range(len(df)).is_in(val_idx))
+        datamodule = eval(config.datamodule)(  # noqa: S307
             train_df=train_df,
             val_df=val_df,
-            target_cols=target_cols,
+            labels=labels,
             cfg=config,
         )
-        model = eval(config.model.name)(config)
-        if config.load_weight.do:
-            weight_paths = sorted(
-                list(
-                    Path(
-                        str(config.weight_path).replace(
-                            str(exp_num), config.load_weight.exp
-                        )
-                    ).glob(f"fold_{fold}_best_loss*")
-                )
-            )
-            last_weight_path = (
-                weight_paths[-2] if len(weight_paths) >= 2 else weight_paths[0]
-            )
-            print(f"load {last_weight_path}")
-            model.load_state_dict(torch.load(last_weight_path)["state_dict"])
-        # model = torch.compile(model)
+        model = eval(config.model.name)(config)  # noqa: S307
+        model = torch.compile(model)
 
         early_stopping = callbacks.EarlyStopping(
             monitor="val_loss",
@@ -137,12 +120,6 @@ def main():
             save_last=False,
             save_weights_only=True,
         )
-        freeze_epoch = FreezeUnfreezeCallback(
-            freeze_epoch=config.load_weight.freeze_epoch
-        )
-
-        if config.optimizer.use_SAM:
-            config.trainer.accumulate_grad_batches = 1
 
         wandb_logger._prefix = f"fold_{fold}"
         trainer = Trainer(
@@ -153,7 +130,6 @@ def main():
                 swa,
                 lr_monitor,
                 loss_checkpoint,
-                # freeze_epoch,
             ],
             **config.trainer,
         )
@@ -174,15 +150,34 @@ def main():
 
         oof_pred = torch.cat(oof_pred).to(torch.float32).numpy()
         emb = torch.cat(emb).to(torch.float32).numpy()
-        df.loc[val_idx, oof_pred_cols] = oof_pred
-        df.loc[val_idx, emb_cols] = emb
+
+        # Update oof predictions using polars
+        for i, col in enumerate(oof_pred_cols):
+            # 全体の長さのリストを作成し、val_idxの位置に値を設定
+            full_pred = [None] * len(df)
+            for j, idx in enumerate(val_idx):
+                full_pred[idx] = oof_pred[j, i]
+
+            df = df.with_columns(pl.col(col).fill_null(pl.Series(full_pred)))
+
+        # Update embeddings using polars
+        for i, col in enumerate(emb_cols):
+            full_emb = [None] * len(df)
+            for j, idx in enumerate(val_idx):
+                full_emb[idx] = emb[j, i]
+
+            df = df.with_columns(pl.col(col).fill_null(pl.Series(full_emb)))
 
         oof_df = pd.DataFrame(oof_pred.copy())
         oof_df["id"] = np.arange(len(oof_df))
-        true_df = pd.DataFrame(df.loc[val_idx, target_cols].to_numpy())
+
+        # Get target columns from validation data using polars
+        val_target_data = val_df["primary_label"].to_dummies().to_numpy()
+        true_df = pd.DataFrame(val_target_data)
         true_df["id"] = np.arange(len(true_df))
+
         print(oof_df)
-        score = kaggle_kl_div_score(
+        score = birdclef_roc_auc(
             solution=true_df,
             submission=oof_df,
             row_id_column_name="id",
@@ -197,33 +192,37 @@ def main():
         )
         gc.collect()
         torch.cuda.empty_cache()
-        pl.utilities.memory.garbage_collection_cuda()
+        garbage_collection_cuda()
 
     wandb_logger.experiment.config.update({"mean_cv": np.mean(scores)})
-    df["id"] = np.arange(len(df))
+    df = df.with_columns(pl.int_range(len(df)).alias("id"))
+
+    # Calculate OOF score using polars filtering
+    filtered_df = df.filter(pl.col(oof_pred_cols[0]) >= 0)
+
+    # Create solution_df with one-hot encoded labels
+    target_data = filtered_df["primary_label"].to_dummies().to_numpy()
+    solution_df = pd.DataFrame(target_data, columns=labels)
+    solution_df["id"] = np.arange(len(solution_df))
+
+    # Create submission_df with predictions
+    submission_df = filtered_df.select([*oof_pred_cols]).to_pandas()
+    submission_df = submission_df.rename(columns=dict(zip(oof_pred_cols, labels)))
+    submission_df["id"] = np.arange(len(submission_df))
+
     wandb_logger.experiment.config.update(
         {
-            "oof_score": kaggle_kl_div_score(
-                solution=df.loc[df[oof_pred_cols[0]] >= 0, target_cols + ["id"]],
-                submission=df.loc[
-                    df[oof_pred_cols[0]] >= 0, oof_pred_cols + ["id"]
-                ].rename(columns=dict(zip(oof_pred_cols, target_cols))),
+            "oof_score": birdclef_roc_auc(
+                solution=solution_df,
+                submission=submission_df,
                 row_id_column_name="id",
             )
         }
     )
 
-    save_cols = (
-        [
-            "eeg_id",
-            "patient_id",
-        ]
-        + oof_pred_cols
-        + target_cols
-        + emb_cols
-    )
+    save_cols = ["filename", "primary_label", *oof_pred_cols, *emb_cols]
 
-    df[save_cols].to_csv(Path(config.pred_path) / "oof_pred.csv", index=False)
+    df.select(save_cols).write_csv(Path(config.pred_path) / "oof_pred.csv")
 
     OmegaConf.save(config, Path(config.config_path) / f"exp_{exp_num}.yaml")
 

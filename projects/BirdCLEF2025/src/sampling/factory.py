@@ -1,18 +1,17 @@
 import datetime
 import logging
-from typing import Optional, Tuple, Union
+from typing import Union
 
 import numpy as np
 import pandas as pd
+import polars as pl
 from imblearn.over_sampling import SMOTE, RandomOverSampler
 from imblearn.under_sampling import RandomUnderSampler
 from omegaconf import DictConfig, ListConfig
-from xfeat.types import XDataFrame, XSeries
-
 from utils import timer
 
-AoD = Union[np.ndarray, XDataFrame]
-AoS = Union[np.ndarray, XSeries]
+AoD = Union[np.ndarray, pd.DataFrame, pl.DataFrame]
+AoS = Union[np.ndarray, pd.Series, pl.Series]
 
 
 def shrink_by_release(x_trn: pd.DataFrame) -> pd.DataFrame:
@@ -27,19 +26,14 @@ def shrink_by_release(x_trn: pd.DataFrame) -> pd.DataFrame:
     return x_trn
 
 
-def shrink_by_date(
-    x_trn: pd.DataFrame, config: Union[DictConfig, ListConfig]
-) -> pd.DataFrame:
+def shrink_by_date(x_trn: pd.DataFrame, config: DictConfig | ListConfig) -> pd.DataFrame:
     # dateがカラムに必要
     with timer("shrink by date"):
         logging.info(f"before train shape : {x_trn.shape}")
 
         params = config["params"]
         x_trn["date"] = pd.to_datetime(x_trn["date"])
-        x_trn = x_trn[
-            x_trn["date"]
-            >= datetime.datetime(params["year"], params["month"], params["day"])
-        ]
+        x_trn = x_trn[x_trn["date"] >= datetime.datetime(params["year"], params["month"], params["day"])]
         x_trn = x_trn.reset_index(drop=True)
 
         logging.info(f"after train shape : {x_trn.shape}")
@@ -47,18 +41,14 @@ def shrink_by_date(
     return x_trn
 
 
-def shrink_by_date_index(
-    x_trn: pd.Series, config: Union[DictConfig, ListConfig]
-) -> pd.Index:
+def shrink_by_date_index(x_trn: pd.Series, config: DictConfig | ListConfig) -> pd.Index:
     # dateがカラムに必要
     with timer("shrink by date index"):
         logging.info(f"before train shape : {x_trn.shape}")
 
         params = config["params"]
         x_trn = pd.to_datetime(x_trn)
-        x_trn = x_trn[
-            x_trn >= datetime.datetime(params["year"], params["month"], params["day"])
-        ]
+        x_trn = x_trn[x_trn >= datetime.datetime(params["year"], params["month"], params["day"])]
         x_trn_idx = x_trn.index
 
         logging.info(f"after train shape : {x_trn.shape}")
@@ -66,9 +56,7 @@ def shrink_by_date_index(
     return x_trn_idx
 
 
-def shrink_dateframe(
-    x_trn: pd.DataFrame, config: Union[DictConfig, ListConfig]
-) -> pd.DataFrame:
+def shrink_dateframe(x_trn: pd.DataFrame, config: DictConfig | ListConfig) -> pd.DataFrame:
     with timer("shrink datafrme"):
         if config["shrink_by_release"]:
             x_trn = shrink_by_release(x_trn)
@@ -77,9 +65,7 @@ def shrink_dateframe(
     return x_trn
 
 
-def smote(
-    x_trn: np.ndarray, y_trn: np.ndarray, config: Union[DictConfig, ListConfig]
-) -> Tuple[np.ndarray, np.ndarray]:
+def smote(x_trn: np.ndarray, y_trn: np.ndarray, config: DictConfig | ListConfig) -> tuple[np.ndarray, np.ndarray]:
     params = config["model"]["sampling"]["params"]
     sm = SMOTE(k_neighbors=params["k_neighbors"], random_state=params["random_state"])
     sampled_x, sampled_y = sm.fit_resample(x_trn, y_trn)
@@ -87,8 +73,8 @@ def smote(
 
 
 def random_under_sample(
-    x_trn: np.ndarray, y_trn: np.ndarray, config: Union[DictConfig, ListConfig]
-) -> Tuple[np.ndarray, np.ndarray]:
+    x_trn: np.ndarray, y_trn: np.ndarray, config: DictConfig | ListConfig
+) -> tuple[np.ndarray, np.ndarray]:
     params = config["sampling"]["params"]
     acc_0 = (y_trn == 0).sum().astype(int)
     acc_1 = (y_trn == 1).sum().astype(int)
@@ -102,16 +88,16 @@ def random_under_sample(
 
 
 def random_under_sample_and_smote(
-    x_trn: np.ndarray, y_trn: np.ndarray, config: Union[DictConfig, ListConfig]
-) -> Tuple[np.ndarray, np.ndarray]:
+    x_trn: np.ndarray, y_trn: np.ndarray, config: DictConfig | ListConfig
+) -> tuple[np.ndarray, np.ndarray]:
     sampled_x, sampled_y = random_under_sample(x_trn, y_trn, config)
     sampled_x, sampled_y = smote(sampled_x, sampled_y, config)
     return sampled_x, sampled_y
 
 
 def random_over_sample(
-    x_trn: np.ndarray, y_trn: np.ndarray, config: Union[DictConfig, ListConfig]
-) -> Tuple[np.ndarray, np.ndarray]:
+    x_trn: np.ndarray, y_trn: np.ndarray, config: DictConfig | ListConfig
+) -> tuple[np.ndarray, np.ndarray]:
     params = config["sampling"]["params"]
 
     rus = RandomOverSampler(
@@ -121,9 +107,7 @@ def random_over_sample(
     return sampled_x, sampled_y
 
 
-def get_sampling(
-    x_trn: AoD, y_trn: AoS, config: Union[DictConfig, ListConfig]
-) -> Tuple[AoD, AoS]:
+def get_sampling(x_trn: AoD, y_trn: AoS, config: DictConfig | ListConfig) -> tuple[AoD, AoS]:
     if config["sampling"]["name"] == "none":
         return x_trn, y_trn
 

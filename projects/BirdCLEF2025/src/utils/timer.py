@@ -2,8 +2,6 @@ import logging
 import time
 from contextlib import contextmanager
 
-from .slack import slack_notify
-
 
 @contextmanager
 def timer(name: str, log: bool = True):

@@ -1,2 +1,2 @@
-from .model import Model, ChrisModel
+from .model import Model
 from .pl_callbacks import FreezeUnfreezeCallback

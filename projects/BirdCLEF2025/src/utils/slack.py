@@ -18,6 +18,4 @@ def slack_notify(msg="おわったよ"):
     }
     channel = "CF6FQD7FX"
     data = {"channel": channel, "text": msg}
-    return requests.post(
-        slack_post_url, data=json.dumps(data), proxies=proxies, headers=headers
-    )
+    return requests.post(slack_post_url, data=json.dumps(data), proxies=proxies, headers=headers)

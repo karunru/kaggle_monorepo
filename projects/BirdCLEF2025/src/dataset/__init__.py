@@ -1,1 +1,1 @@
-from .dataset import HMSDataModule, BirdCLEFDataset
+from .dataset import BirdCLEFDataModule, BirdCLEFDataset

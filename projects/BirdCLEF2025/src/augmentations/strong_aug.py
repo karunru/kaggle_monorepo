@@ -39,7 +39,7 @@ def resizemix(x, y, alpha=0.1, beta=0.8):
 
     rand_index = torch.randperm(x.size()[0]).cuda()
     tau = np.random.uniform(alpha, beta)
-    lam = tau ** 2
+    lam = tau**2
 
     H, W = x.size()[2:]
     resize_transform = Resize((int(H * tau), int(W * tau)))

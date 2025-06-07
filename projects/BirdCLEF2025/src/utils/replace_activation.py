@@ -30,9 +30,7 @@ class TanhExp(nn.Module):
 def replace_activations(model, existing_layer, new_layer):
     for name, module in reversed(model._modules.items()):
         if len(list(module.children())) > 0:
-            model._modules[name] = replace_activations(
-                module, existing_layer, new_layer
-            )
+            model._modules[name] = replace_activations(module, existing_layer, new_layer)
 
         if type(module) == existing_layer:
             layer_old = module

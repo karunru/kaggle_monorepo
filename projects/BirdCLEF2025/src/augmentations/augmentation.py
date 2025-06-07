@@ -1,9 +1,8 @@
+import albumentations as A
+import numpy as np
 import torch
 import torchvision.transforms.v2 as T
-import albumentations as A
 from albumentations.core.transforms_interface import ImageOnlyTransform
-import numpy as np
-
 
 IMAGENET_MEAN = [0.485, 0.456, 0.406]  # RGB
 IMAGENET_STD = [0.229, 0.224, 0.225]  # RGB
@@ -31,9 +30,7 @@ def pet_transform():
     return transform
 
 
-def inaugment_correct_paste(
-    image, n_patches=5, patch_size_ratio=0.1, resize_factors=(0.5, 1.5)
-):
+def inaugment_correct_paste(image, n_patches=5, patch_size_ratio=0.1, resize_factors=(0.5, 1.5)):
     """
     Apply InAugment with correct pasting behavior: Copy patches, resize and paste them back into the image.
 
@@ -63,9 +60,7 @@ def inaugment_correct_paste(
         # Randomly choose a resize factor and resize the patch
         resize_factor = np.random.uniform(*resize_factors)
         target_size = int(patch_size * resize_factor)
-        resized_patch = transform.resize(
-            patch, (target_size, target_size), anti_aliasing=True
-        )
+        resized_patch = transform.resize(patch, (target_size, target_size), anti_aliasing=True)
 
         # Convert resized patch back to original color range
         resized_patch = (resized_patch * 255).astype(image.dtype)
@@ -75,9 +70,7 @@ def inaugment_correct_paste(
         paste_x = np.random.randint(0, W - target_size)
 
         # Paste the resized patch directly into the image, without blending
-        augmented_image[
-            paste_y : paste_y + target_size, paste_x : paste_x + target_size
-        ] = resized_patch
+        augmented_image[paste_y : paste_y + target_size, paste_x : paste_x + target_size] = resized_patch
 
     return augmented_image
 
@@ -106,28 +99,19 @@ class InAugment(ImageOnlyTransform):
 
 
 def get_default_transforms():
-
     params1 = {
         "num_masks_x": 1,
-        "mask_x_length": (0, 20),  # This line changed from fixed  to a range
-        "fill_value": (0, 1, 2, 3, 4, 5, 6, 7),
+        "mask_x_length": (2, 20),  # This line changed from fixed to a range
+        "fill_value": 0,
     }
     params2 = {
         "num_masks_y": 1,
-        "mask_y_length": (0, 20),
-        "fill_value": (0, 1, 2, 3, 4, 5, 6, 7),
+        "mask_y_length": (2, 20),
+        "fill_value": 0,
     }
     transform = {
         "albu_train": A.Compose(
             [
-                A.HorizontalFlip(p=0.5),
-                A.VerticalFlip(p=0.5),
-                InAugment(
-                    n_patches=3,
-                    patch_size_ratio=0.2,
-                    resize_factors=(0.5, 1.5),
-                    p=0.5,
-                ),
                 A.XYMasking(**params1, p=0.3),
                 A.XYMasking(**params2, p=0.3),
             ]

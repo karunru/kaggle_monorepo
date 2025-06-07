@@ -1,1 +1,4 @@
 data/
+src/weights
+src/preds
+src/wandb
