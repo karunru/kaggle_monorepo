@@ -1,4 +1,5 @@
 import numpy as np
+import schedulefree
 from augmentations.augmentation import get_default_transforms
 from augmentations.strong_aug import get_strong_transforms
 from lightning.pytorch import LightningModule
@@ -100,16 +101,32 @@ class Model(LightningModule):
         self.log(f"{mode}_loss", metrics)
 
     def configure_optimizers(self):
-        optimizer = create_optimizer_v2(self.parameters(), **self.cfg.optimizer)
-        scheduler, _ = create_scheduler_v2(optimizer, **self.cfg.scheduler)
+        if self.cfg.optimizer.opt == "radam_schedule_free":
+            # Use RAdamScheduleFree optimizer
+            optimizer = schedulefree.RAdamScheduleFree(
+                self.parameters(),
+                lr=self.cfg.optimizer.lr,
+                betas=self.cfg.optimizer.get("betas", (0.9, 0.999)),
+                eps=self.cfg.optimizer.get("eps", 1e-8),
+                weight_decay=self.cfg.optimizer.get("weight_decay", 0),
+                r=self.cfg.optimizer.get("r", 0.0),
+                weight_lr_power=self.cfg.optimizer.get("weight_lr_power", 2.0),
+                foreach=self.cfg.optimizer.get("foreach", True),
+            )
+            # Schedule-free optimizers don't need external schedulers
+            return [optimizer]
+        else:
+            # Use regular optimizer with scheduler
+            optimizer = create_optimizer_v2(self.parameters(), **self.cfg.optimizer)
+            scheduler, _ = create_scheduler_v2(optimizer, **self.cfg.scheduler)
 
-        scheduler_config = {
-            "scheduler": scheduler,
-            "interval": "epoch",
-            "frequency": 1,
-        }
+            scheduler_config = {
+                "scheduler": scheduler,
+                "interval": "epoch",
+                "frequency": 1,
+            }
 
-        return [optimizer], [scheduler_config]
+            return [optimizer], [scheduler_config]
 
     def lr_scheduler_step(self, scheduler, metric):
         scheduler.step(epoch=self.current_epoch)
@@ -117,3 +134,21 @@ class Model(LightningModule):
     def optimizer_zero_grad(self, epoch, batch_idx, optimizer):
         # https://lightning.ai/docs/pytorch/stable/advanced/speed.html#set-grads-to-none
         optimizer.zero_grad(set_to_none=True)
+
+    def on_train_start(self):
+        # Set schedule-free optimizer to train mode
+        if self.cfg.optimizer.opt == "radam_schedule_free":
+            for optimizer in self.trainer.optimizers:
+                optimizer.train()
+
+    def on_validation_start(self):
+        # Set schedule-free optimizer to eval mode
+        if self.cfg.optimizer.opt == "radam_schedule_free":
+            for optimizer in self.trainer.optimizers:
+                optimizer.eval()
+
+    def on_validation_end(self):
+        # Set schedule-free optimizer back to train mode
+        if self.cfg.optimizer.opt == "radam_schedule_free":
+            for optimizer in self.trainer.optimizers:
+                optimizer.train()

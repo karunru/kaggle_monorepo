@@ -198,7 +198,7 @@ def main():
     df = df.with_columns(pl.int_range(len(df)).alias("id"))
 
     # Calculate OOF score using polars filtering
-    filtered_df = df.filter(pl.col(oof_pred_cols[0]) >= 0)
+    filtered_df = df.filter(pl.col(oof_pred_cols[0]).is_not_null())
 
     # Create solution_df with one-hot encoded labels
     target_data = filtered_df["primary_label"].to_dummies().to_numpy()
