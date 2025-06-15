@@ -9,6 +9,8 @@ from timm.optim import create_optimizer_v2
 from timm.scheduler import create_scheduler_v2
 from torch import nn
 
+from models.losses import FocalLossBCE, SoftAUCLoss  # noqa
+
 
 class Model(LightningModule):
     def __init__(self, cfg, batch_size=32):
