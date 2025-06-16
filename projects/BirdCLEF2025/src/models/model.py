@@ -1,5 +1,6 @@
 import numpy as np
 import schedulefree
+import torch
 from augmentations.augmentation import get_default_transforms
 from augmentations.strong_aug import get_strong_transforms
 from lightning.pytorch import LightningModule
@@ -10,6 +11,54 @@ from timm.scheduler import create_scheduler_v2
 from torch import nn
 
 from models.losses import FocalLossBCE, SoftAUCLoss  # noqa
+
+
+def init_layer(layer):
+    """Initialize a Linear or Convolutional layer."""
+    nn.init.xavier_uniform_(layer.weight)
+    if hasattr(layer, "bias"):
+        if layer.bias is not None:
+            layer.bias.data.fill_(0.0)
+
+
+class AttBlockV2(nn.Module):
+    """Attention block for SED tasks."""
+
+    def __init__(self, in_features, out_features, activation="linear"):
+        super().__init__()
+
+        self.activation = activation
+        self.att = nn.Conv1d(
+            in_channels=in_features, out_channels=out_features, kernel_size=1, stride=1, padding=0, bias=True
+        )
+        self.cla = nn.Conv1d(
+            in_channels=in_features, out_channels=out_features, kernel_size=1, stride=1, padding=0, bias=True
+        )
+        self.activation = activation
+
+        self.init_weights()
+
+    def init_weights(self):
+        init_layer(self.att)
+        init_layer(self.cla)
+
+    def forward(self, x):
+        # x: (batch_size, channels, time)
+        norm_att = torch.softmax(torch.tanh(self.att(x)), dim=-1)
+        cla = self.nonlinear_transform(self.cla(x))
+        x = torch.sum(norm_att * cla, dim=2)
+
+        if self.activation == "sigmoid":
+            eps = 1e-6
+            x = torch.clamp(x, eps, 1 - eps)
+        return x
+
+    def nonlinear_transform(self, x):
+        if self.activation == "linear":
+            return x
+        elif self.activation == "sigmoid":
+            return torch.sigmoid(x)
+        return None
 
 
 class Model(LightningModule):
@@ -35,7 +84,8 @@ class Model(LightningModule):
             self.cfg.model.backbone,
             pretrained=True,
             num_classes=0,
-            in_chans=1,
+            in_chans=self.cfg.model.in_chans,
+            global_pool=self.cfg.model.pool_type,
         )
         num_features = self.backbone.num_features
 
