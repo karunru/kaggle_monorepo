@@ -31,8 +31,8 @@ ruff.toml
 pytest.ini
 mypy.ini
 
-# vscode
-.vscode/
+# pycharm
+.idea/
 
 # user settings
 !projects/*/uv.lock

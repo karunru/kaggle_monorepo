@@ -1,9 +1,9 @@
-FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
+FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu22.04
 
 ARG UID
 ARG GID
 ARG PROJECT
-ARG USERNAME=vscode
+ARG USERNAME=pycharm
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=ja_JP.UTF-8 \
