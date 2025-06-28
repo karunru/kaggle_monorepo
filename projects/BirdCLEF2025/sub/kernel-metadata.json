@@ -1,0 +1,17 @@
+{
+  "id": "karunru/BirdCLEF2025-sub",
+  "title": "BirdCLEF2025-sub",
+  "code_file": "sub.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "false",
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [
+    "karunru/birdclef2025-deps"
+  ],
+  "model_sources": []
+}

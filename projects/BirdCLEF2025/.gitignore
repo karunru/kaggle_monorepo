@@ -1,0 +1,7 @@
+data/
+src/weights
+src/preds
+src/wandb
+*.ckpt
+*.csv
+*.npy
