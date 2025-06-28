@@ -4,3 +4,4 @@ src/preds
 src/wandb
 *.ckpt
 *.csv
+*.npy
