@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv add:*)",
+      "Bash(uv run:*)",
+      "Bash(python:*)",
+      "Bash(jupyter:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:scikit-learn.org)",
+      "WebFetch(domain:pandas.pydata.org)",
+      "WebFetch(domain:numpy.org)",
+      "Bash(mkdir:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_snapshot",
+      "WebFetch(domain:www.kaggle.com)"
+    ],
+    "deny": [
+      "Bash(uv sync:*)",
+      "Read(pattern:**/__pycache__/**)",
+      "Read(pattern:.coverage)",
+      "Read(pattern:**/.mypy_cache/**)",
+      "Read(pattern:**/.pytest_cache/**)",
+      "Read(pattern:**/.ruff_cache/**)",
+      "Read(pattern:**/.ipynb_checkpoints/**)",
+      "Read(pattern:**/.venv/**)",
+      "Read(pattern:**/*.egg-info/**)",
+      "Read(pattern:.env)"
+    ]
+  }
+}
