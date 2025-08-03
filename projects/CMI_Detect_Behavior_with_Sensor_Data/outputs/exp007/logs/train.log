@@ -1,0 +1,377 @@
+07/21/2025 06:57:29 AM INFO __main__: Starting cross-validation training
+07/21/2025 06:57:29 AM INFO __main__: Configuration: {'root': '../../outputs/exp007', 'experiment': {'name': 'exp007_missing_value_attention_mask', 'description': 'Missing value handling with attention mask', 'tags': ['imu_only', 'squeezeformer', 'pytorch_lightning', 'missing_value_mask']}, 'paths': {'experiment_dir': '.', 'output_dir': '../../outputs/exp007'}, 'data': {'root': '../../data', 'train_path': '../../data/train.csv', 'test_path': '../../data/test.csv', 'demographics_train_path': '../../data/train_demographics.csv', 'demographics_test_path': '../../data/test_demographics.csv'}, 'model': {'name': 'cmi_squeezeformer', 'input_dim': 7, 'd_model': 256, 'n_layers': 8, 'n_heads': 8, 'd_ff': 1024, 'num_classes': 18, 'kernel_size': 31, 'dropout': 0.1}, 'training': {'seed': 42, 'batch_size': 128, 'num_workers': 4, 'epochs': 100, 'learning_rate': 0.0003, 'weight_decay': 1e-05, 'early_stopping_patience': 15, 'n_folds': 5, 'scheduler': {'type': 'cosine', 'min_lr': 1e-06, 'factor': 0.5, 'patience': 5}}, 'loss': {'type': 'cmi', 'alpha': 0.5, 'focal_gamma': 2.0, 'focal_alpha': 1.0}, 'length_grouping': {'enabled': False, 'use_dynamic_padding': False, 'mega_batch_multiplier': 8, 'percentile_max_length': 0.95, 'min_sequence_length': 50, 'max_sequence_length': 500, 'put_longest_first': True, 'fallback_to_fixed_length': True}, 'schedule_free': {'enabled': False, 'optimizer_type': 'RAdamScheduleFree', 'learning_rate_multiplier': 5.0, 'warmup_steps': 1000, 'batch_norm_calibration_steps': 50}, 'ema': {'enabled': True, 'beta': 0.9999, 'update_after_step': 1000, 'update_every': 10, 'update_model_with_ema_every': 1000, 'use_ema_for_validation': True}, 'val': {'name': 'stratified_group_kfold', 'params': {'n_splits': 5, 'random_state': 42, 'target': 'gesture', 'group': 'subject', 'id': 'sequence_id', 'force_recreate': False}}, 'preprocessing': {'target_sequence_length': 200, 'imu_normalization': 'zscore', 'apply_lowpass_filter': False, 'lowpass_cutoff': 10, 'lowpass_fs': 50, 'lowpass_order': 4}, 'augmentation': {'gaussian_noise': {'probability': 0.3, 'std': 0.01}, 'time_scaling': {'probability': 0.3, 'scale_range': [0.9, 1.1]}, 'partial_masking': {'probability': 0.2, 'mask_length_range': [5, 20], 'mask_ratio': 0.1}}, 'lightning': {'trainer': {'accelerator': 'auto', 'devices': 'auto', 'precision': '16-mixed', 'max_epochs': 100, 'gradient_clip_val': 1.0, 'accumulate_grad_batches': 1, 'deterministic': False, 'benchmark': True, 'enable_checkpointing': True, 'default_root_dir': '../../outputs/exp007', 'enable_progress_bar': True, 'log_every_n_steps': 50, 'check_val_every_n_epoch': 1, 'val_check_interval': 1.0, 'enable_early_stopping': True}, 'callbacks': {'model_checkpoint': {'monitor': 'val_cmi_score', 'mode': 'max', 'save_top_k': 3, 'save_last': True, 'filename': 'epoch-{epoch:02d}-val_cmi_score-{val_cmi_score:.4f}', 'auto_insert_metric_name': False}, 'early_stopping': {'monitor': 'val_cmi_score', 'mode': 'max', 'patience': 15, 'min_delta': 0.001, 'verbose': True}, 'lr_monitor': {'logging_interval': 'epoch'}, 'rich_progress_bar': {'enable': True}}}, 'logging': {'level': 'INFO', 'log_dir': 'logs', 'log_file': 'exp007.log', 'wandb': {'enabled': True, 'project': 'CMI-Detect-Behavior-with-Sensor-Data', 'name': 'exp007', 'tags': ['exp007', 'switch_ema', 'squeezeformer']}}, 'hardware': {'use_mixed_precision': True, 'gradient_clip_norm': 1.0}, 'inference': {'batch_size': 64, 'use_tta': False, 'tta_iterations': 5, 'ensemble_strategy': 'average'}, 'target_gestures': ['Above ear - pull hair', 'Forehead - pull hairline', 'Forehead - scratch', 'Eyebrow - pull hair', 'Eyelash - pull hair', 'Neck - pinch skin', 'Neck - scratch', 'Cheek - pinch skin'], 'non_target_gestures': ['Drink from bottle/cup', 'Glasses on/off', 'Pull air toward your face', 'Pinch knee/leg skin', 'Scratch knee/leg skin', 'Write name on leg', 'Text on phone', 'Feel around in tray and pull out an object', 'Write name in air', 'Wave hello'], 'imu_features': ['acc_x', 'acc_y', 'acc_z', 'rot_w', 'rot_x', 'rot_y', 'rot_z']}
+07/21/2025 06:57:29 AM INFO __main__: Starting training for fold 0
+07/21/2025 06:57:36 AM ERROR __main__: Error in fold 0
+Traceback (most recent call last):
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/train.py", line 224, in train_cross_validation
+    fold_result = train_single_fold(config, fold, logger, wandb_logger)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/train.py", line 146, in train_single_fold
+    trainer.fit(model, data_module)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 561, in fit
+    call._call_and_handle_interrupt(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, self._fit_impl, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 48, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 599, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 974, in _run
+    call._call_setup_hook(self)  # allow user to set up LightningModule in accelerator environment
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 107, in _call_setup_hook
+    _call_lightning_datamodule_hook(trainer, "setup", stage=fn)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 198, in _call_lightning_datamodule_hook
+    return fn(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/src/utils/timer.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 677, in setup
+    self.train_dataset = IMUDataset(
+                         ~~~~~~~~~~^
+        train_sequence_ids,
+        ^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        use_dynamic_padding=self.use_dynamic_padding,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 252, in __init__
+    self._preprocess_data()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/src/utils/timer.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 304, in _preprocess_data
+    self.sequence_data = self._preprocess_data_vectorized_with_mask()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/src/utils/timer.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 329, in _preprocess_data_vectorized_with_mask
+    sequence_data = self._normalize_sequences_parallel_with_mask(processed_data)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 387, in _normalize_sequences_parallel_with_mask
+    batch_results = list(
+        tqdm(executor.map(process_sequence_batch, batches), desc="Normalizing sequences", total=len(batches))
+    )
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+               ^^^^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 353, in process_sequence_batch
+    imu_data_processed, missing_mask = self._handle_missing_values_with_mask_vectorized(imu_array)
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 419, in _handle_missing_values_with_mask_vectorized
+    missing_mask = np.isnan(data).any(axis=0)  # [seq_len]
+                   ~~~~~~~~^^^^^^
+TypeError: ufunc 'isnan' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''
+07/21/2025 10:58:22 AM INFO __main__: Starting cross-validation training
+07/21/2025 10:58:22 AM INFO __main__: Configuration: {'root': '../../outputs/exp007', 'experiment': {'name': 'exp007_missing_value_attention_mask', 'description': 'Missing value handling with attention mask', 'tags': ['imu_only', 'squeezeformer', 'pytorch_lightning', 'missing_value_mask']}, 'paths': {'experiment_dir': '.', 'output_dir': '../../outputs/exp007'}, 'data': {'root': '../../data', 'train_path': '../../data/train.csv', 'test_path': '../../data/test.csv', 'demographics_train_path': '../../data/train_demographics.csv', 'demographics_test_path': '../../data/test_demographics.csv'}, 'model': {'name': 'cmi_squeezeformer', 'input_dim': 7, 'd_model': 256, 'n_layers': 8, 'n_heads': 8, 'd_ff': 1024, 'num_classes': 18, 'kernel_size': 31, 'dropout': 0.1}, 'training': {'seed': 42, 'batch_size': 128, 'num_workers': 4, 'epochs': 100, 'learning_rate': 0.0003, 'weight_decay': 1e-05, 'early_stopping_patience': 15, 'n_folds': 5, 'scheduler': {'type': 'cosine', 'min_lr': 1e-06, 'factor': 0.5, 'patience': 5}}, 'loss': {'type': 'cmi', 'alpha': 0.5, 'focal_gamma': 2.0, 'focal_alpha': 1.0}, 'length_grouping': {'enabled': False, 'use_dynamic_padding': False, 'mega_batch_multiplier': 8, 'percentile_max_length': 0.95, 'min_sequence_length': 50, 'max_sequence_length': 500, 'put_longest_first': True, 'fallback_to_fixed_length': True}, 'schedule_free': {'enabled': False, 'optimizer_type': 'RAdamScheduleFree', 'learning_rate_multiplier': 5.0, 'warmup_steps': 1000, 'batch_norm_calibration_steps': 50}, 'ema': {'enabled': True, 'beta': 0.9999, 'update_after_step': 1000, 'update_every': 10, 'update_model_with_ema_every': 1000, 'use_ema_for_validation': True}, 'val': {'name': 'stratified_group_kfold', 'params': {'n_splits': 5, 'random_state': 42, 'target': 'gesture', 'group': 'subject', 'id': 'sequence_id', 'force_recreate': False}}, 'preprocessing': {'target_sequence_length': 200, 'imu_normalization': 'zscore', 'apply_lowpass_filter': False, 'lowpass_cutoff': 10, 'lowpass_fs': 50, 'lowpass_order': 4}, 'augmentation': {'gaussian_noise': {'probability': 0.3, 'std': 0.01}, 'time_scaling': {'probability': 0.3, 'scale_range': [0.9, 1.1]}, 'partial_masking': {'probability': 0.2, 'mask_length_range': [5, 20], 'mask_ratio': 0.1}}, 'lightning': {'trainer': {'accelerator': 'auto', 'devices': 'auto', 'precision': '16-mixed', 'max_epochs': 100, 'gradient_clip_val': 1.0, 'accumulate_grad_batches': 1, 'deterministic': False, 'benchmark': True, 'enable_checkpointing': True, 'default_root_dir': '../../outputs/exp007', 'enable_progress_bar': True, 'log_every_n_steps': 50, 'check_val_every_n_epoch': 1, 'val_check_interval': 1.0, 'enable_early_stopping': True}, 'callbacks': {'model_checkpoint': {'monitor': 'val_cmi_score', 'mode': 'max', 'save_top_k': 3, 'save_last': True, 'filename': 'epoch-{epoch:02d}-val_cmi_score-{val_cmi_score:.4f}', 'auto_insert_metric_name': False}, 'early_stopping': {'monitor': 'val_cmi_score', 'mode': 'max', 'patience': 15, 'min_delta': 0.001, 'verbose': True}, 'lr_monitor': {'logging_interval': 'epoch'}, 'rich_progress_bar': {'enable': True}}}, 'logging': {'level': 'INFO', 'log_dir': 'logs', 'log_file': 'exp007.log', 'wandb': {'enabled': True, 'project': 'CMI-Detect-Behavior-with-Sensor-Data', 'name': 'exp007', 'tags': ['exp007', 'switch_ema', 'squeezeformer']}}, 'hardware': {'use_mixed_precision': True, 'gradient_clip_norm': 1.0}, 'inference': {'batch_size': 64, 'use_tta': False, 'tta_iterations': 5, 'ensemble_strategy': 'average'}, 'target_gestures': ['Above ear - pull hair', 'Forehead - pull hairline', 'Forehead - scratch', 'Eyebrow - pull hair', 'Eyelash - pull hair', 'Neck - pinch skin', 'Neck - scratch', 'Cheek - pinch skin'], 'non_target_gestures': ['Drink from bottle/cup', 'Glasses on/off', 'Pull air toward your face', 'Pinch knee/leg skin', 'Scratch knee/leg skin', 'Write name on leg', 'Text on phone', 'Feel around in tray and pull out an object', 'Write name in air', 'Wave hello'], 'imu_features': ['acc_x', 'acc_y', 'acc_z', 'rot_w', 'rot_x', 'rot_y', 'rot_z']}
+07/21/2025 10:58:22 AM INFO __main__: Starting training for fold 0
+07/21/2025 10:58:28 AM ERROR __main__: Error in fold 0
+Traceback (most recent call last):
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/train.py", line 224, in train_cross_validation
+    fold_result = train_single_fold(config, fold, logger, wandb_logger)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/train.py", line 146, in train_single_fold
+    trainer.fit(model, data_module)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 561, in fit
+    call._call_and_handle_interrupt(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, self._fit_impl, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 48, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 599, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 974, in _run
+    call._call_setup_hook(self)  # allow user to set up LightningModule in accelerator environment
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 107, in _call_setup_hook
+    _call_lightning_datamodule_hook(trainer, "setup", stage=fn)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 198, in _call_lightning_datamodule_hook
+    return fn(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/src/utils/timer.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 677, in setup
+    self.train_dataset = IMUDataset(
+                         ~~~~~~~~~~^
+        train_sequence_ids,
+        ^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        use_dynamic_padding=self.use_dynamic_padding,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 252, in __init__
+    self._preprocess_data()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/src/utils/timer.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 304, in _preprocess_data
+    self.sequence_data = self._preprocess_data_vectorized_with_mask()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/src/utils/timer.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 329, in _preprocess_data_vectorized_with_mask
+    sequence_data = self._normalize_sequences_parallel_with_mask(processed_data)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 387, in _normalize_sequences_parallel_with_mask
+    batch_results = list(
+        tqdm(executor.map(process_sequence_batch, batches), desc="Normalizing sequences", total=len(batches))
+    )
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+               ^^^^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 353, in process_sequence_batch
+    imu_data_processed, missing_mask = self._handle_missing_values_with_mask_vectorized(imu_array)
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 419, in _handle_missing_values_with_mask_vectorized
+    missing_mask = np.isnan(data).any(axis=0)  # [seq_len]
+                   ~~~~~~~~^^^^^^
+TypeError: ufunc 'isnan' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''
+07/21/2025 11:02:34 AM INFO __main__: Starting cross-validation training
+07/21/2025 11:02:34 AM INFO __main__: Configuration: {'root': '../../outputs/exp007', 'experiment': {'name': 'exp007_missing_value_attention_mask', 'description': 'Missing value handling with attention mask', 'tags': ['imu_only', 'squeezeformer', 'pytorch_lightning', 'missing_value_mask']}, 'paths': {'experiment_dir': '.', 'output_dir': '../../outputs/exp007'}, 'data': {'root': '../../data', 'train_path': '../../data/train.csv', 'test_path': '../../data/test.csv', 'demographics_train_path': '../../data/train_demographics.csv', 'demographics_test_path': '../../data/test_demographics.csv'}, 'model': {'name': 'cmi_squeezeformer', 'input_dim': 7, 'd_model': 256, 'n_layers': 8, 'n_heads': 8, 'd_ff': 1024, 'num_classes': 18, 'kernel_size': 31, 'dropout': 0.1}, 'training': {'seed': 42, 'batch_size': 128, 'num_workers': 4, 'epochs': 100, 'learning_rate': 0.0003, 'weight_decay': 1e-05, 'early_stopping_patience': 15, 'n_folds': 5, 'scheduler': {'type': 'cosine', 'min_lr': 1e-06, 'factor': 0.5, 'patience': 5}}, 'loss': {'type': 'cmi', 'alpha': 0.5, 'focal_gamma': 2.0, 'focal_alpha': 1.0}, 'length_grouping': {'enabled': False, 'use_dynamic_padding': False, 'mega_batch_multiplier': 8, 'percentile_max_length': 0.95, 'min_sequence_length': 50, 'max_sequence_length': 500, 'put_longest_first': True, 'fallback_to_fixed_length': True}, 'schedule_free': {'enabled': False, 'optimizer_type': 'RAdamScheduleFree', 'learning_rate_multiplier': 5.0, 'warmup_steps': 1000, 'batch_norm_calibration_steps': 50}, 'ema': {'enabled': True, 'beta': 0.9999, 'update_after_step': 1000, 'update_every': 10, 'update_model_with_ema_every': 1000, 'use_ema_for_validation': True}, 'val': {'name': 'stratified_group_kfold', 'params': {'n_splits': 5, 'random_state': 42, 'target': 'gesture', 'group': 'subject', 'id': 'sequence_id', 'force_recreate': False}}, 'preprocessing': {'target_sequence_length': 200, 'imu_normalization': 'zscore', 'apply_lowpass_filter': False, 'lowpass_cutoff': 10, 'lowpass_fs': 50, 'lowpass_order': 4}, 'augmentation': {'gaussian_noise': {'probability': 0.3, 'std': 0.01}, 'time_scaling': {'probability': 0.3, 'scale_range': [0.9, 1.1]}, 'partial_masking': {'probability': 0.2, 'mask_length_range': [5, 20], 'mask_ratio': 0.1}}, 'lightning': {'trainer': {'accelerator': 'auto', 'devices': 'auto', 'precision': '16-mixed', 'max_epochs': 100, 'gradient_clip_val': 1.0, 'accumulate_grad_batches': 1, 'deterministic': False, 'benchmark': True, 'enable_checkpointing': True, 'default_root_dir': '../../outputs/exp007', 'enable_progress_bar': True, 'log_every_n_steps': 50, 'check_val_every_n_epoch': 1, 'val_check_interval': 1.0, 'enable_early_stopping': True}, 'callbacks': {'model_checkpoint': {'monitor': 'val_cmi_score', 'mode': 'max', 'save_top_k': 3, 'save_last': True, 'filename': 'epoch-{epoch:02d}-val_cmi_score-{val_cmi_score:.4f}', 'auto_insert_metric_name': False}, 'early_stopping': {'monitor': 'val_cmi_score', 'mode': 'max', 'patience': 15, 'min_delta': 0.001, 'verbose': True}, 'lr_monitor': {'logging_interval': 'epoch'}, 'rich_progress_bar': {'enable': True}}}, 'logging': {'level': 'INFO', 'log_dir': 'logs', 'log_file': 'exp007.log', 'wandb': {'enabled': True, 'project': 'CMI-Detect-Behavior-with-Sensor-Data', 'name': 'exp007', 'tags': ['exp007', 'switch_ema', 'squeezeformer']}}, 'hardware': {'use_mixed_precision': True, 'gradient_clip_norm': 1.0}, 'inference': {'batch_size': 64, 'use_tta': False, 'tta_iterations': 5, 'ensemble_strategy': 'average'}, 'target_gestures': ['Above ear - pull hair', 'Forehead - pull hairline', 'Forehead - scratch', 'Eyebrow - pull hair', 'Eyelash - pull hair', 'Neck - pinch skin', 'Neck - scratch', 'Cheek - pinch skin'], 'non_target_gestures': ['Drink from bottle/cup', 'Glasses on/off', 'Pull air toward your face', 'Pinch knee/leg skin', 'Scratch knee/leg skin', 'Write name on leg', 'Text on phone', 'Feel around in tray and pull out an object', 'Write name in air', 'Wave hello'], 'imu_features': ['acc_x', 'acc_y', 'acc_z', 'rot_w', 'rot_x', 'rot_y', 'rot_z']}
+07/21/2025 11:02:34 AM INFO __main__: Starting training for fold 0
+07/21/2025 11:02:40 AM ERROR __main__: Error in fold 0
+Traceback (most recent call last):
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/train.py", line 224, in train_cross_validation
+    fold_result = train_single_fold(config, fold, logger, wandb_logger)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/train.py", line 146, in train_single_fold
+    trainer.fit(model, data_module)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 561, in fit
+    call._call_and_handle_interrupt(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, self._fit_impl, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 48, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 599, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 974, in _run
+    call._call_setup_hook(self)  # allow user to set up LightningModule in accelerator environment
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 107, in _call_setup_hook
+    _call_lightning_datamodule_hook(trainer, "setup", stage=fn)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 198, in _call_lightning_datamodule_hook
+    return fn(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/src/utils/timer.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 677, in setup
+    self.train_dataset = IMUDataset(
+                         ~~~~~~~~~~^
+        train_sequence_ids,
+        ^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        use_dynamic_padding=self.use_dynamic_padding,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 252, in __init__
+    self._preprocess_data()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/src/utils/timer.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 304, in _preprocess_data
+    self.sequence_data = self._preprocess_data_vectorized_with_mask()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/src/utils/timer.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 329, in _preprocess_data_vectorized_with_mask
+    sequence_data = self._normalize_sequences_parallel_with_mask(processed_data)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 387, in _normalize_sequences_parallel_with_mask
+    batch_results = list(
+        tqdm(executor.map(process_sequence_batch, batches), desc="Normalizing sequences", total=len(batches))
+    )
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+               ^^^^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 353, in process_sequence_batch
+    imu_data_processed, missing_mask = self._handle_missing_values_with_mask_vectorized(imu_array)
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/exp/exp007/dataset.py", line 419, in _handle_missing_values_with_mask_vectorized
+    missing_mask = np.isnan(data).any(axis=0)  # [seq_len]
+                   ~~~~~~~~^^^^^^
+TypeError: ufunc 'isnan' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''
+07/21/2025 11:22:04 AM INFO __main__: Starting cross-validation training
+07/21/2025 11:22:04 AM INFO __main__: Configuration: {'root': '../../outputs/exp007', 'experiment': {'name': 'exp007_missing_value_attention_mask', 'description': 'Missing value handling with attention mask', 'tags': ['imu_only', 'squeezeformer', 'pytorch_lightning', 'missing_value_mask']}, 'paths': {'experiment_dir': '.', 'output_dir': '../../outputs/exp007'}, 'data': {'root': '../../data', 'train_path': '../../data/train.csv', 'test_path': '../../data/test.csv', 'demographics_train_path': '../../data/train_demographics.csv', 'demographics_test_path': '../../data/test_demographics.csv'}, 'model': {'name': 'cmi_squeezeformer', 'input_dim': 7, 'd_model': 256, 'n_layers': 8, 'n_heads': 8, 'd_ff': 1024, 'num_classes': 18, 'kernel_size': 31, 'dropout': 0.1}, 'training': {'seed': 42, 'batch_size': 128, 'num_workers': 4, 'epochs': 100, 'learning_rate': 0.0003, 'weight_decay': 1e-05, 'early_stopping_patience': 15, 'n_folds': 5, 'scheduler': {'type': 'cosine', 'min_lr': 1e-06, 'factor': 0.5, 'patience': 5}}, 'loss': {'type': 'cmi', 'alpha': 0.5, 'focal_gamma': 2.0, 'focal_alpha': 1.0}, 'length_grouping': {'enabled': False, 'use_dynamic_padding': False, 'mega_batch_multiplier': 8, 'percentile_max_length': 0.95, 'min_sequence_length': 50, 'max_sequence_length': 500, 'put_longest_first': True, 'fallback_to_fixed_length': True}, 'schedule_free': {'enabled': False, 'optimizer_type': 'RAdamScheduleFree', 'learning_rate_multiplier': 5.0, 'warmup_steps': 1000, 'batch_norm_calibration_steps': 50}, 'ema': {'enabled': True, 'beta': 0.9999, 'update_after_step': 1000, 'update_every': 10, 'update_model_with_ema_every': 1000, 'use_ema_for_validation': True}, 'val': {'name': 'stratified_group_kfold', 'params': {'n_splits': 5, 'random_state': 42, 'target': 'gesture', 'group': 'subject', 'id': 'sequence_id', 'force_recreate': False}}, 'preprocessing': {'target_sequence_length': 200, 'imu_normalization': 'zscore', 'apply_lowpass_filter': False, 'lowpass_cutoff': 10, 'lowpass_fs': 50, 'lowpass_order': 4}, 'augmentation': {'gaussian_noise': {'probability': 0.3, 'std': 0.01}, 'time_scaling': {'probability': 0.3, 'scale_range': [0.9, 1.1]}, 'partial_masking': {'probability': 0.2, 'mask_length_range': [5, 20], 'mask_ratio': 0.1}}, 'lightning': {'trainer': {'accelerator': 'auto', 'devices': 'auto', 'precision': '16-mixed', 'max_epochs': 100, 'gradient_clip_val': 1.0, 'accumulate_grad_batches': 1, 'deterministic': False, 'benchmark': True, 'enable_checkpointing': True, 'default_root_dir': '../../outputs/exp007', 'enable_progress_bar': True, 'log_every_n_steps': 50, 'check_val_every_n_epoch': 1, 'val_check_interval': 1.0, 'enable_early_stopping': True}, 'callbacks': {'model_checkpoint': {'monitor': 'val_cmi_score', 'mode': 'max', 'save_top_k': 3, 'save_last': True, 'filename': 'epoch-{epoch:02d}-val_cmi_score-{val_cmi_score:.4f}', 'auto_insert_metric_name': False}, 'early_stopping': {'monitor': 'val_cmi_score', 'mode': 'max', 'patience': 15, 'min_delta': 0.001, 'verbose': True}, 'lr_monitor': {'logging_interval': 'epoch'}, 'rich_progress_bar': {'enable': True}}}, 'logging': {'level': 'INFO', 'log_dir': 'logs', 'log_file': 'exp007.log', 'wandb': {'enabled': True, 'project': 'CMI-Detect-Behavior-with-Sensor-Data', 'name': 'exp007', 'tags': ['exp007', 'switch_ema', 'squeezeformer']}}, 'hardware': {'use_mixed_precision': True, 'gradient_clip_norm': 1.0}, 'inference': {'batch_size': 64, 'use_tta': False, 'tta_iterations': 5, 'ensemble_strategy': 'average'}, 'target_gestures': ['Above ear - pull hair', 'Forehead - pull hairline', 'Forehead - scratch', 'Eyebrow - pull hair', 'Eyelash - pull hair', 'Neck - pinch skin', 'Neck - scratch', 'Cheek - pinch skin'], 'non_target_gestures': ['Drink from bottle/cup', 'Glasses on/off', 'Pull air toward your face', 'Pinch knee/leg skin', 'Scratch knee/leg skin', 'Write name on leg', 'Text on phone', 'Feel around in tray and pull out an object', 'Write name in air', 'Wave hello'], 'imu_features': ['acc_x', 'acc_y', 'acc_z', 'rot_w', 'rot_x', 'rot_y', 'rot_z']}
+07/21/2025 11:22:04 AM INFO __main__: Starting training for fold 0
+07/21/2025 11:47:23 AM INFO __main__: Starting cross-validation training
+07/21/2025 11:47:23 AM INFO __main__: Configuration: {'root': '../../outputs/exp007', 'experiment': {'name': 'exp007_missing_value_attention_mask', 'description': 'Missing value handling with attention mask', 'tags': ['imu_only', 'squeezeformer', 'pytorch_lightning', 'missing_value_mask']}, 'paths': {'experiment_dir': '.', 'output_dir': '../../outputs/exp007'}, 'data': {'root': '../../data', 'train_path': '../../data/train.csv', 'test_path': '../../data/test.csv', 'demographics_train_path': '../../data/train_demographics.csv', 'demographics_test_path': '../../data/test_demographics.csv'}, 'model': {'name': 'cmi_squeezeformer', 'input_dim': 7, 'd_model': 256, 'n_layers': 8, 'n_heads': 8, 'd_ff': 1024, 'num_classes': 18, 'kernel_size': 31, 'dropout': 0.1}, 'training': {'seed': 42, 'batch_size': 128, 'num_workers': 4, 'epochs': 100, 'learning_rate': 0.0003, 'weight_decay': 1e-05, 'early_stopping_patience': 15, 'n_folds': 5, 'scheduler': {'type': 'cosine', 'min_lr': 1e-06, 'factor': 0.5, 'patience': 5}}, 'loss': {'type': 'cmi', 'alpha': 0.5, 'focal_gamma': 2.0, 'focal_alpha': 1.0}, 'length_grouping': {'enabled': False, 'use_dynamic_padding': False, 'mega_batch_multiplier': 8, 'percentile_max_length': 0.95, 'min_sequence_length': 50, 'max_sequence_length': 500, 'put_longest_first': True, 'fallback_to_fixed_length': True}, 'schedule_free': {'enabled': False, 'optimizer_type': 'RAdamScheduleFree', 'learning_rate_multiplier': 5.0, 'warmup_steps': 1000, 'batch_norm_calibration_steps': 50}, 'ema': {'enabled': True, 'beta': 0.9999, 'update_after_step': 1000, 'update_every': 10, 'update_model_with_ema_every': 1000, 'use_ema_for_validation': True}, 'val': {'name': 'stratified_group_kfold', 'params': {'n_splits': 5, 'random_state': 42, 'target': 'gesture', 'group': 'subject', 'id': 'sequence_id', 'force_recreate': False}}, 'preprocessing': {'target_sequence_length': 200, 'imu_normalization': 'zscore', 'apply_lowpass_filter': False, 'lowpass_cutoff': 10, 'lowpass_fs': 50, 'lowpass_order': 4}, 'augmentation': {'gaussian_noise': {'probability': 0.3, 'std': 0.01}, 'time_scaling': {'probability': 0.3, 'scale_range': [0.9, 1.1]}, 'partial_masking': {'probability': 0.2, 'mask_length_range': [5, 20], 'mask_ratio': 0.1}}, 'lightning': {'trainer': {'accelerator': 'auto', 'devices': 'auto', 'precision': '16-mixed', 'max_epochs': 100, 'gradient_clip_val': 1.0, 'accumulate_grad_batches': 1, 'deterministic': False, 'benchmark': True, 'enable_checkpointing': True, 'default_root_dir': '../../outputs/exp007', 'enable_progress_bar': True, 'log_every_n_steps': 50, 'check_val_every_n_epoch': 1, 'val_check_interval': 1.0, 'enable_early_stopping': True}, 'callbacks': {'model_checkpoint': {'monitor': 'val_cmi_score', 'mode': 'max', 'save_top_k': 3, 'save_last': True, 'filename': 'epoch-{epoch:02d}-val_cmi_score-{val_cmi_score:.4f}', 'auto_insert_metric_name': False}, 'early_stopping': {'monitor': 'val_cmi_score', 'mode': 'max', 'patience': 15, 'min_delta': 0.001, 'verbose': True}, 'lr_monitor': {'logging_interval': 'epoch'}, 'rich_progress_bar': {'enable': True}}}, 'logging': {'level': 'INFO', 'log_dir': 'logs', 'log_file': 'exp007.log', 'wandb': {'enabled': True, 'project': 'CMI-Detect-Behavior-with-Sensor-Data', 'name': 'exp007', 'tags': ['exp007', 'switch_ema', 'squeezeformer']}}, 'hardware': {'use_mixed_precision': True, 'gradient_clip_norm': 1.0}, 'inference': {'batch_size': 64, 'use_tta': False, 'tta_iterations': 5, 'ensemble_strategy': 'average'}, 'target_gestures': ['Above ear - pull hair', 'Forehead - pull hairline', 'Forehead - scratch', 'Eyebrow - pull hair', 'Eyelash - pull hair', 'Neck - pinch skin', 'Neck - scratch', 'Cheek - pinch skin'], 'non_target_gestures': ['Drink from bottle/cup', 'Glasses on/off', 'Pull air toward your face', 'Pinch knee/leg skin', 'Scratch knee/leg skin', 'Write name on leg', 'Text on phone', 'Feel around in tray and pull out an object', 'Write name in air', 'Wave hello'], 'imu_features': ['acc_x', 'acc_y', 'acc_z', 'rot_w', 'rot_x', 'rot_y', 'rot_z']}
+07/21/2025 11:47:24 AM INFO __main__: Starting training for fold 0
+07/21/2025 12:06:25 PM INFO __main__: Loading best model from: ../../outputs/exp007/fold_0/version_4/checkpoints/epoch-62-val_cmi_score-0.7704.ckpt
+07/21/2025 12:06:27 PM INFO __main__: Fold 0 results: {'fold': 0, 'val_loss': 1.4127256870269775, 'val_cmi_score': 0.7703575491905212, 'val_multiclass_loss': 2.6021931171417236, 'val_binary_loss': 0.22325877845287323, 'best_model_path': '../../outputs/exp007/fold_0/version_4/checkpoints/epoch-62-val_cmi_score-0.7704.ckpt'}
+07/21/2025 12:06:27 PM INFO __main__: Starting training for fold 1
+07/21/2025 12:22:11 PM INFO __main__: Loading best model from: ../../outputs/exp007/fold_1/version_0/checkpoints/epoch-59-val_cmi_score-0.7407.ckpt
+07/21/2025 12:22:14 PM INFO __main__: Fold 1 results: {'fold': 1, 'val_loss': 1.5989511013031006, 'val_cmi_score': 0.740712583065033, 'val_multiclass_loss': 2.8521933555603027, 'val_binary_loss': 0.3457087576389313, 'best_model_path': '../../outputs/exp007/fold_1/version_0/checkpoints/epoch-59-val_cmi_score-0.7407.ckpt'}
+07/21/2025 12:22:14 PM INFO __main__: Starting training for fold 2
+07/21/2025 12:37:09 PM INFO __main__: Loading best model from: ../../outputs/exp007/fold_2/version_0/checkpoints/epoch-44-val_cmi_score-0.7637.ckpt
+07/21/2025 12:37:12 PM INFO __main__: Fold 2 results: {'fold': 2, 'val_loss': 1.2664849758148193, 'val_cmi_score': 0.7637296915054321, 'val_multiclass_loss': 2.251554250717163, 'val_binary_loss': 0.281415730714798, 'best_model_path': '../../outputs/exp007/fold_2/version_0/checkpoints/epoch-44-val_cmi_score-0.7637.ckpt'}
+07/21/2025 12:37:12 PM INFO __main__: Starting training for fold 3
+07/21/2025 12:50:57 PM INFO __main__: Loading best model from: ../../outputs/exp007/fold_3/version_0/checkpoints/epoch-42-val_cmi_score-0.7629.ckpt
+07/21/2025 12:51:00 PM INFO __main__: Fold 3 results: {'fold': 3, 'val_loss': 1.1713656187057495, 'val_cmi_score': 0.762871503829956, 'val_multiclass_loss': 2.102841854095459, 'val_binary_loss': 0.2398892641067505, 'best_model_path': '../../outputs/exp007/fold_3/version_0/checkpoints/epoch-42-val_cmi_score-0.7629.ckpt'}
+07/21/2025 12:51:00 PM INFO __main__: Starting training for fold 4
+07/21/2025 01:06:12 PM INFO __main__: Loading best model from: ../../outputs/exp007/fold_4/version_0/checkpoints/epoch-45-val_cmi_score-0.7722.ckpt
+07/21/2025 01:06:15 PM INFO __main__: Fold 4 results: {'fold': 4, 'val_loss': 1.2236045598983765, 'val_cmi_score': 0.7721936106681824, 'val_multiclass_loss': 2.226400852203369, 'val_binary_loss': 0.2208084762096405, 'best_model_path': '../../outputs/exp007/fold_4/version_0/checkpoints/epoch-45-val_cmi_score-0.7722.ckpt'}
+07/21/2025 01:06:15 PM INFO __main__: Cross-validation completed
+07/21/2025 01:06:15 PM INFO __main__: Mean CV Loss: 1.3346 ± 0.1547
+07/21/2025 01:06:15 PM INFO __main__: Mean CV CMI Score: 0.7620 ± 0.0112
+07/21/2025 01:06:15 PM INFO __main__: Results saved to: ../../outputs/exp007/cv_results.csv
+07/21/2025 01:06:15 PM INFO __main__: CV results logged to WandB
+07/21/2025 09:36:25 PM INFO __main__: Starting cross-validation training
+07/21/2025 09:36:25 PM INFO __main__: Configuration: {'root': '../../../outputs/exp007', 'experiment': {'name': 'exp007_missing_value_attention_mask', 'description': 'Missing value handling with attention mask', 'tags': ['imu_only', 'squeezeformer', 'pytorch_lightning', 'missing_value_mask']}, 'paths': {'experiment_dir': '.', 'output_dir': '../../../outputs/exp007'}, 'data': {'root': '../../../data', 'train_path': '../../../data/train.csv', 'test_path': '../../../data/test.csv', 'demographics_train_path': '../../../data/train_demographics.csv', 'demographics_test_path': '../../../data/test_demographics.csv'}, 'model': {'name': 'cmi_squeezeformer', 'input_dim': 7, 'd_model': 256, 'n_layers': 8, 'n_heads': 8, 'd_ff': 1024, 'num_classes': 18, 'kernel_size': 31, 'dropout': 0.1}, 'training': {'seed': 42, 'batch_size': 128, 'num_workers': 4, 'epochs': 100, 'learning_rate': 0.0003, 'weight_decay': 1e-05, 'early_stopping_patience': 15, 'n_folds': 5, 'scheduler': {'type': 'cosine', 'min_lr': 1e-06, 'factor': 0.5, 'patience': 5}}, 'loss': {'type': 'cmi', 'alpha': 0.5, 'focal_gamma': 2.0, 'focal_alpha': 1.0}, 'length_grouping': {'enabled': False, 'use_dynamic_padding': False, 'mega_batch_multiplier': 8, 'percentile_max_length': 0.95, 'min_sequence_length': 50, 'max_sequence_length': 500, 'put_longest_first': True, 'fallback_to_fixed_length': True}, 'schedule_free': {'enabled': False, 'optimizer_type': 'RAdamScheduleFree', 'learning_rate_multiplier': 5.0, 'warmup_steps': 1000, 'batch_norm_calibration_steps': 50}, 'ema': {'enabled': True, 'beta': 0.9999, 'update_after_step': 1000, 'update_every': 10, 'update_model_with_ema_every': 1000, 'use_ema_for_validation': True}, 'val': {'name': 'stratified_group_kfold', 'params': {'n_splits': 5, 'random_state': 42, 'target': 'gesture', 'group': 'subject', 'id': 'sequence_id', 'force_recreate': False}}, 'preprocessing': {'target_sequence_length': 200, 'imu_normalization': 'zscore', 'apply_lowpass_filter': False, 'lowpass_cutoff': 10, 'lowpass_fs': 50, 'lowpass_order': 4}, 'augmentation': {'gaussian_noise': {'probability': 0.3, 'std': 0.01}, 'time_scaling': {'probability': 0.3, 'scale_range': [0.9, 1.1]}, 'partial_masking': {'probability': 0.2, 'mask_length_range': [5, 20], 'mask_ratio': 0.1}}, 'lightning': {'trainer': {'accelerator': 'auto', 'devices': 'auto', 'precision': '16-mixed', 'max_epochs': 100, 'gradient_clip_val': 1.0, 'accumulate_grad_batches': 1, 'deterministic': False, 'benchmark': True, 'enable_checkpointing': True, 'default_root_dir': '../../../outputs/exp007', 'enable_progress_bar': True, 'log_every_n_steps': 50, 'check_val_every_n_epoch': 1, 'val_check_interval': 1.0, 'enable_early_stopping': True}, 'callbacks': {'model_checkpoint': {'monitor': 'val_cmi_score', 'mode': 'max', 'save_top_k': 3, 'save_last': True, 'filename': 'epoch-{epoch:02d}-val_cmi_score-{val_cmi_score:.4f}', 'auto_insert_metric_name': False}, 'early_stopping': {'monitor': 'val_cmi_score', 'mode': 'max', 'patience': 15, 'min_delta': 0.001, 'verbose': True}, 'lr_monitor': {'logging_interval': 'epoch'}, 'rich_progress_bar': {'enable': True}}}, 'logging': {'level': 'INFO', 'log_dir': 'logs', 'log_file': 'exp007.log', 'wandb': {'enabled': True, 'project': 'CMI-Detect-Behavior-with-Sensor-Data', 'name': 'exp007', 'tags': ['exp007', 'switch_ema', 'squeezeformer']}}, 'hardware': {'use_mixed_precision': True, 'gradient_clip_norm': 1.0}, 'inference': {'batch_size': 64, 'use_tta': False, 'tta_iterations': 5, 'ensemble_strategy': 'average'}, 'target_gestures': ['Above ear - pull hair', 'Forehead - pull hairline', 'Forehead - scratch', 'Eyebrow - pull hair', 'Eyelash - pull hair', 'Neck - pinch skin', 'Neck - scratch', 'Cheek - pinch skin'], 'non_target_gestures': ['Drink from bottle/cup', 'Glasses on/off', 'Pull air toward your face', 'Pinch knee/leg skin', 'Scratch knee/leg skin', 'Write name on leg', 'Text on phone', 'Feel around in tray and pull out an object', 'Write name in air', 'Wave hello'], 'imu_features': ['acc_x', 'acc_y', 'acc_z', 'rot_w', 'rot_x', 'rot_y', 'rot_z']}
+07/21/2025 09:36:25 PM INFO __main__: Starting training for fold 0
+07/21/2025 09:36:29 PM ERROR __main__: Error in fold 0
+Traceback (most recent call last):
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/exp007/train.py", line 229, in train_cross_validation
+    fold_result = train_single_fold(config, fold, logger, wandb_logger)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/exp007/train.py", line 151, in train_single_fold
+    trainer.fit(model, data_module)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 561, in fit
+    call._call_and_handle_interrupt(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, self._fit_impl, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 48, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 599, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 974, in _run
+    call._call_setup_hook(self)  # allow user to set up LightningModule in accelerator environment
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 101, in _call_setup_hook
+    if hasattr(logger, "experiment"):
+       ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/lightning_fabric/loggers/logger.py", line 118, in experiment
+    return fn(self)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/pytorch_lightning/loggers/wandb.py", line 407, in experiment
+    self._experiment = wandb.init(**self._wandb_init)
+                       ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/wandb/sdk/wandb_init.py", line 1620, in init
+    wandb._sentry.reraise(e)
+    ~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/wandb/analytics/sentry.py", line 157, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/wandb/sdk/wandb_init.py", line 1548, in init
+    wi.maybe_login(init_settings)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/wandb/sdk/wandb_init.py", line 191, in maybe_login
+    wandb_login._login(
+    ~~~~~~~~~~~~~~~~~~^
+        anonymous=run_settings.anonymous,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        _silent=run_settings.quiet or run_settings.silent,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/wandb/sdk/wandb_login.py", line 326, in _login
+    wlogin._print_logged_in_message()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/wandb/sdk/wandb_login.py", line 164, in _print_logged_in_message
+    wandb.termlog(
+    ~~~~~~~~~~~~~^
+        f"{login_state_str}. {login_info_str}",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        repeat=False,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/wandb/errors/term.py", line 172, in termlog
+    _log(
+    ~~~~^
+        string,
+        ^^^^^^^
+    ...<3 lines>...
+        silent=not _show_info,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/wandb/errors/term.py", line 358, in _log
+    click.echo(string, file=sys.stderr, nl=newline)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/click/utils.py", line 318, in echo
+    file.write(out)  # type: ignore
+    ~~~~~~~~~~^^^^^
+  File "/home/karunru/.local/share/uv/python/cpython-3.13.2-linux-x86_64-gnu/lib/python3.13/contextlib.py", line 85, in inner
+    return func(*args, **kwds)
+  File "/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/.venv/lib/python3.13/site-packages/wandb/sdk/lib/console_capture.py", line 168, in write_with_callbacks
+    n = orig_write(s)
+BrokenPipeError: [Errno 32] Broken pipe
+07/21/2025 10:22:04 PM INFO __main__: Starting cross-validation training
+07/21/2025 10:22:04 PM INFO __main__: Configuration: {'root': '../../../outputs/exp007', 'experiment': {'name': 'exp007_missing_value_attention_mask', 'description': 'Missing value handling with attention mask', 'tags': ['imu_only', 'squeezeformer', 'pytorch_lightning', 'missing_value_mask']}, 'paths': {'experiment_dir': '.', 'output_dir': '../../../outputs/exp007'}, 'data': {'root': '../../../data', 'train_path': '../../../data/train.csv', 'test_path': '../../../data/test.csv', 'demographics_train_path': '../../../data/train_demographics.csv', 'demographics_test_path': '../../../data/test_demographics.csv'}, 'model': {'name': 'cmi_squeezeformer', 'input_dim': 7, 'd_model': 256, 'n_layers': 8, 'n_heads': 8, 'd_ff': 1024, 'num_classes': 18, 'kernel_size': 31, 'dropout': 0.1}, 'training': {'seed': 42, 'batch_size': 128, 'num_workers': 4, 'epochs': 100, 'learning_rate': 0.0003, 'weight_decay': 1e-05, 'early_stopping_patience': 15, 'n_folds': 5, 'scheduler': {'type': 'cosine', 'min_lr': 1e-06, 'factor': 0.5, 'patience': 5}}, 'loss': {'type': 'cmi', 'alpha': 0.5, 'focal_gamma': 2.0, 'focal_alpha': 1.0}, 'length_grouping': {'enabled': False, 'use_dynamic_padding': False, 'mega_batch_multiplier': 8, 'percentile_max_length': 0.95, 'min_sequence_length': 50, 'max_sequence_length': 500, 'put_longest_first': True, 'fallback_to_fixed_length': True}, 'schedule_free': {'enabled': False, 'optimizer_type': 'RAdamScheduleFree', 'learning_rate_multiplier': 5.0, 'warmup_steps': 1000, 'batch_norm_calibration_steps': 50}, 'ema': {'enabled': True, 'beta': 0.9999, 'update_after_step': 1000, 'update_every': 10, 'update_model_with_ema_every': 1000, 'use_ema_for_validation': True}, 'val': {'name': 'stratified_group_kfold', 'params': {'n_splits': 5, 'random_state': 42, 'target': 'gesture', 'group': 'subject', 'id': 'sequence_id', 'force_recreate': False}}, 'preprocessing': {'target_sequence_length': 200, 'imu_normalization': 'zscore', 'apply_lowpass_filter': False, 'lowpass_cutoff': 10, 'lowpass_fs': 50, 'lowpass_order': 4}, 'augmentation': {'gaussian_noise': {'probability': 0.3, 'std': 0.01}, 'time_scaling': {'probability': 0.3, 'scale_range': [0.9, 1.1]}, 'partial_masking': {'probability': 0.2, 'mask_length_range': [5, 20], 'mask_ratio': 0.1}}, 'lightning': {'trainer': {'accelerator': 'auto', 'devices': 'auto', 'precision': '16-mixed', 'max_epochs': 100, 'gradient_clip_val': 1.0, 'accumulate_grad_batches': 1, 'deterministic': False, 'benchmark': True, 'enable_checkpointing': True, 'default_root_dir': '../../../outputs/exp007', 'enable_progress_bar': True, 'log_every_n_steps': 50, 'check_val_every_n_epoch': 1, 'val_check_interval': 1.0, 'enable_early_stopping': True}, 'callbacks': {'model_checkpoint': {'monitor': 'val_cmi_score', 'mode': 'max', 'save_top_k': 3, 'save_last': True, 'filename': 'epoch-{epoch:02d}-val_cmi_score-{val_cmi_score:.4f}', 'auto_insert_metric_name': False}, 'early_stopping': {'monitor': 'val_cmi_score', 'mode': 'max', 'patience': 15, 'min_delta': 0.001, 'verbose': True}, 'lr_monitor': {'logging_interval': 'epoch'}, 'rich_progress_bar': {'enable': True}}}, 'logging': {'level': 'INFO', 'log_dir': 'logs', 'log_file': 'exp007.log', 'wandb': {'enabled': True, 'project': 'CMI-Detect-Behavior-with-Sensor-Data', 'name': 'exp007', 'tags': ['exp007', 'switch_ema', 'squeezeformer']}}, 'hardware': {'use_mixed_precision': True, 'gradient_clip_norm': 1.0}, 'inference': {'batch_size': 64, 'use_tta': False, 'tta_iterations': 5, 'ensemble_strategy': 'average'}, 'target_gestures': ['Above ear - pull hair', 'Forehead - pull hairline', 'Forehead - scratch', 'Eyebrow - pull hair', 'Eyelash - pull hair', 'Neck - pinch skin', 'Neck - scratch', 'Cheek - pinch skin'], 'non_target_gestures': ['Drink from bottle/cup', 'Glasses on/off', 'Pull air toward your face', 'Pinch knee/leg skin', 'Scratch knee/leg skin', 'Write name on leg', 'Text on phone', 'Feel around in tray and pull out an object', 'Write name in air', 'Wave hello'], 'imu_features': ['acc_x', 'acc_y', 'acc_z', 'rot_w', 'rot_x', 'rot_y', 'rot_z']}
+07/21/2025 10:22:04 PM INFO __main__: Starting training for fold 0
+07/21/2025 10:36:20 PM INFO __main__: Loading best model from: ../../../outputs/exp007/fold_0/version_5/checkpoints/epoch-43-val_cmi_score-0.7748.ckpt
+07/21/2025 10:36:22 PM INFO __main__: Fold 0 results: {'fold': 0, 'val_loss': 1.1346009969711304, 'val_cmi_score': 0.7748401761054993, 'val_multiclass_loss': 2.0549373626708984, 'val_binary_loss': 0.21426473557949066, 'best_model_path': '../../../outputs/exp007/fold_0/version_5/checkpoints/epoch-43-val_cmi_score-0.7748.ckpt'}
+07/21/2025 10:36:22 PM INFO __main__: Starting training for fold 1
+07/21/2025 10:46:21 PM INFO __main__: Loading best model from: ../../../outputs/exp007/fold_1/version_1/checkpoints/epoch-25-val_cmi_score-0.7379.ckpt
+07/21/2025 10:46:24 PM INFO __main__: Fold 1 results: {'fold': 1, 'val_loss': 1.0278931856155396, 'val_cmi_score': 0.7378801107406616, 'val_multiclass_loss': 1.7476292848587036, 'val_binary_loss': 0.3081568479537964, 'best_model_path': '../../../outputs/exp007/fold_1/version_1/checkpoints/epoch-25-val_cmi_score-0.7379.ckpt'}
+07/21/2025 10:46:24 PM INFO __main__: Starting training for fold 2
+07/21/2025 11:00:39 PM INFO __main__: Loading best model from: ../../../outputs/exp007/fold_2/version_1/checkpoints/epoch-42-val_cmi_score-0.7769.ckpt
+07/21/2025 11:00:41 PM INFO __main__: Fold 2 results: {'fold': 2, 'val_loss': 1.1455655097961426, 'val_cmi_score': 0.7769170999526978, 'val_multiclass_loss': 2.020890951156616, 'val_binary_loss': 0.2702401578426361, 'best_model_path': '../../../outputs/exp007/fold_2/version_1/checkpoints/epoch-42-val_cmi_score-0.7769.ckpt'}
+07/21/2025 11:00:41 PM INFO __main__: Starting training for fold 3
+07/21/2025 11:16:24 PM INFO __main__: Loading best model from: ../../../outputs/exp007/fold_3/version_1/checkpoints/epoch-61-val_cmi_score-0.7648.ckpt
+07/21/2025 11:16:27 PM INFO __main__: Fold 3 results: {'fold': 3, 'val_loss': 1.6158004999160767, 'val_cmi_score': 0.7648366689682007, 'val_multiclass_loss': 2.9286015033721924, 'val_binary_loss': 0.3029995858669281, 'best_model_path': '../../../outputs/exp007/fold_3/version_1/checkpoints/epoch-61-val_cmi_score-0.7648.ckpt'}
+07/21/2025 11:16:27 PM INFO __main__: Starting training for fold 4
+07/21/2025 11:30:02 PM INFO __main__: Loading best model from: ../../../outputs/exp007/fold_4/version_1/checkpoints/epoch-39-val_cmi_score-0.7707.ckpt
+07/21/2025 11:30:04 PM INFO __main__: Fold 4 results: {'fold': 4, 'val_loss': 1.0782009363174438, 'val_cmi_score': 0.7706781625747681, 'val_multiclass_loss': 1.94780433177948, 'val_binary_loss': 0.2085975557565689, 'best_model_path': '../../../outputs/exp007/fold_4/version_1/checkpoints/epoch-39-val_cmi_score-0.7707.ckpt'}
+07/21/2025 11:30:04 PM INFO __main__: Cross-validation completed
+07/21/2025 11:30:04 PM INFO __main__: Mean CV Loss: 1.2004 ± 0.2119
+07/21/2025 11:30:04 PM INFO __main__: Mean CV CMI Score: 0.7650 ± 0.0142
+07/21/2025 11:30:04 PM INFO __main__: Results saved to: ../../../outputs/exp007/cv_results.csv
+07/21/2025 11:30:04 PM INFO __main__: CV results logged to WandB
+07/21/2025 11:36:06 PM INFO __main__: Starting cross-validation training
+07/21/2025 11:36:06 PM INFO __main__: Configuration: {'root': '../../../outputs/exp007', 'experiment': {'name': 'exp007_missing_value_attention_mask', 'description': 'Missing value handling with attention mask', 'tags': ['imu_only', 'squeezeformer', 'pytorch_lightning', 'missing_value_mask']}, 'paths': {'experiment_dir': '.', 'output_dir': '../../../outputs/exp007'}, 'data': {'root': '../../../data', 'train_path': '../../../data/train.csv', 'test_path': '../../../data/test.csv', 'demographics_train_path': '../../../data/train_demographics.csv', 'demographics_test_path': '../../../data/test_demographics.csv'}, 'model': {'name': 'cmi_squeezeformer', 'input_dim': 7, 'd_model': 256, 'n_layers': 8, 'n_heads': 8, 'd_ff': 1024, 'num_classes': 18, 'kernel_size': 31, 'dropout': 0.1}, 'training': {'seed': 42, 'batch_size': 128, 'num_workers': 4, 'epochs': 100, 'learning_rate': 0.0003, 'weight_decay': 1e-05, 'early_stopping_patience': 15, 'n_folds': 5, 'scheduler': {'type': 'cosine', 'min_lr': 1e-06, 'factor': 0.5, 'patience': 5}}, 'loss': {'type': 'cmi', 'alpha': 0.5, 'focal_gamma': 2.0, 'focal_alpha': 1.0}, 'length_grouping': {'enabled': False, 'use_dynamic_padding': False, 'mega_batch_multiplier': 8, 'percentile_max_length': 0.95, 'min_sequence_length': 50, 'max_sequence_length': 500, 'put_longest_first': True, 'fallback_to_fixed_length': True}, 'schedule_free': {'enabled': False, 'optimizer_type': 'RAdamScheduleFree', 'learning_rate_multiplier': 5.0, 'warmup_steps': 1000, 'batch_norm_calibration_steps': 50}, 'ema': {'enabled': True, 'beta': 0.9999, 'update_after_step': 1000, 'update_every': 10, 'update_model_with_ema_every': 1000, 'use_ema_for_validation': True}, 'val': {'name': 'stratified_group_kfold', 'params': {'n_splits': 5, 'random_state': 42, 'target': 'gesture', 'group': 'subject', 'id': 'sequence_id', 'force_recreate': False}}, 'preprocessing': {'target_sequence_length': 200, 'imu_normalization': 'zscore', 'apply_lowpass_filter': False, 'lowpass_cutoff': 10, 'lowpass_fs': 50, 'lowpass_order': 4}, 'augmentation': {'gaussian_noise': {'probability': 0.3, 'std': 0.01}, 'time_scaling': {'probability': 0.3, 'scale_range': [0.9, 1.1]}, 'partial_masking': {'probability': 0.2, 'mask_length_range': [5, 20], 'mask_ratio': 0.1}}, 'lightning': {'trainer': {'accelerator': 'auto', 'devices': 'auto', 'precision': '16-mixed', 'max_epochs': 100, 'gradient_clip_val': 1.0, 'accumulate_grad_batches': 1, 'deterministic': False, 'benchmark': True, 'enable_checkpointing': True, 'default_root_dir': '../../../outputs/exp007', 'enable_progress_bar': True, 'log_every_n_steps': 50, 'check_val_every_n_epoch': 1, 'val_check_interval': 1.0, 'enable_early_stopping': True}, 'callbacks': {'model_checkpoint': {'monitor': 'val_cmi_score', 'mode': 'max', 'save_top_k': 3, 'save_last': True, 'filename': 'epoch-{epoch:02d}-val_cmi_score-{val_cmi_score:.4f}', 'auto_insert_metric_name': False}, 'early_stopping': {'monitor': 'val_cmi_score', 'mode': 'max', 'patience': 15, 'min_delta': 0.001, 'verbose': True}, 'lr_monitor': {'logging_interval': 'epoch'}, 'rich_progress_bar': {'enable': True}}}, 'logging': {'level': 'INFO', 'log_dir': 'logs', 'log_file': 'exp007.log', 'wandb': {'enabled': True, 'project': 'CMI-Detect-Behavior-with-Sensor-Data', 'name': 'exp007', 'tags': ['exp007', 'switch_ema', 'squeezeformer']}}, 'hardware': {'use_mixed_precision': True, 'gradient_clip_norm': 1.0}, 'inference': {'batch_size': 64, 'use_tta': False, 'tta_iterations': 5, 'ensemble_strategy': 'average'}, 'target_gestures': ['Above ear - pull hair', 'Forehead - pull hairline', 'Forehead - scratch', 'Eyebrow - pull hair', 'Eyelash - pull hair', 'Neck - pinch skin', 'Neck - scratch', 'Cheek - pinch skin'], 'non_target_gestures': ['Drink from bottle/cup', 'Glasses on/off', 'Pull air toward your face', 'Pinch knee/leg skin', 'Scratch knee/leg skin', 'Write name on leg', 'Text on phone', 'Feel around in tray and pull out an object', 'Write name in air', 'Wave hello'], 'imu_features': ['acc_x', 'acc_y', 'acc_z', 'rot_w', 'rot_x', 'rot_y', 'rot_z']}
+07/21/2025 11:36:06 PM INFO __main__: Starting training for fold 0

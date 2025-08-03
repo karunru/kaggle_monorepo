@@ -7,12 +7,83 @@
 # プロジェクト構造
 - プロジェクトのテンプレートは以下の通りになっています。プロジェクトによっては異なることがあるため、不明なディレクトリもしくはファイルがあれば、ユーザにCLAUDE.mdに記載を促すように指摘してください。
 ```
-- data/    # kaggleのデータセットなどのデータはここに置く
-- outputs/ # 実験の出力やclaudeの計画などの成果物をここに置く (e.g., logs, model weights)
-- src/     #  各実験で共通するコードはここに置く (e.g., src/dataset.py, src/model.py)
-- exp/     #  各実験のコードはここに置く (e.g., exp001/train.py, exp001/config.yaml)
-- tests/   # ここにテストコードを置く
+- data/       # kaggleのデータセットなどのデータはここに置く
+- outputs/    # 実験の出力やclaudeの計画などの成果物をここに置く
+  ├── claude/ # Claudeが作成したドキュメント・計画
+  ├── exp002/ # exp002の実験出力（モデル、ログ等）
+  ├── exp003/ # exp003の実験出力
+  ├── exp004/ # exp004の実験出力
+  ├── exp005/ # exp005の実験出力
+  ├── exp006/ # exp006の実験出力
+  └── exp007/ # exp007の実験出力
+- codes/      # メインのコードディレクトリ
+  ├── src/    # 各実験で共通するコードはここに置く
+  │   ├── ensemble/         # アンサンブル手法
+  │   │   └── blending.py   # 重み付きアンサンブル最適化（ランダムサーチベース）
+  │   ├── evaluation/       # 評価・最適化関連
+  │   │   ├── metrics.py    # 競技用評価指標（Concordance Index for EEFS）
+  │   │   ├── cat.py        # CatBoost専用評価ラッパー
+  │   │   ├── lgbm.py       # LightGBM専用評価ラッパー
+  │   │   ├── optimization.py # ハイパーパラメータ最適化
+  │   │   └── truncate.py   # データ切り詰め処理
+  │   ├── features/         # 特徴量エンジニアリング（Polars/Arrow対応）
+  │   │   ├── base.py       # 抽象基底クラス（自動保存/ロード、圧縮対応）
+  │   │   ├── statistics.py # 統計的特徴量
+  │   │   ├── category_vectorizer.py # カテゴリカル変数ベクトル化
+  │   │   ├── category_w2v.py # Word2Vecベースカテゴリ特徴量
+  │   │   ├── kaplan_meier_target.py # Kaplan-Meier生存分析特徴量
+  │   │   ├── groupby_concat_cat.py # グループ別カテゴリ連結特徴量
+  │   │   └── [その他]      # basic_fix_le, modules など
+  │   ├── kaggle_evaluation/ # Kaggle評価用のgRPCインターフェース
+  │   │   ├── cmi_gateway.py # CMIコンペ用ゲートウェイ
+  │   │   ├── cmi_inference_server.py # CMI推論サーバー
+  │   │   └── core/         # 評価コア機能
+  │   ├── models/           # 機械学習モデル（GPU最適化）
+  │   │   ├── base.py       # 抽象基底クラス（CV、前処理、事後処理統合）
+  │   │   ├── factory.py    # モデルファクトリ（LightGBM, XGBoost, CatBoost等）
+  │   │   ├── lightgbm.py   # LightGBMモデル
+  │   │   ├── xgb.py        # XGBoostモデル
+  │   │   ├── cat.py        # CatBoostモデル
+  │   │   ├── tabnet.py     # TabNetモデル
+  │   │   ├── gnn.py        # Graph Neural Network
+  │   │   ├── litnn.py      # Pairwise Ranking Neural Network
+  │   │   └── [その他]      # SVM, Ridge, RGF, ERT, KTBoost等
+  │   ├── sampling/         # 不均衡データ対応サンプリング
+  │   │   └── factory.py    # SMOTE、アンダーサンプリング、GPU対応
+  │   ├── utils/            # ユーティリティ関数
+  │   │   ├── config.py     # YAML設定管理（階層化設定対応）
+  │   │   ├── logger.py     # 集約ログ管理（ファイル/コンソール出力）
+  │   │   ├── timer.py      # 処理時間計測
+  │   │   ├── seed_everything.py # シード設定
+  │   │   ├── slack.py      # Slack通知
+  │   │   ├── file_io.py    # ファイルI/O
+  │   │   ├── visualization.py # データ可視化
+  │   │   └── [その他]      # 引数解析、チェック機能等
+  │   └── validation/       # クロスバリデーション戦略
+  │       └── factory.py    # 時系列対応CV（滑動窓、日付ベース、曜日調整）
+  └── exp/                  # 各実験のコードはここに置く
+      ├── exp001/           # 初期実験
+      ├── exp002/           # Squeezeformer実装（PyTorch Lightning）
+      ├── exp003/           # 損失関数改善
+      ├── exp004/           # 最適化手法改善
+      ├── exp005/           # 長さグループ化
+      ├── exp006/           # Switch EMA実装
+      └── exp007/           # 欠損値attention mask処理
+- deps/       # Kaggle依存関係管理用ノートブック
+- docs/       # プロジェクトドキュメント
+- requirements/ # Kaggleデータセット用の要件ファイル
+- sub/        # Kaggleサブミッション用ノートブック
+- tests/      # テストコード
+- mise.toml   # タスク自動化設定（update-requirements, update-codes, track-submission等）
+- pyproject.toml # Pythonプロジェクト設定（依存関係、ツール設定）
+- CLAUDE.md   # Claudeのための指示書（このファイル）
+- .gitignore  # Git除外設定
 ```
+
+**注記**: 
+- 現在のsrc/ディレクトリは別のKaggleプロジェクト（生存分析系）のコードベースと、CMIプロジェクト用の新しいコード（kaggle_evaluation等）が混在しています。
+- exp002-007は、CMIプロジェクト用のSqueezeformerベースの実装です。
+- miseタスクを使用してKaggleへのコードやデータセットのアップロードが自動化されています（`mise run update-codes`など）。
 
 # 技術スタック
 - 既存のコードは親ディレクトリに存在しますが、データが多すぎるためユーザが指定した場合のみ参照してください

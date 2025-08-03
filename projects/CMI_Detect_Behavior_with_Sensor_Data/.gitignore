@@ -1,0 +1,4 @@
+*.csv
+*.zip
+*.ckpt
+*wandb/

@@ -1,0 +1,20 @@
+input_dim: 7
+d_model: 256
+n_layers: 8
+n_heads: 8
+d_ff: 1024
+num_classes: 18
+kernel_size: 31
+dropout: 0.1
+learning_rate: 0.0003
+weight_decay: 1.0e-05
+scheduler_config:
+  type: cosine
+  min_lr: 1.0e-06
+  factor: 0.5
+  patience: 5
+loss_config:
+  type: cmi
+  alpha: 0.5
+  focal_gamma: 2.0
+  focal_alpha: 1.0

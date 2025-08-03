@@ -1,6 +1,6 @@
 {
-  "id": "karunru/PROJECT_NAME-sub",
-  "title": "PROJECT_NAME-sub",
+  "id": "karunru/CMI-Detect-Behavior-with-Sensor-Data-sub",
+  "title": "CMI-Detect-Behavior-with-Sensor-Data-sub",
   "code_file": "sub.ipynb",
   "language": "python",
   "kernel_type": "notebook",
@@ -8,8 +8,15 @@
   "enable_gpu": "true",
   "enable_tpu": "false",
   "enable_internet": "false",
-  "dataset_sources": [],
-  "competition_sources": [],
-  "kernel_sources": [],
+  "dataset_sources": [
+    "karunru/cmi-codes",
+    "karunru/cmi-exp007"
+  ],
+  "competition_sources": [
+    "cmi-detect-behavior-with-sensor-data"
+  ],
+  "kernel_sources": [
+    "karunru/CMI-Detect-Behavior-with-Sensor-Data-deps"
+  ],
   "model_sources": []
 }

@@ -1,0 +1,149 @@
+# Configuration for CMI Detect Behavior with Sensor Data - Experiment 001
+# Squeezeformer baseline with standard settings
+
+# Paths configuration
+paths:
+  experiment_dir: "."
+
+# Data configuration
+data:
+  root: "../../data"
+  train_path: "../../data/train.csv"
+  test_path: "../../data/test.csv"
+  demographics_train_path: "../../data/train_demographics.csv"
+  demographics_test_path: "../../data/test_demographics.csv"
+
+# Model configuration
+model:
+  name: "squeezeformer"
+  d_model: 256
+  n_layers: 8
+  n_heads: 8
+  d_ff: 1024
+  dropout: 0.1
+  kernel_size: 31
+
+# Training configuration
+training:
+  seed: 42
+  batch_size: 32
+  num_workers: 4
+  epochs: 100
+  learning_rate: 3e-4
+  weight_decay: 1e-5
+  early_stopping_patience: 15
+  n_folds: 5
+  output_dir: "../../outputs/exp001"
+  
+  # Scheduler configuration
+  scheduler:
+    type: "cosine"  # "cosine", "plateau", or null
+    min_lr: 1e-6
+    factor: 0.5
+    patience: 5
+
+# Loss configuration
+loss:
+  type: "cmi"  # "cmi", "cmi_focal", "cmi_advanced"
+  alpha: 0.5  # Weight for binary vs multiclass loss
+  use_class_weights: true
+  label_smoothing: 0.1
+  focal_gamma: 2.0
+  focal_alpha: 1.0
+  consistency_weight: 0.1
+
+# Cross-validation configuration
+val:
+  name: "stratified_group_kfold"
+  params:
+    n_splits: 5
+    random_state: 42
+    target: "gesture"
+    group: "subject"
+    id: "sequence_id"
+    force_recreate: false
+
+# Preprocessing configuration
+preprocessing:
+  target_sequence_length: 200  # 100 transition + 100 gesture
+  transition_length: 100
+  gesture_length: 100
+  
+  # Normalization settings
+  imu_normalization: "zscore"  # "zscore" or "minmax"
+  thermopile_normalization: "minmax"
+  tof_normalization: "minmax"
+  
+  # Filter settings
+  apply_lowpass_filter: true
+  lowpass_cutoff: 10
+  lowpass_fs: 50
+  lowpass_order: 4
+  
+  # Feature engineering
+  add_magnitude_features: true
+  add_statistical_features: true
+  add_tof_spatial_features: true
+
+# Data augmentation configuration
+augmentation:
+  gaussian_noise:
+    probability: 0.3
+    std: 0.01
+  
+  time_scaling:
+    probability: 0.3
+    scale_range: [0.9, 1.1]
+  
+  partial_masking:
+    probability: 0.2
+    mask_length_range: [5, 20]
+    mask_ratio: 0.1
+
+# Logging configuration
+logging:
+  level: "INFO"
+  log_dir: "logs"
+  log_file: "exp001.log"
+  
+# Experiment metadata
+experiment:
+  name: "exp001_squeezeformer_baseline"
+  description: "Baseline Squeezeformer model with standard preprocessing and augmentation"
+  tags: ["baseline", "squeezeformer", "multimodal", "sensor_fusion"]
+  
+# Hardware configuration
+hardware:
+  use_mixed_precision: true
+  gradient_clip_norm: 1.0
+  
+# Inference configuration
+inference:
+  batch_size: 64
+  use_tta: false  # Test-time augmentation
+  tta_iterations: 5
+  ensemble_strategy: "average"  # "average", "voting", "weighted"
+
+# Target gestures (for binary classification)
+target_gestures:
+  - "Above ear - pull hair"
+  - "Forehead - pull hairline"
+  - "Forehead - scratch"
+  - "Eyebrow - pull hair"
+  - "Eyelash - pull hair"
+  - "Neck - pinch skin"
+  - "Neck - scratch"
+  - "Cheek - pinch skin"
+
+# Non-target gestures
+non_target_gestures:
+  - "Drink from bottle/cup"
+  - "Glasses on/off"
+  - "Pull air toward your face"
+  - "Pinch knee/leg skin"
+  - "Scratch knee/leg skin"
+  - "Write name on leg"
+  - "Text on phone"
+  - "Feel around in tray and pull out an object"
+  - "Write name in air"
+  - "Wave hello"

@@ -1,0 +1,15 @@
+- コンペの基本概念として以下のファイルを参照すること
+  - `docs/competition_overview.md`: コンペティション概要の確認
+  - `docs/data_description.md`: データセット詳細の理解
+- validation
+  - `subject` を group としたstratifiedgroupkfold
+  - k = 5
+  - @src/validation/factory.py を使って実装すること
+- imuのみを入力とすること
+- exp002配下に最低限以下のファイルを作成すること
+  - train.py
+  - model.py
+  - dataset.py
+- polars, pytorch lightningで実装すること
+- squeezeformerでモデルを作成すること
+

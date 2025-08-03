@@ -1,4 +1,7 @@
 {
+  "env": {
+    "BASH_DEFAULT_TIMEOUT_MS": "600000"
+  },
   "permissions": {
     "allow": [
       "Bash(uv add:*)",
@@ -13,7 +16,29 @@
       "Bash(mkdir:*)",
       "mcp__playwright__browser_navigate",
       "mcp__playwright__browser_snapshot",
-      "WebFetch(domain:www.kaggle.com)"
+      "WebFetch(domain:www.kaggle.com)",
+      "Bash(cut:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(nvidia-smi:*)",
+      "Bash(ls:*)",
+      "Bash(ps:*)",
+      "Bash(cat:*)",
+      "Bash(mise run:*)",
+      "Bash(cp:*)",
+      "WebFetch(domain:kaeru-nantoka.hatenablog.com)",
+      "WebFetch(domain:huggingface.co)",
+      "Bash(mv:*)",
+      "Bash(chmod:*)",
+      "Bash(./test_script.sh:*)",
+      "Bash(timeout:*)",
+      "Bash(./run_experiments_simple.sh:*)",
+      "Bash(ruff check:*)",
+      "Bash(mypy:*)",
+      "Bash(diff:*)",
+      "WebFetch(domain:ho.lc)",
+      "Bash(jq:*)",
+      "WebFetch(domain:zenn.dev)"
     ],
     "deny": [
       "Bash(uv sync:*)",
