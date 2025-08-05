@@ -536,14 +536,14 @@ class IMUDataset(Dataset):
             return imu_data
 
         # ガウシアンノイズ
-        if np.random.random() < self.augmentation_config.get("gaussian_noise", {}).get("probability", 0.0):
-            noise_std = self.augmentation_config["gaussian_noise"].get("std", 0.01)
+        if np.random.random() < self.augmentation_config.get("gaussian_noise_prob", 0.0):
+            noise_std = self.augmentation_config.get("gaussian_noise_std", 0.01)
             noise = np.random.normal(0, noise_std, imu_data.shape)
             imu_data = imu_data + noise
 
         # 時間スケーリング
-        if np.random.random() < self.augmentation_config.get("time_scaling", {}).get("probability", 0.0):
-            scale_range = self.augmentation_config["time_scaling"].get("scale_range", [0.9, 1.1])
+        if np.random.random() < self.augmentation_config.get("time_scaling_prob", 0.0):
+            scale_range = self.augmentation_config.get("time_scaling_range", [0.9, 1.1])
             scale_factor = np.random.uniform(scale_range[0], scale_range[1])
 
             current_length = len(imu_data)
@@ -565,10 +565,9 @@ class IMUDataset(Dataset):
             imu_data = scaled_data
 
         # 部分マスキング
-        if np.random.random() < self.augmentation_config.get("partial_masking", {}).get("probability", 0.0):
-            mask_config = self.augmentation_config["partial_masking"]
-            mask_length_range = mask_config.get("mask_length_range", [5, 20])
-            mask_ratio = mask_config.get("mask_ratio", 0.1)
+        if np.random.random() < self.augmentation_config.get("partial_masking_prob", 0.0):
+            mask_length_range = self.augmentation_config.get("partial_masking_length_range", [5, 20])
+            mask_ratio = self.augmentation_config.get("partial_masking_ratio", 0.1)
 
             num_masks = int(len(imu_data) * mask_ratio / np.mean(mask_length_range))
 
