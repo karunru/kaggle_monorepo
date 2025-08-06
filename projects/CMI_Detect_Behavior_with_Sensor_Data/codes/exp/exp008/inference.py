@@ -105,7 +105,7 @@ def load_models():
     # 設定の読み込み
     config = Config()
     if os.getenv("KAGGLE_KERNEL_RUN_TYPE", "local") != "local":
-        config.paths.output_dir = "/kaggle/input/cmi-exp007/"
+        config.paths.output_dir = f"/kaggle/input/cmi-{config.experiment.exp_num}/"
 
     # シード設定
     seed_everything(config.training.seed)
@@ -131,8 +131,10 @@ def load_models():
                     best_checkpoint = get_best_checkpoint(checkpoint_dir)
                     if best_checkpoint:
                         model_paths.append(str(best_checkpoint))
+                        print(f"Found model for fold {fold}: {best_checkpoint} (from {latest_version_dir.name})")
 
     if not model_paths:
+        print("No trained models found. Using dummy model.")
         models = []
         return
 
@@ -144,12 +146,16 @@ def load_models():
             model.eval()
             model.to(device)
             models.append(model)
-        except Exception:
+            print(f"Loaded model: {model_path}")
+        except Exception as e:
+            print(f"Failed to load model {model_path}: {e}")
             # 1つでもモデルが読み込めれば続行
             continue
 
     if not models:
         raise RuntimeError("Failed to load any models")
+
+    print(f"Successfully loaded {len(models)} models")
 
 
 def predict(sequence: pl.DataFrame, demographics: pl.DataFrame) -> str:
@@ -163,12 +169,15 @@ def predict(sequence: pl.DataFrame, demographics: pl.DataFrame) -> str:
     Returns:
         予測されたジェスチャー名(文字列)
     """
+    print("in predict")
     global config, models, device
     print(f"{config=}")
+    print(f"{models=}")
     print(f"{device=}")
 
     # データセットの作成
     dataset = SingleSequenceIMUDataset(sequence, target_sequence_length=config.preprocessing.target_sequence_length)
+    print(f"{dataset=}")
 
     # データローダーの作成
     dataloader = DataLoader(
@@ -178,6 +187,7 @@ def predict(sequence: pl.DataFrame, demographics: pl.DataFrame) -> str:
         num_workers=0,  # 推論時は並列処理を無効化
         pin_memory=True,
     )
+    print(f"{dataloader=}")
 
     # 予測実行
     all_multiclass_probs = []
@@ -185,6 +195,7 @@ def predict(sequence: pl.DataFrame, demographics: pl.DataFrame) -> str:
 
     with torch.no_grad():
         for batch in dataloader:
+            print(f"{batch=}")
             imu = batch["imu"].to(device)
             attention_mask = batch["attention_mask"].to(device)
 

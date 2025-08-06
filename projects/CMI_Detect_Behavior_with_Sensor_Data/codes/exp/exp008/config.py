@@ -13,6 +13,7 @@ EXP_NUM = "exp008"
 class ExperimentConfig(BaseModel):
     """実験メタデータ設定."""
 
+    exp_num: str = EXP_NUM
     name: str = Field(default=f"{EXP_NUM}_early_stopping_with_loss", description="実験名")
     description: str = Field(default="Early stopping with val_loss instead of val_cmi_score", description="実験説明")
     tags: list[str] = Field(

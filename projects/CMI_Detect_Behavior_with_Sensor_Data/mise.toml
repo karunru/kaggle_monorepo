@@ -55,13 +55,47 @@ uv run kaggle k push
 
 
 [tasks.update-subs]
-description=""
+description="Update subs kernel for uv run kaggle"
 run="""
+EXPERIMENT_NAME="{{arg(name=\"experiment_name\", required=false)}}"
 REPO_ROOT=$(git rev-parse --show-toplevel)
 CURRENT_PATH=$(pwd)
 REL_PATH=${CURRENT_PATH#${REPO_ROOT}/projects/}
 PROJECT_NAME=$(echo ${REL_PATH} | cut -d'/' -f1)
 PROJECT_DIR=${REPO_ROOT}/projects/${PROJECT_NAME}
+
+# Update sub/ files if experiment name is provided
+if [ -n "$EXPERIMENT_NAME" ]; then
+    echo "Updating sub/ files for experiment: $EXPERIMENT_NAME"
+    
+    # Update kernel-metadata.json dataset_sources
+    cd ${PROJECT_DIR}/sub
+    if [ -f kernel-metadata.json ]; then
+        echo "Updating kernel-metadata.json dataset_sources..."
+        jq --arg exp "$EXPERIMENT_NAME" '
+            .dataset_sources = [
+                .dataset_sources[] | 
+                if test("^karunru/cmi-exp[0-9]+$") then 
+                    "karunru/cmi-" + $exp 
+                else 
+                    . 
+                end
+            ]
+        ' kernel-metadata.json > tmp.json && mv tmp.json kernel-metadata.json
+        echo "kernel-metadata.json updated successfully."
+    else
+        echo "Warning: kernel-metadata.json not found in sub/ directory"
+    fi
+    
+    # Update sub.ipynb experiment references
+    if [ -f sub.ipynb ]; then
+        echo "Updating sub.ipynb experiment references..."
+        sed -E -i "s|/exp/exp[0-9]+/|/exp/$EXPERIMENT_NAME/|g" sub.ipynb
+        echo "sub.ipynb updated successfully."
+    else
+        echo "Warning: sub.ipynb not found in sub/ directory"
+    fi
+fi
 
 cd ${PROJECT_DIR}/sub
 uv run kaggle k push
@@ -189,7 +223,7 @@ echo "🚀 Tracking submission for competition: ${COMPETITION_NAME}"
 echo "📊 Fetching latest submission..."
 
 # Get latest submission
-SUBMISSION_DATA=$(uv run kaggle competitions submissions "${COMPETITION_NAME}" --csv | tail -n 1)
+SUBMISSION_DATA=$(uv run kaggle competitions submissions "${COMPETITION_NAME}" --csv | head -n 2 | tail -n 1)
 
 if [ -z "$SUBMISSION_DATA" ]; then
     echo "❌ No submissions found for competition: ${COMPETITION_NAME}"
@@ -231,7 +265,7 @@ echo ""
 
 while true; do
     # Get current submission status
-    CURRENT_DATA=$(uv run kaggle competitions submissions "${COMPETITION_NAME}" --csv | tail -n 1)
+    CURRENT_DATA=$(uv run kaggle competitions submissions "${COMPETITION_NAME}" --csv | head -n 2 | tail -n 1)
     CURRENT_STATUS=$(echo "$CURRENT_DATA" | cut -d',' -f4 | tr -d '"')
     CURRENT_SCORE=$(echo "$CURRENT_DATA" | cut -d',' -f5 | tr -d '"')
     

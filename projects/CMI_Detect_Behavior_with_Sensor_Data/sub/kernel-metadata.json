@@ -10,7 +10,7 @@
   "enable_internet": "false",
   "dataset_sources": [
     "karunru/cmi-codes",
-    "karunru/cmi-exp007"
+    "karunru/cmi-exp008"
   ],
   "competition_sources": [
     "cmi-detect-behavior-with-sensor-data"
