@@ -27,6 +27,7 @@ dependencies = [
   "polars>=0.20.15",
   "pydantic==2.10.6",
   "pydantic-settings>=2.2.1",
+  "pytorch-optimizer>=3.7.0",
   "rich>=14.0.0",
   "schedulefree>=1.4.1",
   "scipy>=1.15.2",

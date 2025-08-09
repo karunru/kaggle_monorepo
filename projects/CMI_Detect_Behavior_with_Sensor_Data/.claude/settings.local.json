@@ -43,7 +43,8 @@
       "Bash(PYTHONPATH=codes/exp/exp010:$PYTHONPATH uv run python -m pytest tests/test_exp010_dataset.py::test_imu_dataset_physics_features -v -s)",
       "Bash(PYTHONPATH=codes/exp/exp010:$PYTHONPATH uv run python -m pytest tests/test_exp010_dataset.py::test_imu_dataset_physics_features -v)",
       "Bash(PYTHONPATH=codes/exp/exp010:$PYTHONPATH uv run python -m pytest tests/test_exp010_dataset.py -v)",
-      "Bash(PYTHONPATH=.:$PYTHONPATH uv run python -m pytest ../../../tests/test_exp010_dataset.py -v)"
+      "Bash(PYTHONPATH=.:$PYTHONPATH uv run python -m pytest ../../../tests/test_exp010_dataset.py -v)",
+      "WebFetch(domain:pytorch-optimizers.readthedocs.io)"
     ],
     "deny": [
       "Bash(uv sync:*)",

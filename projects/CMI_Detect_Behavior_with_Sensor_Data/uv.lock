@@ -470,6 +470,7 @@ dependencies = [
     { name = "polars" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
+    { name = "pytorch-optimizer" },
     { name = "rich" },
     { name = "schedulefree" },
     { name = "scipy" },
@@ -513,6 +514,7 @@ requires-dist = [
     { name = "polars", specifier = ">=0.20.15" },
     { name = "pydantic", specifier = "==2.10.6" },
     { name = "pydantic-settings", specifier = ">=2.2.1" },
+    { name = "pytorch-optimizer", specifier = ">=3.7.0" },
     { name = "rich", specifier = ">=14.0.0" },
     { name = "schedulefree", specifier = ">=1.4.1" },
     { name = "scipy", specifier = ">=1.15.2" },
@@ -2729,6 +2731,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/01/3e/728fbdc671d07727ad447f9401d98a43570573965beb3cb2060f9a330b4f/pytorch_lightning-2.5.2.tar.gz", hash = "sha256:f817087d611be8d43b777dd4e543d72703e235510936677a13e6c29f7fd790e3", size = 636859 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e2/42/47c186c8f9e956e559c89e6c764d5d5d0d0af517c04ca0ad39bd0a357d3a/pytorch_lightning-2.5.2-py3-none-any.whl", hash = "sha256:17cfdf89bd98074e389101f097cdf34c486a1f5c6d3fdcefbaf4dea7f97ff0bf", size = 825366 },
+]
+
+[[package]]
+name = "pytorch-optimizer"
+version = "3.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "torch" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b0/f7/46cbbc5551eff6366eb876358b59916aa4886664d38c64b2f4e2163397a7/pytorch_optimizer-3.7.0.tar.gz", hash = "sha256:c869118da342ed9b9ab4b62a4dd0c098b38015b8d9435c1dc3266a50f68bb968", size = 153603 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/10/53/37e944bbcafb967b10558de821b98fd1927c6fd864b904c40dd718636dd3/pytorch_optimizer-3.7.0-py3-none-any.whl", hash = "sha256:70290a519a321db075588ef7115eecda7e90c5f1e1540dbf69844fd21078de37", size = 262261 },
 ]
 
 [[package]]
