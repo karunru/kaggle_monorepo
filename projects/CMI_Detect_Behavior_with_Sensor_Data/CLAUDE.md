@@ -10,6 +10,7 @@
 - data/       # kaggleのデータセットなどのデータはここに置く
 - outputs/    # 実験の出力やclaudeの計画などの成果物をここに置く
   ├── claude/ # Claudeが作成したドキュメント・計画
+  │   └── tmp/ # uv run kaggleコマンドで取得したnotebookやdiscussionなどの一時ファイルを置く
   ├── exp002/ # exp002の実験出力（モデル、ログ等）
   ├── exp003/ # exp003の実験出力
   ├── exp004/ # exp004の実験出力
