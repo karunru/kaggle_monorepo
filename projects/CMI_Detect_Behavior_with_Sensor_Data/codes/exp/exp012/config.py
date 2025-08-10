@@ -83,15 +83,17 @@ class TrainingConfig(BaseModel):
 
 class ACLSConfig(BaseModel):
     """ACLS損失関数設定."""
-    
+
     # Label Smoothing
     label_smoothing_alpha: float = Field(default=0.1, description="Label smoothing parameter")
-    
-    # Margin-based Label Smoothing  
+
+    # Margin-based Label Smoothing
     mbls_margin: float = Field(default=10.0, description="MbLS margin parameter")
     mbls_alpha: float = Field(default=0.1, description="MbLS weight parameter")
-    mbls_schedule: str | None = Field(default=None, description="MbLS alpha scheduling ('add', 'multiply', 'step', None)")
-    
+    mbls_schedule: str | None = Field(
+        default=None, description="MbLS alpha scheduling ('add', 'multiply', 'step', None)"
+    )
+
     # ACLS
     acls_pos_lambda: float = Field(default=1.0, description="ACLS positive sample regularization weight")
     acls_neg_lambda: float = Field(default=0.1, description="ACLS negative sample regularization weight")
@@ -102,7 +104,9 @@ class ACLSConfig(BaseModel):
 class LossConfig(BaseModel):
     """損失関数設定."""
 
-    type: Literal["cmi", "cmi_focal", "soft_f1", "acls", "label_smoothing", "mbls"] = Field(default="acls", description="損失関数タイプ")
+    type: Literal["cmi", "cmi_focal", "soft_f1", "acls", "label_smoothing", "mbls"] = Field(
+        default="acls", description="損失関数タイプ"
+    )
     alpha: float = Field(default=0.5, description="バイナリ vs マルチクラス損失の重み")
     focal_gamma: float = Field(default=2.0, description="Focal Loss gamma パラメータ")
     focal_alpha: float = Field(default=1.0, description="Focal Loss alpha パラメータ")

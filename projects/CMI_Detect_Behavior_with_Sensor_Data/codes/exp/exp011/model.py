@@ -428,9 +428,7 @@ class CMISqueezeformer(pl.LightningModule):
             # SoftF1Loss
             beta = self.loss_config.get("soft_f1_beta", 1.0)
             eps = self.loss_config.get("soft_f1_eps", 1e-6)
-            self.multiclass_criterion = MulticlassSoftF1Loss(
-                num_classes=self.num_classes, beta=beta, eps=eps
-            )
+            self.multiclass_criterion = MulticlassSoftF1Loss(num_classes=self.num_classes, beta=beta, eps=eps)
             self.binary_criterion = BinarySoftF1Loss(beta=beta, eps=eps)
         else:
             # デフォルト
@@ -910,7 +908,7 @@ class BinarySoftF1Loss(nn.Module):
         recall = tp / (tp + fn + self.eps)
 
         # F-beta score
-        f_beta = (1 + self.beta ** 2) * precision * recall / (self.beta ** 2 * precision + recall + self.eps)
+        f_beta = (1 + self.beta**2) * precision * recall / (self.beta**2 * precision + recall + self.eps)
 
         return 1.0 - f_beta
 
@@ -962,7 +960,7 @@ class MulticlassSoftF1Loss(nn.Module):
             recall = tp / (tp + fn + self.eps)
 
             # F-beta score
-            f_beta = (1 + self.beta ** 2) * precision * recall / (self.beta ** 2 * precision + recall + self.eps)
+            f_beta = (1 + self.beta**2) * precision * recall / (self.beta**2 * precision + recall + self.eps)
             f1_scores.append(f_beta)
 
         # Macro F1 (全クラスの平均)

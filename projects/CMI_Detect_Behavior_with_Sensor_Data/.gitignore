@@ -2,3 +2,6 @@
 *.zip
 *.ckpt
 *wandb/
+*.pt
+*.npy
+*.npz

@@ -1078,35 +1078,37 @@ class SingleSequenceIMUDataset(Dataset):
         """単一シーケンス用の物理特徴量計算."""
         # LazyFrameに変換
         df_lazy = df.lazy()
-        
+
         # 線形加速度（重力除去）
         linear_acc_df = remove_gravity_from_acc_pl(df_lazy)
-        
+
         # 角速度（単一シーケンスなのでsequence_idなしで計算）
         angular_vel_df = calculate_angular_velocity_from_quat_pl(df_lazy)
-        
+
         # 角距離
         angular_dist_df = calculate_angular_distance_pl(df_lazy)
-        
+
         # 全ての物理特徴量を結合
         df_with_physics = (
             pl.concat([df_lazy, linear_acc_df, angular_vel_df, angular_dist_df], how="horizontal")
-            .with_columns([
-                # 線形加速度の大きさ
-                (pl.col("linear_acc_x") ** 2 + pl.col("linear_acc_y") ** 2 + pl.col("linear_acc_z") ** 2)
-                .sqrt()
-                .alias("linear_acc_mag"),
-                # 線形加速度大きさのジャーク
-                (
+            .with_columns(
+                [
+                    # 線形加速度の大きさ
                     (pl.col("linear_acc_x") ** 2 + pl.col("linear_acc_y") ** 2 + pl.col("linear_acc_z") ** 2)
                     .sqrt()
-                    .diff()
-                    .fill_null(0.0)
-                ).alias("linear_acc_mag_jerk"),
-            ])
+                    .alias("linear_acc_mag"),
+                    # 線形加速度大きさのジャーク
+                    (
+                        (pl.col("linear_acc_x") ** 2 + pl.col("linear_acc_y") ** 2 + pl.col("linear_acc_z") ** 2)
+                        .sqrt()
+                        .diff()
+                        .fill_null(0.0)
+                    ).alias("linear_acc_mag_jerk"),
+                ]
+            )
             .collect()
         )
-        
+
         return df_with_physics
 
     def _preprocess_data(self):

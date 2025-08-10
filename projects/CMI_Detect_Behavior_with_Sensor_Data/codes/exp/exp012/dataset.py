@@ -135,10 +135,16 @@ def calculate_angular_velocity_from_quat_pl(
     z1 = pl.col("rot_z")
     w1 = pl.col("rot_w")
     # シーケンス境界を尊重したshift操作
-    x2 = x1.shift(-1).over("sequence_id") if "sequence_id" in rot_df.columns else x1.shift(-1)
-    y2 = y1.shift(-1).over("sequence_id") if "sequence_id" in rot_df.columns else y1.shift(-1)
-    z2 = z1.shift(-1).over("sequence_id") if "sequence_id" in rot_df.columns else z1.shift(-1)
-    w2 = w1.shift(-1).over("sequence_id") if "sequence_id" in rot_df.columns else w1.shift(-1)
+    if "sequence_id" in rot_df.collect_schema().names():
+        x2 = x1.shift(-1).over("sequence_id")
+        y2 = y1.shift(-1).over("sequence_id")
+        z2 = z1.shift(-1).over("sequence_id")
+        w2 = w1.shift(-1).over("sequence_id")
+    else:
+        x2 = x1.shift(-1)
+        y2 = y1.shift(-1)
+        z2 = z1.shift(-1)
+        w2 = w1.shift(-1)
 
     # ノルムで正規化（SciPy 相当）
     n1 = (x1 * x1 + y1 * y1 + z1 * z1 + w1 * w1).sqrt()
@@ -209,10 +215,16 @@ def calculate_angular_distance_pl(rot_df: pl.LazyFrame, tol: float = 1e-8) -> pl
     z1 = pl.col("rot_z")
     w1 = pl.col("rot_w")
     # シーケンス境界を尊重したshift操作
-    x2 = x1.shift(-1).over("sequence_id") if "sequence_id" in rot_df.columns else x1.shift(-1)
-    y2 = y1.shift(-1).over("sequence_id") if "sequence_id" in rot_df.columns else y1.shift(-1)
-    z2 = z1.shift(-1).over("sequence_id") if "sequence_id" in rot_df.columns else z1.shift(-1)
-    w2 = w1.shift(-1).over("sequence_id") if "sequence_id" in rot_df.columns else w1.shift(-1)
+    if "sequence_id" in rot_df.collect_schema().names():
+        x2 = x1.shift(-1).over("sequence_id")
+        y2 = y1.shift(-1).over("sequence_id")
+        z2 = z1.shift(-1).over("sequence_id")
+        w2 = w1.shift(-1).over("sequence_id")
+    else:
+        x2 = x1.shift(-1)
+        y2 = y1.shift(-1)
+        z2 = z1.shift(-1)
+        w2 = w1.shift(-1)
 
     # 正規化（SciPy相当）
     n1 = (x1 * x1 + y1 * y1 + z1 * z1 + w1 * w1).sqrt()
@@ -1091,19 +1103,21 @@ class SingleSequenceIMUDataset(Dataset):
         # 全ての物理特徴量を結合
         df_with_physics = (
             pl.concat([df_lazy, linear_acc_df, angular_vel_df, angular_dist_df], how="horizontal")
-            .with_columns([
-                # 線形加速度の大きさ
-                (pl.col("linear_acc_x") ** 2 + pl.col("linear_acc_y") ** 2 + pl.col("linear_acc_z") ** 2)
-                .sqrt()
-                .alias("linear_acc_mag"),
-                # 線形加速度大きさのジャーク
-                (
+            .with_columns(
+                [
+                    # 線形加速度の大きさ
                     (pl.col("linear_acc_x") ** 2 + pl.col("linear_acc_y") ** 2 + pl.col("linear_acc_z") ** 2)
                     .sqrt()
-                    .diff()
-                    .fill_null(0.0)
-                ).alias("linear_acc_mag_jerk"),
-            ])
+                    .alias("linear_acc_mag"),
+                    # 線形加速度大きさのジャーク
+                    (
+                        (pl.col("linear_acc_x") ** 2 + pl.col("linear_acc_y") ** 2 + pl.col("linear_acc_z") ** 2)
+                        .sqrt()
+                        .diff()
+                        .fill_null(0.0)
+                    ).alias("linear_acc_mag_jerk"),
+                ]
+            )
             .collect()
         )
 

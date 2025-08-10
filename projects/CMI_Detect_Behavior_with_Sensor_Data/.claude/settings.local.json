@@ -45,7 +45,11 @@
       "Bash(PYTHONPATH=codes/exp/exp010:$PYTHONPATH uv run python -m pytest tests/test_exp010_dataset.py -v)",
       "Bash(PYTHONPATH=.:$PYTHONPATH uv run python -m pytest ../../../tests/test_exp010_dataset.py -v)",
       "WebFetch(domain:pytorch-optimizers.readthedocs.io)",
-      "WebFetch(domain:arxiv.org)"
+      "Bash(git clone:*)",
+      "WebFetch(domain:chatgpt.com)",
+      "WebFetch(domain:www.sktime.net)",
+      "mcp__arxiv-mcp-server",
+      "mcp__gemini-cli"
     ],
     "deny": [
       "Bash(uv sync:*)",

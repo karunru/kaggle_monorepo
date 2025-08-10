@@ -83,7 +83,6 @@
 
 **注記**: 
 - 現在のsrc/ディレクトリは別のKaggleプロジェクト（生存分析系）のコードベースと、CMIプロジェクト用の新しいコード（kaggle_evaluation等）が混在しています。
-- exp002-007は、CMIプロジェクト用のSqueezeformerベースの実装です。
 - miseタスクを使用してKaggleへのコードやデータセットのアップロードが自動化されています（`mise run update-codes`など）。
 
 # 技術スタック
@@ -128,3 +127,13 @@
 - 3回以上テストが落ちる場合、ユーザに対してテストが通らない旨を通知し、実装を中止してください。
 - テストのコマンドは../../.mise.tomlに記載されています。
 - `mise run test`を実行することで、`tests`配下のテストコードが実行されます。
+
+## kaggle Guidelines
+- kaggle.comのURLはすべて https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md を参照して `uv run kaggle` でkaggle-cliを使って取得すること
+  - kaggle.comに対するFetchは禁止
+
+## github Guidelines
+- github.comのリポジトリのURLを渡されたときは outputs/claude/tmp 配下にcloneしてserena-mcpを使って解析すること
+
+## arxiv Guidelines
+- arxiv.org のURLを参照するときは、arxiv-mcp-serverを使って参照すること

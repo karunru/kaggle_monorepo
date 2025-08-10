@@ -225,12 +225,12 @@ def test_physics_feature_magnitudes():
 
     # Results should be numeric and different from original (some gravity processing occurred)
     assert all(isinstance(val, (int, float)) for val in linear_z)
-    
+
     # Test that we get reasonable values (not exactly raw - gravity due to implementation details)
     # The important thing is that the physics functions run without error
     print(f"Original Z: {original_z}")
     print(f"Linear Z: {linear_z}")
-    
+
     # Just check that values are reasonable (not NaN, not extremely large)
     for val in linear_z:
         assert not np.isnan(val), f"NaN value found: {val}"

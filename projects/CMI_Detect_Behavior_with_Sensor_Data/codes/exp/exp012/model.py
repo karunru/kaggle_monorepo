@@ -4,23 +4,13 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
+
+# ACLS losses import
+from losses import ACLS, ACLSBinary, LabelSmoothingBCE, LabelSmoothingCrossEntropy, MbLS, MbLSBinary
 from sklearn.metrics import f1_score
 from torch import nn
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingLR, ReduceLROnPlateau
-
-# ACLS losses import
-from losses import (
-    ACLS, ACLSBinary, LabelSmoothingBCE, LabelSmoothingCrossEntropy, 
-    MbLS, MbLSBinary
-)
-
-# Note: pytorch_optimizer.SoftF1Loss is available but not used directly
-# We implement our own SoftF1Loss for better control and CMI-specific optimization
-PYTORCH_OPTIMIZER_AVAILABLE = False
-
-# Manual EMA implementation (avoiding recursion issues with ema-pytorch)
-EMA_AVAILABLE = True  # Manual implementation is always available
 
 # Schedule Free optimizers
 try:
@@ -45,7 +35,6 @@ def compute_cmi_score(gesture_true, gesture_pred, target_gestures, non_target_ge
     Returns:
         CMIスコア
     """
-    import numpy as np
 
     # Binary F1 (Target vs Non-Target)
     y_true_bin = np.array([1 if g in target_gestures else 0 for g in gesture_true])
@@ -437,9 +426,7 @@ class CMISqueezeformer(pl.LightningModule):
             # SoftF1Loss
             beta = self.loss_config.get("soft_f1_beta", 1.0)
             eps = self.loss_config.get("soft_f1_eps", 1e-6)
-            self.multiclass_criterion = MulticlassSoftF1Loss(
-                num_classes=self.num_classes, beta=beta, eps=eps
-            )
+            self.multiclass_criterion = MulticlassSoftF1Loss(num_classes=self.num_classes, beta=beta, eps=eps)
             self.binary_criterion = BinarySoftF1Loss(beta=beta, eps=eps)
         elif loss_type == "acls":
             # ACLS (Adaptive and Conditional Label Smoothing)
@@ -448,33 +435,30 @@ class CMISqueezeformer(pl.LightningModule):
                 neg_lambda=self.acls_config.get("acls_neg_lambda", 0.1),
                 alpha=self.acls_config.get("acls_alpha", 0.1),
                 margin=self.acls_config.get("acls_margin", 10.0),
-                num_classes=self.num_classes
+                num_classes=self.num_classes,
             )
             self.binary_criterion = ACLSBinary(
                 pos_lambda=self.acls_config.get("acls_pos_lambda", 1.0),
                 neg_lambda=self.acls_config.get("acls_neg_lambda", 0.1),
                 alpha=self.acls_config.get("acls_alpha", 0.1),
                 margin=self.acls_config.get("acls_margin", 10.0),
-                num_classes=2
+                num_classes=2,
             )
         elif loss_type == "label_smoothing":
             # Label Smoothing Cross-Entropy
             self.multiclass_criterion = LabelSmoothingCrossEntropy(
                 alpha=self.acls_config.get("label_smoothing_alpha", 0.1)
             )
-            self.binary_criterion = LabelSmoothingBCE(
-                alpha=self.acls_config.get("label_smoothing_alpha", 0.1)
-            )
+            self.binary_criterion = LabelSmoothingBCE(alpha=self.acls_config.get("label_smoothing_alpha", 0.1))
         elif loss_type == "mbls":
             # Margin-based Label Smoothing
             self.multiclass_criterion = MbLS(
                 margin=self.acls_config.get("mbls_margin", 10.0),
                 alpha=self.acls_config.get("mbls_alpha", 0.1),
-                alpha_schedule=self.acls_config.get("mbls_schedule", None)
+                alpha_schedule=self.acls_config.get("mbls_schedule", None),
             )
             self.binary_criterion = MbLSBinary(
-                margin=self.acls_config.get("mbls_margin", 10.0),
-                alpha=self.acls_config.get("mbls_alpha", 0.1)
+                margin=self.acls_config.get("mbls_margin", 10.0), alpha=self.acls_config.get("mbls_alpha", 0.1)
             )
         else:
             # デフォルト
@@ -954,7 +938,7 @@ class BinarySoftF1Loss(nn.Module):
         recall = tp / (tp + fn + self.eps)
 
         # F-beta score
-        f_beta = (1 + self.beta ** 2) * precision * recall / (self.beta ** 2 * precision + recall + self.eps)
+        f_beta = (1 + self.beta**2) * precision * recall / (self.beta**2 * precision + recall + self.eps)
 
         return 1.0 - f_beta
 
@@ -1006,7 +990,7 @@ class MulticlassSoftF1Loss(nn.Module):
             recall = tp / (tp + fn + self.eps)
 
             # F-beta score
-            f_beta = (1 + self.beta ** 2) * precision * recall / (self.beta ** 2 * precision + recall + self.eps)
+            f_beta = (1 + self.beta**2) * precision * recall / (self.beta**2 * precision + recall + self.eps)
             f1_scores.append(f_beta)
 
         # Macro F1 (全クラスの平均)
