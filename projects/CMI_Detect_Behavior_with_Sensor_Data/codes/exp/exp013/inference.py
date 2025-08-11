@@ -195,7 +195,7 @@ def predict(sequence: pl.DataFrame, demographics: pl.DataFrame) -> str:
 
     # Demographics統合が有効で、引数でdemographicsが提供されている場合に使用
     use_demographics = config.demographics.enabled and demographics is not None and len(demographics) > 0
-    
+
     # subjectを取得（シーケンスデータから）
     subject = None
     if "subject" in sequence.columns:

@@ -110,10 +110,18 @@ class DemographicsConfig(BaseModel):
     age_max: float = Field(default=60.0, description="年齢の最大値（実データ: 10-53 + マージン）")
     height_min: float = Field(default=130.0, description="身長の最小値（cm）（実データ: 135-190.5 + マージン）")
     height_max: float = Field(default=195.0, description="身長の最大値（cm）（実データ: 135-190.5 + マージン）")
-    shoulder_to_wrist_min: float = Field(default=35.0, description="肩-手首距離の最小値（cm）（実データ: 41-71 + マージン）")
-    shoulder_to_wrist_max: float = Field(default=75.0, description="肩-手首距離の最大値（cm）（実データ: 41-71 + マージン）")
-    elbow_to_wrist_min: float = Field(default=15.0, description="肘-手首距離の最小値（cm）（実データ: 18-44 + マージン）")
-    elbow_to_wrist_max: float = Field(default=50.0, description="肘-手首距離の最大値（cm）（実データ: 18-44 + マージン）")
+    shoulder_to_wrist_min: float = Field(
+        default=35.0, description="肩-手首距離の最小値（cm）（実データ: 41-71 + マージン）"
+    )
+    shoulder_to_wrist_max: float = Field(
+        default=75.0, description="肩-手首距離の最大値（cm）（実データ: 41-71 + マージン）"
+    )
+    elbow_to_wrist_min: float = Field(
+        default=15.0, description="肘-手首距離の最小値（cm）（実データ: 18-44 + マージン）"
+    )
+    elbow_to_wrist_max: float = Field(
+        default=50.0, description="肘-手首距離の最大値（cm）（実データ: 18-44 + マージン）"
+    )
 
     # 特徴量リスト
     categorical_features: list[str] = Field(

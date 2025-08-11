@@ -490,22 +490,27 @@ class IMUDataset(Dataset):
             return
 
         print("Setting up demographics scaling parameters from config...")
-        
+
         # demographics_configから直接パラメータを取得
         self.scaling_params = {
-            "age": (self.demographics_config.get("age_min", 8.0), 
-                   self.demographics_config.get("age_max", 60.0)),
-            "height_cm": (self.demographics_config.get("height_min", 130.0), 
-                         self.demographics_config.get("height_max", 195.0)),
-            "shoulder_to_wrist_cm": (self.demographics_config.get("shoulder_to_wrist_min", 35.0), 
-                                    self.demographics_config.get("shoulder_to_wrist_max", 75.0)),
-            "elbow_to_wrist_cm": (self.demographics_config.get("elbow_to_wrist_min", 15.0), 
-                                 self.demographics_config.get("elbow_to_wrist_max", 50.0)),
+            "age": (self.demographics_config.get("age_min", 8.0), self.demographics_config.get("age_max", 60.0)),
+            "height_cm": (
+                self.demographics_config.get("height_min", 130.0),
+                self.demographics_config.get("height_max", 195.0),
+            ),
+            "shoulder_to_wrist_cm": (
+                self.demographics_config.get("shoulder_to_wrist_min", 35.0),
+                self.demographics_config.get("shoulder_to_wrist_max", 75.0),
+            ),
+            "elbow_to_wrist_cm": (
+                self.demographics_config.get("elbow_to_wrist_min", 15.0),
+                self.demographics_config.get("elbow_to_wrist_max", 50.0),
+            ),
         }
-        
+
         for feature, (min_val, max_val) in self.scaling_params.items():
             print(f"{feature}: using config range ({min_val:.2f}, {max_val:.2f})")
-            
+
         print(f"Scaling parameters set for {len(self.scaling_params)} features from config")
 
     def _get_demographics_for_subject(self, subject: str) -> dict[str, torch.Tensor] | None:
@@ -1190,12 +1195,12 @@ class SingleSequenceIMUDataset(Dataset):
         self.df = sequence_df
         self.target_sequence_length = target_sequence_length
         self.augment = False  # 推論時は拡張なし
-        
+
         # Demographics設定
         self.use_demographics = use_demographics and demographics_data is not None
         self.demographics_data = demographics_data
         self.demographics_config = demographics_config or {}
-        
+
         # Subject の取得（引数で指定されない場合はsequence_dfから取得）
         if subject is not None:
             self.subject = subject
@@ -1203,7 +1208,7 @@ class SingleSequenceIMUDataset(Dataset):
             self.subject = sequence_df.get_column("subject")[0]
         else:
             self.subject = None
-            
+
         # Demographics データ前処理
         if self.use_demographics:
             self._setup_demographics()
@@ -1275,39 +1280,44 @@ class SingleSequenceIMUDataset(Dataset):
         """Demographics データの前処理."""
         if not self.use_demographics or self.demographics_data is None:
             return
-            
+
         print(f"Setting up demographics for subject: {self.subject}")
-        
+
         # Demographics データを dict 形式に変換（高速アクセス用）
         demographics_dict = self.demographics_data.to_dict(as_series=False)
-        
+
         # subject-to-demographics マッピングを作成
         self.subject_to_demographics = {}
         for i, subj in enumerate(demographics_dict["subject"]):
             self.subject_to_demographics[subj] = {
                 key: values[i] for key, values in demographics_dict.items() if key != "subject"
             }
-        
+
         # スケーリングパラメータの設定（設定値ベース）
         self._setup_scaling_params()
-        
+
         print(f"Demographics setup completed for {len(self.subject_to_demographics)} subjects")
 
     def _setup_scaling_params(self):
         """設定値からスケーリングパラメータを設定."""
         if not self.use_demographics:
             return
-            
+
         # demographics_configから直接パラメータを取得
         self.scaling_params = {
-            "age": (self.demographics_config.get("age_min", 8.0), 
-                   self.demographics_config.get("age_max", 60.0)),
-            "height_cm": (self.demographics_config.get("height_min", 130.0), 
-                         self.demographics_config.get("height_max", 195.0)),
-            "shoulder_to_wrist_cm": (self.demographics_config.get("shoulder_to_wrist_min", 35.0), 
-                                    self.demographics_config.get("shoulder_to_wrist_max", 75.0)),
-            "elbow_to_wrist_cm": (self.demographics_config.get("elbow_to_wrist_min", 15.0), 
-                                 self.demographics_config.get("elbow_to_wrist_max", 50.0)),
+            "age": (self.demographics_config.get("age_min", 8.0), self.demographics_config.get("age_max", 60.0)),
+            "height_cm": (
+                self.demographics_config.get("height_min", 130.0),
+                self.demographics_config.get("height_max", 195.0),
+            ),
+            "shoulder_to_wrist_cm": (
+                self.demographics_config.get("shoulder_to_wrist_min", 35.0),
+                self.demographics_config.get("shoulder_to_wrist_max", 75.0),
+            ),
+            "elbow_to_wrist_cm": (
+                self.demographics_config.get("elbow_to_wrist_min", 15.0),
+                self.demographics_config.get("elbow_to_wrist_max", 50.0),
+            ),
         }
 
     def _get_demographics_for_subject(self) -> dict[str, torch.Tensor] | None:
@@ -1454,13 +1464,13 @@ class SingleSequenceIMUDataset(Dataset):
         attention_mask = torch.tensor(~self.missing_mask, dtype=torch.bool)  # 欠損位置でFalse、正常位置でTrue
 
         result = {"imu": imu_tensor, "attention_mask": attention_mask, "sequence_id": self.sequence_id}
-        
+
         # Demographicsデータが利用可能な場合は追加
         if self.use_demographics:
             demographics = self._get_demographics_for_subject()
             if demographics is not None:
                 result["demographics"] = demographics
-        
+
         return result
 
 

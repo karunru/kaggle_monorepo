@@ -553,6 +553,7 @@ dependencies = [
     { name = "pytorch-optimizer" },
     { name = "rich" },
     { name = "schedulefree" },
+    { name = "scikit-time" },
     { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
     { name = "scipy", version = "1.16.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "sktime", version = "0.36.0", source = { registry = "https://pypi.org/simple" }, extra = ["all-extras"], marker = "python_full_version < '3.14'" },
@@ -561,12 +562,14 @@ dependencies = [
     { name = "torch" },
     { name = "torchaudio" },
     { name = "torchvision" },
+    { name = "torchviz" },
     { name = "tqdm" },
     { name = "transformers" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "graphviz" },
     { name = "kaggle" },
     { name = "mypy" },
     { name = "nbclassic" },
@@ -575,6 +578,7 @@ dev = [
     { name = "ruff" },
     { name = "seaborn" },
     { name = "streamlit" },
+    { name = "torchviz" },
     { name = "wandb" },
 ]
 
@@ -602,18 +606,21 @@ requires-dist = [
     { name = "pytorch-optimizer", specifier = ">=3.7.0" },
     { name = "rich", specifier = ">=14.0.0" },
     { name = "schedulefree", specifier = ">=1.4.1" },
+    { name = "scikit-time", specifier = ">=0.0.0" },
     { name = "scipy", specifier = ">=1.15.2" },
     { name = "sktime", extras = ["all-extras"], specifier = ">=0.36.0" },
     { name = "timm", specifier = ">=1.0.15" },
     { name = "torch", specifier = ">=2.6", index = "https://download.pytorch.org/whl/cu124" },
     { name = "torchaudio", specifier = ">=2.6.0", index = "https://download.pytorch.org/whl/cu124" },
     { name = "torchvision", specifier = ">=0.21", index = "https://download.pytorch.org/whl/cu124" },
+    { name = "torchviz", specifier = ">=0.0.3" },
     { name = "tqdm", specifier = ">=4.64.1" },
     { name = "transformers", specifier = ">=4.55.0" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "graphviz", specifier = ">=0.20.1" },
     { name = "kaggle", specifier = ">=1.6.6" },
     { name = "mypy", specifier = ">=1.16.1" },
     { name = "nbclassic", specifier = ">=1.3.1" },
@@ -622,6 +629,7 @@ dev = [
     { name = "ruff", specifier = ">=0.12.1" },
     { name = "seaborn", specifier = ">=0.13.2" },
     { name = "streamlit", specifier = ">=1.43.2" },
+    { name = "torchviz", specifier = ">=0.0.3" },
     { name = "wandb", specifier = ">=0.16.4" },
 ]
 
@@ -1147,6 +1155,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/95/8e/ac06012148ea68b301d8f041d3c97cca6b5000f58c8ebf94bf71a601f771/gluonts-0.16.2.tar.gz", hash = "sha256:1fef7fff186b567edf9db7cd052c10ee82fb74bb4b4914b925340ba33d494548", size = 1317671 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/38/3d/83cbe565f59b1d55b6436576d8d7bc3890aebdd8a55db34e60ff69f8e8ef/gluonts-0.16.2-py3-none-any.whl", hash = "sha256:351497c37bd0dd13776310f132b7f110f45821559cbc1a03c24908051fcf8155", size = 1519207 },
+]
+
+[[package]]
+name = "graphviz"
+version = "0.21"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f8/b3/3ac91e9be6b761a4b30d66ff165e54439dcd48b83f4e20d644867215f6ca/graphviz-0.21.tar.gz", hash = "sha256:20743e7183be82aaaa8ad6c93f8893c923bd6658a04c32ee115edb3c8a835f78", size = 200434 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/91/4c/e0ce1ef95d4000ebc1c11801f9b944fa5910ecc15b5e351865763d8657f8/graphviz-0.21-py3-none-any.whl", hash = "sha256:54f33de9f4f911d7e84e4191749cac8cc5653f815b06738c54db9a15ab8b1e42", size = 47300 },
 ]
 
 [[package]]
@@ -3796,6 +3813,12 @@ wheels = [
 ]
 
 [[package]]
+name = "scikit-time"
+version = "0.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0d/dd/1335e5543654b3226ef56181b0c5768c9132a86a33ec87ce24f471266c5c/scikit-time-0.0.0.tar.gz", hash = "sha256:8c00693b58aa74a9d147a3881cd8075c8b208b4ad90bddf4526ec84a5bfcdf5d", size = 1758 }
+
+[[package]]
 name = "scipy"
 version = "1.15.3"
 source = { registry = "https://pypi.org/simple" }
@@ -4623,6 +4646,19 @@ wheels = [
     { url = "https://download.pytorch.org/whl/cu124/torchvision-0.21.0%2Bcu124-cp312-cp312-win_amd64.whl", hash = "sha256:ec63c2ee792757492da40590e34b14f2fceda29050558c215f0c1f3b08149c0f" },
     { url = "https://download.pytorch.org/whl/cu124/torchvision-0.21.0%2Bcu124-cp313-cp313-linux_x86_64.whl", hash = "sha256:4b70acf3b4b96a0ceb1374116626c9bef9e8be016b57b1284e482260ca1896d6" },
     { url = "https://download.pytorch.org/whl/cu124/torchvision-0.21.0%2Bcu124-cp313-cp313-win_amd64.whl", hash = "sha256:8fcf55321b206de70ff8e01c884fa42e57a60b1cb749341b96e0f22c8a7c9ec7" },
+]
+
+[[package]]
+name = "torchviz"
+version = "0.0.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "graphviz" },
+    { name = "torch" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5c/80/a84e0e8877630262c3f4c8d2e7fd0647c6751afeca301cfc04a1b65ac820/torchviz-0.0.3.tar.gz", hash = "sha256:2e95f2fea7a31ec9549f2d6bbf446d75aeb6a9880fcf13e7dd843fdcdb4a3725", size = 5705 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5e/06/bea648249802b65282414caf5e7bc94fcb6e5a3e311b537845417d19edb9/torchviz-0.0.3-py3-none-any.whl", hash = "sha256:5eab98d17cbe8a54727cfa6a527681cff613430fff8fc68f52302ca5fa26cdf1", size = 5708 },
 ]
 
 [[package]]
