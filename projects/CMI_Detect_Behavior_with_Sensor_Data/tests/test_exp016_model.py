@@ -41,13 +41,18 @@ class TestExp016Model:
         """サンプルdemographicsデータを生成."""
         batch_size = 2
         # [adult_child, sex, handedness, age, height_cm, shoulder_to_wrist_cm, elbow_to_wrist_cm]
-        demographics = torch.tensor([
-            [1, 0, 1, 25.0, 165.0, 55.0, 30.0],  # 大人、女性、右利き
-            [0, 1, 1, 12.0, 140.0, 45.0, 25.0],  # 子供、男性、右利き
-        ], dtype=torch.float32)
+        demographics = torch.tensor(
+            [
+                [1, 0, 1, 25.0, 165.0, 55.0, 30.0],  # 大人、女性、右利き
+                [0, 1, 1, 12.0, 140.0, 45.0, 25.0],  # 子供、男性、右利き
+            ],
+            dtype=torch.float32,
+        )
         return demographics
 
-    def test_model_forward_without_demographics(self, sample_imu_data: torch.Tensor, sample_attention_mask: torch.Tensor):
+    def test_model_forward_without_demographics(
+        self, sample_imu_data: torch.Tensor, sample_attention_mask: torch.Tensor
+    ):
         """Demographics無しでのモデル推論テスト."""
         config = {
             "input_dim": 7,
@@ -57,10 +62,7 @@ class TestExp016Model:
             "d_ff": 256,
             "num_classes": 18,
             "demographics_config": {"enabled": False},
-            "feature_extractor_config": {
-                "time_delta": 1.0/200.0,
-                "tol": 1e-8
-            }
+            "feature_extractor_config": {"time_delta": 1.0 / 200.0, "tol": 1e-8},
         }
 
         model = CMISqueezeformer(**config)
@@ -72,14 +74,20 @@ class TestExp016Model:
 
         # 出力形状の確認
         batch_size = sample_imu_data.shape[0]
-        assert multiclass_logits.shape == (batch_size, 18), f"Expected multiclass shape ({batch_size}, 18), got {multiclass_logits.shape}"
-        assert binary_logits.shape == (batch_size, 1), f"Expected binary shape ({batch_size}, 1), got {binary_logits.shape}"
+        assert multiclass_logits.shape == (batch_size, 18), (
+            f"Expected multiclass shape ({batch_size}, 18), got {multiclass_logits.shape}"
+        )
+        assert binary_logits.shape == (batch_size, 1), (
+            f"Expected binary shape ({batch_size}, 1), got {binary_logits.shape}"
+        )
 
         # NaN/Infの確認
         assert torch.isfinite(multiclass_logits).all(), "Multiclass logits contain NaN or Inf"
         assert torch.isfinite(binary_logits).all(), "Binary logits contain NaN or Inf"
 
-    def test_model_forward_with_demographics(self, sample_imu_data: torch.Tensor, sample_attention_mask: torch.Tensor, sample_demographics: torch.Tensor):
+    def test_model_forward_with_demographics(
+        self, sample_imu_data: torch.Tensor, sample_attention_mask: torch.Tensor, sample_demographics: torch.Tensor
+    ):
         """Demographics有りでのモデル推論テスト."""
         config = {
             "input_dim": 7,
@@ -93,12 +101,9 @@ class TestExp016Model:
                 "embedding_dim": 16,
                 "categorical_features": ["adult_child", "sex", "handedness"],
                 "numerical_features": ["age", "height_cm", "shoulder_to_wrist_cm", "elbow_to_wrist_cm"],
-                "categorical_embedding_dims": {"adult_child": 2, "sex": 2, "handedness": 2}
+                "categorical_embedding_dims": {"adult_child": 2, "sex": 2, "handedness": 2},
             },
-            "feature_extractor_config": {
-                "time_delta": 1.0/200.0,
-                "tol": 1e-8
-            }
+            "feature_extractor_config": {"time_delta": 1.0 / 200.0, "tol": 1e-8},
         }
 
         model = CMISqueezeformer(**config)
@@ -106,12 +111,18 @@ class TestExp016Model:
 
         # 順伝播
         with torch.no_grad():
-            multiclass_logits, binary_logits = model(sample_imu_data, sample_attention_mask, demographics=sample_demographics)
+            multiclass_logits, binary_logits = model(
+                sample_imu_data, sample_attention_mask, demographics=sample_demographics
+            )
 
         # 出力形状の確認
         batch_size = sample_imu_data.shape[0]
-        assert multiclass_logits.shape == (batch_size, 18), f"Expected multiclass shape ({batch_size}, 18), got {multiclass_logits.shape}"
-        assert binary_logits.shape == (batch_size, 1), f"Expected binary shape ({batch_size}, 1), got {binary_logits.shape}"
+        assert multiclass_logits.shape == (batch_size, 18), (
+            f"Expected multiclass shape ({batch_size}, 18), got {multiclass_logits.shape}"
+        )
+        assert binary_logits.shape == (batch_size, 1), (
+            f"Expected binary shape ({batch_size}, 1), got {binary_logits.shape}"
+        )
 
         # NaN/Infの確認
         assert torch.isfinite(multiclass_logits).all(), "Multiclass logits contain NaN or Inf"
@@ -119,13 +130,7 @@ class TestExp016Model:
 
     def test_feature_extraction_dimension(self, sample_imu_data: torch.Tensor):
         """特徴量抽出の次元確認テスト."""
-        config = {
-            "input_dim": 7,
-            "feature_extractor_config": {
-                "time_delta": 1.0/200.0,
-                "tol": 1e-8
-            }
-        }
+        config = {"input_dim": 7, "feature_extractor_config": {"time_delta": 1.0 / 200.0, "tol": 1e-8}}
 
         model = CMISqueezeformer(**config)
 
@@ -146,10 +151,7 @@ class TestExp016Model:
             "d_ff": 256,
             "num_classes": 18,
             "demographics_config": {"enabled": False},
-            "feature_extractor_config": {
-                "time_delta": 1.0/200.0,
-                "tol": 1e-8
-            }
+            "feature_extractor_config": {"time_delta": 1.0 / 200.0, "tol": 1e-8},
         }
 
         model = CMISqueezeformer(**config)
@@ -165,7 +167,7 @@ class TestExp016Model:
             "attention_mask": sample_attention_mask,
             "multiclass_target": multiclass_targets,
             "binary_target": binary_targets,
-            "demographics": None
+            "demographics": None,
         }
 
         # 訓練ステップ実行
@@ -187,10 +189,7 @@ class TestExp016Model:
             "d_ff": 256,
             "num_classes": 18,
             "demographics_config": {"enabled": False},
-            "feature_extractor_config": {
-                "time_delta": 1.0/200.0,
-                "tol": 1e-8
-            }
+            "feature_extractor_config": {"time_delta": 1.0 / 200.0, "tol": 1e-8},
         }
 
         model = CMISqueezeformer(**config)
@@ -206,7 +205,7 @@ class TestExp016Model:
             "attention_mask": sample_attention_mask,
             "multiclass_target": multiclass_targets,
             "binary_target": binary_targets,
-            "demographics": None
+            "demographics": None,
         }
 
         # 検証ステップ実行
@@ -226,10 +225,7 @@ class TestExp016Model:
             "d_ff": 256,
             "num_classes": 18,
             "demographics_config": {"enabled": False},
-            "feature_extractor_config": {
-                "time_delta": 1.0/200.0,
-                "tol": 1e-8
-            }
+            "feature_extractor_config": {"time_delta": 1.0 / 200.0, "tol": 1e-8},
         }
 
         model = CMISqueezeformer(**config)
@@ -270,10 +266,7 @@ class TestExp016Model:
             "d_ff": 128,
             "num_classes": 18,
             "demographics_config": {"enabled": False},
-            "feature_extractor_config": {
-                "time_delta": 1.0/200.0,
-                "tol": 1e-8
-            }
+            "feature_extractor_config": {"time_delta": 1.0 / 200.0, "tol": 1e-8},
         }
 
         model = CMISqueezeformer(**config)
@@ -315,10 +308,7 @@ class TestExp016Model:
             "d_ff": 256,
             "num_classes": 18,
             "demographics_config": {"enabled": False},
-            "feature_extractor_config": {
-                "time_delta": 1.0/200.0,
-                "tol": 1e-8
-            }
+            "feature_extractor_config": {"time_delta": 1.0 / 200.0, "tol": 1e-8},
         }
 
         device = torch.device("cuda")

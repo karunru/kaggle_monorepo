@@ -54,7 +54,7 @@ class TestIMUFeatureExtractor:
 
     def test_feature_extractor_basic_functionality(self, sample_imu_data: torch.Tensor):
         """基本的な動作確認テスト."""
-        extractor = IMUFeatureExtractor(time_delta=1.0/200.0, tol=1e-8)
+        extractor = IMUFeatureExtractor(time_delta=1.0 / 200.0, tol=1e-8)
 
         # 順伝播テスト
         features = extractor(sample_imu_data)
@@ -67,7 +67,7 @@ class TestIMUFeatureExtractor:
 
     def test_feature_extractor_output_structure(self, sample_imu_data: torch.Tensor):
         """出力特徴量の構造確認."""
-        extractor = IMUFeatureExtractor(time_delta=1.0/200.0, tol=1e-8)
+        extractor = IMUFeatureExtractor(time_delta=1.0 / 200.0, tol=1e-8)
         features = extractor(sample_imu_data)
 
         # 各特徴量の確認
@@ -97,7 +97,7 @@ class TestIMUFeatureExtractor:
 
     def test_gravity_removal_comparison(self, sample_imu_data: torch.Tensor, sample_polars_data: pl.LazyFrame):
         """重力除去の数値比較テスト."""
-        extractor = IMUFeatureExtractor(time_delta=1.0/200.0, tol=1e-8)
+        extractor = IMUFeatureExtractor(time_delta=1.0 / 200.0, tol=1e-8)
 
         # PyTorch実装
         acc = sample_imu_data[0:1, :3, :]  # 最初のバッチのみ
@@ -106,18 +106,22 @@ class TestIMUFeatureExtractor:
 
         # Polars実装
         polars_linear_acc_df = remove_gravity_from_acc_pl(sample_polars_data, tol=1e-8).collect()
-        polars_linear_acc = torch.tensor(polars_linear_acc_df.to_numpy().T, dtype=torch.float32).unsqueeze(0)  # [1, 3, T]
+        polars_linear_acc = torch.tensor(polars_linear_acc_df.to_numpy().T, dtype=torch.float32).unsqueeze(
+            0
+        )  # [1, 3, T]
 
         # 数値比較（相対誤差5%以内）
         torch.testing.assert_close(
-            pytorch_linear_acc, polars_linear_acc,
-            rtol=0.05, atol=1e-3,
-            msg="Gravity removal results don't match between PyTorch and Polars implementations"
+            pytorch_linear_acc,
+            polars_linear_acc,
+            rtol=0.05,
+            atol=1e-3,
+            msg="Gravity removal results don't match between PyTorch and Polars implementations",
         )
 
     def test_angular_velocity_comparison(self, sample_imu_data: torch.Tensor, sample_polars_data: pl.LazyFrame):
         """角速度計算の数値比較テスト."""
-        extractor = IMUFeatureExtractor(time_delta=1.0/200.0, tol=1e-8)
+        extractor = IMUFeatureExtractor(time_delta=1.0 / 200.0, tol=1e-8)
 
         # PyTorch実装
         quat = sample_imu_data[0:1, 3:, :]  # 最初のバッチのみ
@@ -125,41 +129,47 @@ class TestIMUFeatureExtractor:
 
         # Polars実装
         polars_angular_vel_df = calculate_angular_velocity_from_quat_pl(
-            sample_polars_data, time_delta=1.0/200.0, tol=1e-8
+            sample_polars_data, time_delta=1.0 / 200.0, tol=1e-8
         ).collect()
-        polars_angular_vel = torch.tensor(polars_angular_vel_df.to_numpy().T, dtype=torch.float32).unsqueeze(0)  # [1, 3, T]
+        polars_angular_vel = torch.tensor(polars_angular_vel_df.to_numpy().T, dtype=torch.float32).unsqueeze(
+            0
+        )  # [1, 3, T]
 
         # 数値比較（相対誤差10%以内、角速度は数値的に不安定になりやすい）
         torch.testing.assert_close(
-            pytorch_angular_vel, polars_angular_vel,
-            rtol=0.1, atol=1e-2,
-            msg="Angular velocity results don't match between PyTorch and Polars implementations"
+            pytorch_angular_vel,
+            polars_angular_vel,
+            rtol=0.1,
+            atol=1e-2,
+            msg="Angular velocity results don't match between PyTorch and Polars implementations",
         )
 
     def test_angular_distance_comparison(self, sample_imu_data: torch.Tensor, sample_polars_data: pl.LazyFrame):
         """角距離計算の数値比較テスト."""
-        extractor = IMUFeatureExtractor(time_delta=1.0/200.0, tol=1e-8)
+        extractor = IMUFeatureExtractor(time_delta=1.0 / 200.0, tol=1e-8)
 
         # PyTorch実装
         quat = sample_imu_data[0:1, 3:, :]  # 最初のバッチのみ
         pytorch_angular_dist = extractor.calculate_angular_distance(quat)  # [1, 1, T]
 
         # Polars実装
-        polars_angular_dist_df = calculate_angular_distance_pl(
-            sample_polars_data, tol=1e-8
-        ).collect()
-        polars_angular_dist = torch.tensor(polars_angular_dist_df.to_numpy().T, dtype=torch.float32).unsqueeze(0)  # [1, 1, T]
+        polars_angular_dist_df = calculate_angular_distance_pl(sample_polars_data, tol=1e-8).collect()
+        polars_angular_dist = torch.tensor(polars_angular_dist_df.to_numpy().T, dtype=torch.float32).unsqueeze(
+            0
+        )  # [1, 1, T]
 
         # 数値比較（相対誤差5%以内）
         torch.testing.assert_close(
-            pytorch_angular_dist, polars_angular_dist,
-            rtol=0.05, atol=1e-3,
-            msg="Angular distance results don't match between PyTorch and Polars implementations"
+            pytorch_angular_dist,
+            polars_angular_dist,
+            rtol=0.05,
+            atol=1e-3,
+            msg="Angular distance results don't match between PyTorch and Polars implementations",
         )
 
     def test_feature_extractor_gpu_cpu_consistency(self, sample_imu_data: torch.Tensor):
         """GPU/CPU間の一貫性テスト."""
-        extractor = IMUFeatureExtractor(time_delta=1.0/200.0, tol=1e-8)
+        extractor = IMUFeatureExtractor(time_delta=1.0 / 200.0, tol=1e-8)
 
         # CPU実行
         cpu_features = extractor(sample_imu_data)
@@ -174,14 +184,12 @@ class TestIMUFeatureExtractor:
 
             # CPU/GPU結果の比較（数値安定性のため許容範囲を広げる）
             torch.testing.assert_close(
-                cpu_features, gpu_features,
-                rtol=1e-3, atol=1e-5,
-                msg="GPU and CPU results don't match"
+                cpu_features, gpu_features, rtol=1e-3, atol=1e-5, msg="GPU and CPU results don't match"
             )
 
     def test_batch_processing(self):
         """異なるバッチサイズでの動作確認."""
-        extractor = IMUFeatureExtractor(time_delta=1.0/200.0, tol=1e-8)
+        extractor = IMUFeatureExtractor(time_delta=1.0 / 200.0, tol=1e-8)
 
         # 異なるバッチサイズでテスト
         for batch_size in [1, 4, 8]:
@@ -203,7 +211,7 @@ class TestIMUFeatureExtractor:
 
     def test_numerical_stability(self):
         """数値安定性のテスト."""
-        extractor = IMUFeatureExtractor(time_delta=1.0/200.0, tol=1e-8)
+        extractor = IMUFeatureExtractor(time_delta=1.0 / 200.0, tol=1e-8)
 
         # 極値データでのテスト
         batch_size, seq_len = 2, 50
@@ -228,7 +236,7 @@ class TestIMUFeatureExtractor:
 
     def test_sequence_boundary_handling(self):
         """シーケンス境界の処理テスト."""
-        extractor = IMUFeatureExtractor(time_delta=1.0/200.0, tol=1e-8)
+        extractor = IMUFeatureExtractor(time_delta=1.0 / 200.0, tol=1e-8)
 
         # 短いシーケンス
         batch_size, seq_len = 1, 2

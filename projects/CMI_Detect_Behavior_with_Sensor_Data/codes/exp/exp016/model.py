@@ -530,10 +530,10 @@ class IMUFeatureExtractor(nn.Module):
 
         # シフト操作（次のタイムステップ）
         # 最後の行は前の行を複製（シーケンス境界を考慮）
-        x2 = F.pad(x1[:, :, 1:], (0, 1), mode='replicate')
-        y2 = F.pad(y1[:, :, 1:], (0, 1), mode='replicate')
-        z2 = F.pad(z1[:, :, 1:], (0, 1), mode='replicate')
-        w2 = F.pad(w1[:, :, 1:], (0, 1), mode='replicate')
+        x2 = F.pad(x1[:, :, 1:], (0, 1), mode="replicate")
+        y2 = F.pad(y1[:, :, 1:], (0, 1), mode="replicate")
+        z2 = F.pad(z1[:, :, 1:], (0, 1), mode="replicate")
+        w2 = F.pad(w1[:, :, 1:], (0, 1), mode="replicate")
 
         # ノルムで正規化（exp013準拠）
         n1 = torch.sqrt(x1**2 + y1**2 + z1**2 + w1**2)
@@ -571,13 +571,7 @@ class IMUFeatureExtractor(nn.Module):
         wz = rvz / self.time_delta
 
         # 有効判定（NaN/Nullや最終行は無効 → 0）
-        valid = (
-            (n1 > self.tol) &
-            (n2 > self.tol) &
-            torch.isfinite(wx) &
-            torch.isfinite(wy) &
-            torch.isfinite(wz)
-        )
+        valid = (n1 > self.tol) & (n2 > self.tol) & torch.isfinite(wx) & torch.isfinite(wy) & torch.isfinite(wz)
 
         wx = torch.where(valid, wx, 0.0)
         wy = torch.where(valid, wy, 0.0)
@@ -604,10 +598,10 @@ class IMUFeatureExtractor(nn.Module):
         w1 = quat[:, 0:1, :]  # rot_w
 
         # シフト操作
-        x2 = F.pad(x1[:, :, 1:], (0, 1), mode='replicate')
-        y2 = F.pad(y1[:, :, 1:], (0, 1), mode='replicate')
-        z2 = F.pad(z1[:, :, 1:], (0, 1), mode='replicate')
-        w2 = F.pad(w1[:, :, 1:], (0, 1), mode='replicate')
+        x2 = F.pad(x1[:, :, 1:], (0, 1), mode="replicate")
+        y2 = F.pad(y1[:, :, 1:], (0, 1), mode="replicate")
+        z2 = F.pad(z1[:, :, 1:], (0, 1), mode="replicate")
+        w2 = F.pad(w1[:, :, 1:], (0, 1), mode="replicate")
 
         # 正規化（exp013準拠）
         n1 = torch.sqrt(x1**2 + y1**2 + z1**2 + w1**2)
