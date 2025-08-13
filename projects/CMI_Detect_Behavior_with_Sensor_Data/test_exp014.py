@@ -22,10 +22,11 @@ from config import Config
 from dataset import IMUDataset
 from model import CMISqueezeformer
 
+
 def create_dummy_data(n_samples: int = 100, n_timepoints: int = 200) -> pl.DataFrame:
     """ダミーのIMUデータを作成."""
     print(f"Creating dummy data: {n_samples} samples, {n_timepoints} timepoints")
-    
+
     data = []
     for seq_idx in range(n_samples):
         for time_idx in range(n_timepoints):
@@ -35,10 +36,9 @@ def create_dummy_data(n_samples: int = 100, n_timepoints: int = 200) -> pl.DataF
                 "sequence_counter": time_idx,
                 "subject": f"subject_{seq_idx % 10}",  # 10人の被験者
                 "gesture": f"Gesture_{seq_idx % 18}",  # 18クラス
-                
                 # 基本IMUデータ
                 "acc_x": np.random.normal(0, 1),
-                "acc_y": np.random.normal(0, 1), 
+                "acc_y": np.random.normal(0, 1),
                 "acc_z": np.random.normal(9.8, 1),  # 重力込み
                 "rot_w": np.random.normal(0, 0.1),
                 "rot_x": np.random.normal(0, 0.1),
@@ -46,7 +46,7 @@ def create_dummy_data(n_samples: int = 100, n_timepoints: int = 200) -> pl.DataF
                 "rot_z": np.random.normal(0, 0.1),
             }
             data.append(row)
-    
+
     df = pl.DataFrame(data)
     print(f"Generated dataframe shape: {df.shape}")
     return df
@@ -55,7 +55,7 @@ def create_dummy_data(n_samples: int = 100, n_timepoints: int = 200) -> pl.DataF
 def create_dummy_demographics(n_subjects: int = 10) -> pl.DataFrame:
     """ダミーのdemographicsデータを作成."""
     print(f"Creating dummy demographics data for {n_subjects} subjects")
-    
+
     data = []
     for i in range(n_subjects):
         row = {
@@ -69,7 +69,7 @@ def create_dummy_demographics(n_subjects: int = 10) -> pl.DataFrame:
             "elbow_to_wrist_cm": np.random.normal(30, 5),
         }
         data.append(row)
-    
+
     df = pl.DataFrame(data)
     print(f"Generated demographics shape: {df.shape}")
     return df
@@ -78,14 +78,14 @@ def create_dummy_demographics(n_subjects: int = 10) -> pl.DataFrame:
 def test_dataset_initialization():
     """データセット初期化のテスト."""
     print("\n=== Dataset Initialization Test ===")
-    
+
     # ダミーデータ作成
     df = create_dummy_data(n_samples=50, n_timepoints=150)
     demographics_df = create_dummy_demographics(n_subjects=10)
-    
+
     # 設定読み込み
     config = Config()
-    
+
     try:
         # データセット初期化（MiniRocket有効）
         dataset = IMUDataset(
@@ -95,26 +95,27 @@ def test_dataset_initialization():
             demographics_config=config.demographics.model_dump(),
             rocket_config=config.rocket.model_dump(),
         )
-        
-        print(f"✅ Dataset initialized successfully")
+
+        print("✅ Dataset initialized successfully")
         print(f"   - Number of sequences: {len(dataset)}")
         print(f"   - Use demographics: {dataset.use_demographics}")
         print(f"   - Use MiniRocket: {dataset.use_rocket}")
-        
+
         # サンプルデータ取得テスト
         sample = dataset[0]
         print(f"   - Sample IMU shape: {sample['imu'].shape}")
         print(f"   - Sample multiclass label: {sample['multiclass_label']}")
         print(f"   - Sample binary label: {sample['binary_label']}")
-        
-        if 'demographics' in sample:
+
+        if "demographics" in sample:
             print(f"   - Demographics features: {list(sample['demographics'].keys())}")
-            
+
         return True
-        
+
     except Exception as e:
         print(f"❌ Dataset initialization failed: {e}")
         import traceback
+
         traceback.print_exc()
         return False
 
@@ -122,10 +123,10 @@ def test_dataset_initialization():
 def test_model_initialization():
     """モデル初期化のテスト."""
     print("\n=== Model Initialization Test ===")
-    
+
     config = Config()
     effective_input_dim = config.get_effective_input_dim()
-    
+
     try:
         # モデル初期化
         model = CMISqueezeformer(
@@ -137,23 +138,24 @@ def test_model_initialization():
             num_classes=config.model.num_classes,
             demographics_config=config.demographics.model_dump(),
         )
-        
-        print(f"✅ Model initialized successfully")
+
+        print("✅ Model initialized successfully")
         print(f"   - Input dimension: {effective_input_dim}")
         print(f"   - Model dimension: {config.model.d_model}")
         print(f"   - Number of layers: {config.model.n_layers}")
-        
+
         # パラメータ数
         total_params = sum(p.numel() for p in model.parameters())
         trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
         print(f"   - Total parameters: {total_params:,}")
         print(f"   - Trainable parameters: {trainable_params:,}")
-        
+
         return model
-        
+
     except Exception as e:
         print(f"❌ Model initialization failed: {e}")
         import traceback
+
         traceback.print_exc()
         return None
 
@@ -161,21 +163,21 @@ def test_model_initialization():
 def test_forward_pass(model):
     """前向き計算のテスト."""
     print("\n=== Forward Pass Test ===")
-    
+
     if model is None:
         print("❌ Model is None, skipping forward pass test")
         return False
-    
+
     config = Config()
     effective_input_dim = config.get_effective_input_dim()
-    
+
     try:
         # ダミー入力データ
         batch_size = 4
         seq_len = config.preprocessing.target_sequence_length
-        
+
         dummy_imu = torch.randn(batch_size, effective_input_dim, seq_len)
-        
+
         # Demographics特徴量（オプション）
         dummy_demographics = None
         if config.demographics.enabled:
@@ -188,30 +190,31 @@ def test_forward_pass(model):
                 "shoulder_to_wrist_cm": torch.rand(batch_size, dtype=torch.float32) * 30 + 40,
                 "elbow_to_wrist_cm": torch.rand(batch_size, dtype=torch.float32) * 25 + 20,
             }
-        
+
         # 前向き計算
         model.eval()
         with torch.no_grad():
             multiclass_logits, binary_logits = model(dummy_imu, demographics=dummy_demographics)
-        
-        print(f"✅ Forward pass completed successfully")
+
+        print("✅ Forward pass completed successfully")
         print(f"   - Input shape: {dummy_imu.shape}")
         print(f"   - Multiclass output: {multiclass_logits.shape}")
         print(f"   - Binary output: {binary_logits.shape}")
         print(f"   - Demographics included: {dummy_demographics is not None}")
-        
+
         # 出力値の妥当性チェック
         assert multiclass_logits.shape == (batch_size, config.model.num_classes)
         assert binary_logits.shape == (batch_size, 1)
         assert not torch.isnan(multiclass_logits).any()
         assert not torch.isnan(binary_logits).any()
-        
-        print(f"   - Output validation passed")
+
+        print("   - Output validation passed")
         return True
-        
+
     except Exception as e:
         print(f"❌ Forward pass failed: {e}")
         import traceback
+
         traceback.print_exc()
         return False
 
@@ -219,15 +222,15 @@ def test_forward_pass(model):
 def test_integration():
     """統合テスト."""
     print("\n=== Integration Test ===")
-    
+
     try:
         # データ作成
         df = create_dummy_data(n_samples=20, n_timepoints=100)
         demographics_df = create_dummy_demographics(n_subjects=10)
-        
+
         # 設定
         config = Config()
-        
+
         # データセット作成
         dataset = IMUDataset(
             df=df,
@@ -236,7 +239,7 @@ def test_integration():
             demographics_config=config.demographics.model_dump(),
             rocket_config=config.rocket.model_dump(),
         )
-        
+
         # モデル作成
         model = CMISqueezeformer(
             input_dim=config.get_effective_input_dim(),
@@ -247,28 +250,33 @@ def test_integration():
             num_classes=config.model.num_classes,
             demographics_config=config.demographics.model_dump(),
         )
-        
+
         # データセットからのサンプル取得
         sample = dataset[0]
-        
+
         # モデルに入力
         model.eval()
         with torch.no_grad():
-            imu_input = sample['imu'].unsqueeze(0)  # バッチ次元追加
-            demographics_input = {k: v.unsqueeze(0) for k, v in sample.get('demographics', {}).items()} if 'demographics' in sample else None
-            
+            imu_input = sample["imu"].unsqueeze(0)  # バッチ次元追加
+            demographics_input = (
+                {k: v.unsqueeze(0) for k, v in sample.get("demographics", {}).items()}
+                if "demographics" in sample
+                else None
+            )
+
             multiclass_logits, binary_logits = model(imu_input, demographics=demographics_input)
-        
-        print(f"✅ Integration test passed")
-        print(f"   - Dataset → Model pipeline works correctly")
+
+        print("✅ Integration test passed")
+        print("   - Dataset → Model pipeline works correctly")
         print(f"   - Input shape: {imu_input.shape}")
         print(f"   - Output shapes: multiclass={multiclass_logits.shape}, binary={binary_logits.shape}")
-        
+
         return True
-        
+
     except Exception as e:
         print(f"❌ Integration test failed: {e}")
         import traceback
+
         traceback.print_exc()
         return False
 
@@ -277,34 +285,34 @@ def main():
     """メインテスト実行."""
     print("EXP014 Basic Operation Test")
     print("=" * 50)
-    
+
     results = []
-    
+
     # 各テストの実行
     results.append(("Dataset Initialization", test_dataset_initialization()))
-    
+
     model = test_model_initialization()
     results.append(("Model Initialization", model is not None))
-    
+
     results.append(("Forward Pass", test_forward_pass(model)))
     results.append(("Integration", test_integration()))
-    
+
     # 結果サマリー
     print("\n" + "=" * 50)
     print("Test Results Summary")
     print("=" * 50)
-    
+
     passed = 0
     total = len(results)
-    
+
     for test_name, result in results:
         status = "✅ PASSED" if result else "❌ FAILED"
         print(f"{test_name:<25}: {status}")
         if result:
             passed += 1
-    
+
     print(f"\nOverall: {passed}/{total} tests passed")
-    
+
     if passed == total:
         print("🎉 All tests passed! EXP014 implementation is working correctly.")
         return True

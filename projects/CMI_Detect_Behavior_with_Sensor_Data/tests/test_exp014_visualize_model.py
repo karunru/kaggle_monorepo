@@ -243,7 +243,8 @@ class TestCommandLineInterface:
         """ヘルプメッセージの表示テスト."""
         result = subprocess.run(
             ["python", "-m", "codes.exp.exp014.visualize_model", "--help"],
-            check=False, capture_output=True,
+            check=False,
+            capture_output=True,
             text=True,
             cwd=Path(__file__).parent.parent,
         )

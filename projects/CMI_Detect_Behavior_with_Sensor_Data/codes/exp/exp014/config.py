@@ -20,7 +20,16 @@ class ExperimentConfig(BaseModel):
         description="実験説明",
     )
     tags: list[str] = Field(
-        default=["minirocket", "time_series", "demographics", "embedding", "acls", "squeezeformer", "pytorch_lightning", "physics_features"],
+        default=[
+            "minirocket",
+            "time_series",
+            "demographics",
+            "embedding",
+            "acls",
+            "squeezeformer",
+            "pytorch_lightning",
+            "physics_features",
+        ],
         description="実験タグ",
     )
 
@@ -58,10 +67,10 @@ class ModelConfig(BaseModel):
     num_classes: int = Field(default=18, description="クラス数")
     kernel_size: int = Field(default=31, description="Convolutionカーネルサイズ")
     dropout: float = Field(default=0.1, description="ドロップアウト率")
-    
+
     # 特徴量統合設定
     base_imu_features: int = Field(default=16, description="基本IMU特徴量数（基本IMU 7 + 物理特徴量 9）")
-    
+
     def get_effective_input_dim(self, rocket_config: "MiniRocketConfig") -> int:
         """実効的な入力次元数を計算."""
         if rocket_config.enabled:
@@ -142,6 +151,7 @@ class DemographicsConfig(BaseModel):
         default=["age", "height_cm", "shoulder_to_wrist_cm", "elbow_to_wrist_cm"], description="数値特徴量リスト"
     )
 
+
 class MiniRocketConfig(BaseModel):
     """MiniRocketMultivariate設定."""
 
@@ -166,7 +176,7 @@ class MiniRocketConfig(BaseModel):
             "angular_vel_z",
             "angular_distance",
         ],
-        description="MiniRocket変換対象の時系列特徴量リスト"
+        description="MiniRocket変換対象の時系列特徴量リスト",
     )
 
     # パフォーマンス設定
