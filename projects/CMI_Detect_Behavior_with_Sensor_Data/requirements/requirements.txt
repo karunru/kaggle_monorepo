@@ -14,6 +14,7 @@ arrow==1.3.0
 asttokens==3.0.0
 async-lru==2.0.5
 attrs==25.3.0
+autots==0.6.21
 babel==2.17.0
 beautifulsoup4==4.13.4
 bleach==6.2.0
@@ -43,6 +44,7 @@ frozenlist==1.7.0
 fsspec==2025.7.0
 gitdb==4.0.12
 gitpython==3.1.45
+graphviz==0.21
 greenlet==3.2.3
 grpcio==1.74.0
 grpcio-tools==1.74.0
@@ -62,7 +64,7 @@ ipython-pygments-lexers==1.1.1
 isoduration==20.11.0
 jedi==0.19.2
 jinja2==3.1.6
-joblib==1.5.1
+joblib==1.4.2
 json5==0.12.0
 jsonpointer==3.0.0
 jsonschema==4.25.0
@@ -82,6 +84,7 @@ lark==1.2.2
 lightgbm==4.6.0
 lightning==2.5.2
 lightning-utilities==0.15.0
+llvmlite==0.44.0
 loguru==0.7.3
 mako==1.3.10
 markdown-it-py==3.0.0
@@ -104,7 +107,8 @@ nest-asyncio==1.6.0
 networkx==3.5
 notebook==7.3.2
 notebook-shim==0.2.4
-numpy==2.3.2
+numba==0.61.2
+numpy==2.1.3
 nvidia-cublas-cu12==12.4.5.8
 nvidia-cuda-cupti-cu12==12.4.127
 nvidia-cuda-nvrtc-cu12==12.4.127
@@ -120,13 +124,14 @@ nvidia-nvjitlink-cu12==12.4.127
 nvidia-nvtx-cu12==12.4.127
 omegaconf==2.3.0
 opencv-python-headless==4.11.0.86
-optuna==4.4.0
+optuna==4.2.1
 overrides==7.7.0
 packaging==25.0
-pandas==2.3.1
+pandas==2.2.3
 pandocfilters==1.5.1
 parso==0.8.4
 pathspec==0.12.1
+patsy==1.0.1
 pexpect==4.9.0
 pillow==11.3.0
 platformdirs==4.3.8
@@ -168,8 +173,10 @@ rpds-py==0.26.0
 ruff==0.12.7
 safetensors==0.5.3
 schedulefree==1.4.1
+scikit-base==0.12.4
 scikit-learn==1.6.1
-scipy==1.16.1
+scikit-time==0.0.0
+scipy==1.15.3
 seaborn==0.13.2
 send2trash==1.8.3
 sentry-sdk==2.34.1
@@ -177,11 +184,14 @@ setuptools==80.9.0
 simsimd==6.5.0
 six==1.17.0
 sklearn-compat==0.1.3
+skpro==2.9.2
+sktime==0.36.0
 smmap==5.0.2
 sniffio==1.3.1
 soupsieve==2.7
 sqlalchemy==2.0.42
 stack-data==0.6.3
+statsmodels==0.14.5
 streamlit==1.47.1
 stringzilla==3.12.5
 sympy==1.13.1
@@ -194,8 +204,10 @@ tinycss2==1.4.0
 tokenizers==0.21.4
 toml==0.10.2
 torch==2.6.0
+torchaudio==2.6.0
 torchmetrics==1.8.0
 torchvision==0.21.0
+torchviz==0.0.3
 tornado==6.5.1
 tqdm==4.67.1
 traitlets==5.14.3
