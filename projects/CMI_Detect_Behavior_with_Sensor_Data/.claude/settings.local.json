@@ -21,6 +21,7 @@
       "Bash(grep:*)",
       "Bash(nvidia-smi:*)",
       "Bash(ls:*)",
+      "Bash(cd:*)",
       "Bash(ps:*)",
       "Bash(cat:*)",
       "Bash(mise run:*)",
