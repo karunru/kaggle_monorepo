@@ -2,8 +2,9 @@
 """モデル内部のNaN原因デバッグ."""
 
 import sys
-import torch
 from pathlib import Path
+
+import torch
 
 # Add codes directory to path
 sys.path.append(str(Path(__file__).resolve().parents[2]))
@@ -16,27 +17,27 @@ from model import CMISqueezeformer
 def debug_demographics_processing():
     """Demographics処理のデバッグ."""
     print("=== Demographics処理デバッグ ===")
-    
+
     config = Config()
     data_module = IMUDataModule(config, fold=0)
     data_module.setup("fit")
-    
+
     # バッチ取得
     train_loader = data_module.train_dataloader()
     batch = next(iter(train_loader))
-    
+
     demographics = batch.get('demographics', None)
     if demographics is None:
         print("Demographics data not found")
         return
-    
+
     print("Demographics data:")
     for key, value in demographics.items():
         if isinstance(value, torch.Tensor):
             print(f"{key}: shape={value.shape}, dtype={value.dtype}")
             print(f"  min={value.min().item():.6f}, max={value.max().item():.6f}")
             print(f"  nan={torch.isnan(value).any()}, inf={torch.isinf(value).any()}")
-            
+
             # NaNやInfが検出された場合の詳細
             if torch.isnan(value).any():
                 print(f"  ⚠️ NaN detected in {key}")
@@ -49,11 +50,11 @@ def debug_demographics_processing():
 def debug_model_step_by_step():
     """モデルの各ステップでNaN発生箇所を特定."""
     print("\n=== モデルステップバイステップデバッグ ===")
-    
+
     config = Config()
     data_module = IMUDataModule(config, fold=0)
     data_module.setup("fit")
-    
+
     # モデル作成
     actual_input_dim = len(data_module.train_dataset.imu_cols)
     model = CMISqueezeformer(
@@ -85,39 +86,39 @@ def debug_model_step_by_step():
         else None,
     )
     model.eval()
-    
+
     # バッチ取得
     train_loader = data_module.train_dataloader()
     batch = next(iter(train_loader))
-    
+
     imu_data = batch['imu']
     attention_mask = batch.get('missing_mask', None)
     demographics = batch.get('demographics', None)
-    
-    print(f"Input shapes:")
+
+    print("Input shapes:")
     print(f"  IMU: {imu_data.shape}")
     print(f"  Mask: {attention_mask.shape if attention_mask is not None else None}")
-    
+
     with torch.no_grad():
         # ステップ1: Input transpose
         x = imu_data.transpose(1, 2)
         print(f"\nStep 1 - Transpose: {x.shape}, nan={torch.isnan(x).any()}")
-        
+
         # ステップ2: Input projection
         x = model.input_projection(x)
         print(f"Step 2 - Input projection: {x.shape}, nan={torch.isnan(x).any()}")
-        
+
         # ステップ3: Positional encoding
         x = model.pos_encoding(x)
         print(f"Step 3 - Positional encoding: {x.shape}, nan={torch.isnan(x).any()}")
-        
+
         # ステップ4: Demographics統合（ここが怪しい）
         if model.use_demographics and demographics is not None:
-            print(f"\nDemographics integration...")
+            print("\nDemographics integration...")
             try:
                 demo_embeddings = model.demographics_processor(demographics)
                 print(f"Demo embeddings: {demo_embeddings.shape}, nan={torch.isnan(demo_embeddings).any()}")
-                
+
                 if torch.isnan(demo_embeddings).any():
                     print("  ⚠️ NaN detected in demographics embeddings!")
                     # 各Demographics特徴量を個別チェック
@@ -126,19 +127,19 @@ def debug_model_step_by_step():
                             if key in model.demographics_processor.categorical_embedders:
                                 emb = model.demographics_processor.categorical_embedders[key](value)
                                 print(f"    {key} embedding: nan={torch.isnan(emb).any()}")
-                
+
                 # 統合
                 x = model.demographics_integrator(x, demo_embeddings)
                 print(f"After demo integration: {x.shape}, nan={torch.isnan(x).any()}")
-                
+
             except Exception as e:
                 print(f"Error in demographics processing: {e}")
                 import traceback
                 traceback.print_exc()
-        
+
         # ステップ5: Transformer layers
         if not torch.isnan(x).any():
-            print(f"\nTransformer processing...")
+            print("\nTransformer processing...")
             for i, layer in enumerate(model.transformer_layers):
                 try:
                     x = layer(x, src_key_padding_mask=attention_mask)

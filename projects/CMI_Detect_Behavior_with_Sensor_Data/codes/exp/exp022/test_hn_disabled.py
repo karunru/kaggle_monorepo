@@ -2,8 +2,9 @@
 """HN無効化でのモデル検証."""
 
 import sys
-import torch
 from pathlib import Path
+
+import torch
 
 # Add codes directory to path
 sys.path.append(str(Path(__file__).resolve().parents[2]))
@@ -16,21 +17,21 @@ from model import CMISqueezeformer
 def test_model_without_hn():
     """HN無効化でのモデル検証."""
     print("=== HN無効化モデル検証 ===")
-    
+
     # 設定読み込み（HN無効化）
     config = Config()
     config.demographics.hn_enabled = False  # HN無効化
-    
+
     print(f"HN enabled: {config.demographics.hn_enabled}")
-    
+
     # データモジュール作成
     data_module = IMUDataModule(config, fold=0)
     data_module.setup("fit")
-    
+
     # 入力次元を動的に取得
     actual_input_dim = len(data_module.train_dataset.imu_cols)
     print(f"Model input_dim: {actual_input_dim}")
-    
+
     # モデル作成
     model = CMISqueezeformer(
         input_dim=actual_input_dim,
@@ -60,52 +61,52 @@ def test_model_without_hn():
         if hasattr(data_module, "train_dataset") and hasattr(data_module.train_dataset, "id_to_gesture")
         else None,
     )
-    
-    print(f"Model created successfully")
-    
+
+    print("Model created successfully")
+
     # データローダーから1バッチ取得
     train_loader = data_module.train_dataloader()
     batch = next(iter(train_loader))
-    
+
     print(f"Batch keys: {list(batch.keys())}")
-    
+
     # モデル評価モードに設定
     model.eval()
-    
+
     with torch.no_grad():
         try:
             # バッチから適切な要素を抽出
             imu_data = batch['imu']
             attention_mask = batch.get('missing_mask', None)
             demographics = batch.get('demographics', None)
-            
+
             print(f"IMU shape: {imu_data.shape}")
             print(f"Mask shape: {attention_mask.shape if attention_mask is not None else None}")
-            
+
             # 前方パス実行
             multiclass_logits, binary_logits = model(imu_data, attention_mask, demographics)
-            print(f"✅ Forward pass successful!")
-            
+            print("✅ Forward pass successful!")
+
             # 各出力をチェック
             print(f"multiclass_logits: shape={multiclass_logits.shape}, nan={torch.isnan(multiclass_logits).any()}, inf={torch.isinf(multiclass_logits).any()}")
             print(f"binary_logits: shape={binary_logits.shape}, nan={torch.isnan(binary_logits).any()}, inf={torch.isinf(binary_logits).any()}")
-            
+
             if torch.isnan(multiclass_logits).any():
-                print(f"  ⚠️ NaN detected in multiclass_logits")
+                print("  ⚠️ NaN detected in multiclass_logits")
                 return False
             if torch.isinf(multiclass_logits).any():
-                print(f"  ⚠️ Inf detected in multiclass_logits")
+                print("  ⚠️ Inf detected in multiclass_logits")
                 return False
             if torch.isnan(binary_logits).any():
-                print(f"  ⚠️ NaN detected in binary_logits")
+                print("  ⚠️ NaN detected in binary_logits")
                 return False
             if torch.isinf(binary_logits).any():
-                print(f"  ⚠️ Inf detected in binary_logits")
+                print("  ⚠️ Inf detected in binary_logits")
                 return False
-            
+
             print("✅ No NaN/Inf detected - Model is stable without HN")
             return True
-            
+
         except Exception as e:
             print(f"❌ Forward pass failed: {e}")
             import traceback

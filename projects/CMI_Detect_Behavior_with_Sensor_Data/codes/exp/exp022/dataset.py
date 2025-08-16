@@ -571,7 +571,7 @@ class IMUDataset(Dataset):
             "angular_vel_z",
             "angular_distance",
         ]
-        
+
         # Human Normalization特徴量の追加
         if self.use_demographics and self.demographics_config.get("hn_enabled", False):
             hn_config = HNConfig(
@@ -782,7 +782,7 @@ class IMUDataset(Dataset):
         )
 
         print(f"Added physics features. DataFrame shape: {df_with_physics.shape}")
-        
+
         # Human Normalization特徴量の計算
         if self.use_demographics and self.demographics_config.get("hn_enabled", False):
             print("Computing Human Normalization features...")
@@ -799,7 +799,7 @@ class IMUDataset(Dataset):
             ).collect()
             print(f"Added Human Normalization features. DataFrame shape: {df_with_hn.shape}")
             return df_with_hn
-        
+
         return df_with_physics
 
     @timer_decorator("IMUDataset._preprocess_data_vectorized_with_mask")
@@ -814,7 +814,7 @@ class IMUDataset(Dataset):
         # 実際に使用するIMU列を取得（HN特徴量を含む）
         # DataFrameに存在し、かつself.imu_colsに含まれるカラムのみを使用
         available_cols = [col for col in self.imu_cols if col in df_with_physics.columns]
-        
+
         print(f"Using {len(available_cols)} IMU columns (including HN features if enabled)")
 
         # シーケンスごとの前処理済みデータを一括取得（欠損値処理前）

@@ -633,7 +633,7 @@ class CMISqueezeformer(pl.LightningModule):
 
         # メトリクス保存用
         self.validation_outputs = []
-        
+
         # 重み初期化（NaN問題解決のため）
         self._init_weights()
 
@@ -726,11 +726,11 @@ class CMISqueezeformer(pl.LightningModule):
             elif isinstance(module, nn.Embedding):
                 # Embedding の初期化
                 nn.init.normal_(module.weight, mean=0.0, std=0.1)
-        
+
         # 特別な層の初期化
         if hasattr(self, 'cls_token'):
             nn.init.normal_(self.cls_token, std=0.02)
-        
+
         # Input projection の重み初期化を強化
         if hasattr(self, 'input_projection'):
             nn.init.xavier_uniform_(self.input_projection.weight, gain=0.5)  # より小さなgain
