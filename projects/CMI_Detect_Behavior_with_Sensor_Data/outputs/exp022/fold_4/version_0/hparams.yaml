@@ -1,0 +1,127 @@
+input_dim: 26
+d_model: 256
+n_layers: 8
+n_heads: 8
+d_ff: 1024
+num_classes: 18
+kernel_size: 31
+dropout: 0.1
+learning_rate: 0.0001
+weight_decay: 1.0e-05
+scheduler_config:
+  type: cosine
+  min_lr: 1.0e-06
+  factor: 0.5
+  patience: 5
+loss_config:
+  type: cmi
+  alpha: 0.5
+  focal_gamma: 2.0
+  focal_alpha: 1.0
+  soft_f1_beta: 1.0
+  soft_f1_eps: 1.0e-06
+  label_smoothing: 0.1
+acls_config:
+  label_smoothing_alpha: 0.1
+  mbls_margin: 10.0
+  mbls_alpha: 0.1
+  mbls_schedule: null
+  acls_pos_lambda: 1.0
+  acls_neg_lambda: 0.1
+  acls_alpha: 0.1
+  acls_margin: 10.0
+schedule_free_config:
+  enabled: false
+  optimizer_type: RAdamScheduleFree
+  learning_rate_multiplier: 5.0
+  warmup_steps: 1000
+  batch_norm_calibration_steps: 50
+ema_config:
+  enabled: true
+  beta: 0.9999
+  update_after_step: 1000
+  update_every: 10
+  update_model_with_ema_every: 1000
+  use_ema_for_validation: true
+demographics_config:
+  enabled: true
+  embedding_dim: 16
+  categorical_embedding_dims:
+    adult_child: 2
+    sex: 2
+    handedness: 2
+  numerical_scaling_method: minmax
+  clip_outliers: true
+  age_min: 8.0
+  age_max: 60.0
+  height_min: 130.0
+  height_max: 195.0
+  shoulder_to_wrist_min: 35.0
+  shoulder_to_wrist_max: 75.0
+  elbow_to_wrist_min: 15.0
+  elbow_to_wrist_max: 50.0
+  categorical_features:
+  - adult_child
+  - sex
+  - handedness
+  numerical_features:
+  - age
+  - height_cm
+  - shoulder_to_wrist_cm
+  - elbow_to_wrist_cm
+  hn_enabled: true
+  hn_eps: 0.001
+  hn_radius_min_max:
+  - 0.15
+  - 0.9
+  hn_features:
+  - linear_acc_mag_per_h
+  - linear_acc_mag_per_rS
+  - linear_acc_mag_per_rE
+  - acc_over_centripetal_rS
+  - acc_over_centripetal_rE
+  - alpha_like_rS
+  - alpha_like_rE
+  - v_over_h
+  - v_over_rS
+  - v_over_rE
+bert_config: null
+target_gestures:
+- Above ear - pull hair
+- Forehead - pull hairline
+- Forehead - scratch
+- Eyebrow - pull hair
+- Eyelash - pull hair
+- Neck - pinch skin
+- Neck - scratch
+- Cheek - pinch skin
+non_target_gestures:
+- Drink from bottle/cup
+- Glasses on/off
+- Pull air toward your face
+- Pinch knee/leg skin
+- Scratch knee/leg skin
+- Write name on leg
+- Text on phone
+- Feel around in tray and pull out an object
+- Write name in air
+- Wave hello
+id_to_gesture:
+  0: Above ear - pull hair
+  1: Cheek - pinch skin
+  2: Drink from bottle/cup
+  3: Eyebrow - pull hair
+  4: Eyelash - pull hair
+  5: Feel around in tray and pull out an object
+  6: Forehead - pull hairline
+  7: Forehead - scratch
+  8: Glasses on/off
+  9: Neck - pinch skin
+  10: Neck - scratch
+  11: Pinch knee/leg skin
+  12: Pull air toward your face
+  13: Scratch knee/leg skin
+  14: Text on phone
+  15: Wave hello
+  16: Write name in air
+  17: Write name on leg

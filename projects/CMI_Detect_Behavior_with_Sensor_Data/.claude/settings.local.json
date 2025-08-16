@@ -49,7 +49,8 @@
       "WebFetch(domain:chatgpt.com)",
       "WebFetch(domain:www.sktime.net)",
       "mcp__arxiv-mcp-server",
-      "mcp__gemini-cli"
+      "mcp__gemini-cli",
+      "WebFetch(domain:docs.pytorch.org)"
     ],
     "deny": [
       "Bash(uv sync:*)",
