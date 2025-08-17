@@ -259,10 +259,12 @@ class SpectralConv1d(nn.Module):
 
     def compl_mul1d(self, x_ft, w):
         # x_ft: [B, C_in, F] 複素, w: [C_in, C_out, modes, 2]
-        real = torch.einsum("bif,iof->bof", x_ft.real[:, :, :self.modes], w[..., 0]) \
-             - torch.einsum("bif,iof->bof", x_ft.imag[:, :, :self.modes], w[..., 1])
-        imag = torch.einsum("bif,iof->bof", x_ft.real[:, :, :self.modes], w[..., 1]) \
-             + torch.einsum("bif,iof->bof", x_ft.imag[:, :, :self.modes], w[..., 0])
+        real = torch.einsum("bif,iof->bof", x_ft.real[:, :, : self.modes], w[..., 0]) - torch.einsum(
+            "bif,iof->bof", x_ft.imag[:, :, : self.modes], w[..., 1]
+        )
+        imag = torch.einsum("bif,iof->bof", x_ft.real[:, :, : self.modes], w[..., 1]) + torch.einsum(
+            "bif,iof->bof", x_ft.imag[:, :, : self.modes], w[..., 0]
+        )
         out = torch.complex(real, imag)
         return out
 
@@ -277,12 +279,12 @@ class SpectralConv1d(nn.Module):
             if padded_length != length:
                 # ゼロパディング
                 padding = padded_length - length
-                x = F.pad(x, (0, padding), mode='constant', value=0)
+                x = F.pad(x, (0, padding), mode="constant", value=0)
 
         # FFT実行
         x_ft = torch.fft.rfft(x, dim=-1)  # [B, C_in, F_r]
         out_ft = torch.zeros(x.size(0), self.out_channels, x_ft.size(-1), dtype=torch.cfloat, device=x.device)
-        out_ft[:, :, :self.modes] = self.compl_mul1d(x_ft, self.weight)
+        out_ft[:, :, : self.modes] = self.compl_mul1d(x_ft, self.weight)
         x_out = torch.fft.irfft(out_ft, n=x.size(-1), dim=-1)  # [B, C_out, T]
 
         # 元のサイズに戻す
@@ -392,15 +394,11 @@ class IMUOnlyLSTM(nn.Module):
         # ResidualSECNN ブランチ（exp031ベース）
         self.residual_branch = nn.Sequential(
             ResidualSECNNBlock(imu_dim, 64, 3, dropout=0.3, weight_decay=weight_decay),
-            ResidualSECNNBlock(64, 128, 5, dropout=0.3, weight_decay=weight_decay)
+            ResidualSECNNBlock(64, 128, 5, dropout=0.3, weight_decay=weight_decay),
         )
 
         # FNO ブランチ（exp032ベース）
-        self.fno_proj = nn.Sequential(
-            nn.Conv1d(imu_dim, 128, 1, bias=False),
-            nn.BatchNorm1d(128),
-            nn.Mish()
-        )
+        self.fno_proj = nn.Sequential(nn.Conv1d(imu_dim, 128, 1, bias=False), nn.BatchNorm1d(128), nn.Mish())
         self.fno_branch = nn.Sequential(
             FNOBlock1D(128, modes=32, dropout=0.2),
             FNOBlock1D(128, modes=32, dropout=0.2),
@@ -408,15 +406,12 @@ class IMUOnlyLSTM(nn.Module):
             FNOBlock1D(128, modes=32, dropout=0.2),
             SEBlock(128),
             nn.MaxPool1d(2),
-            nn.Dropout(0.3)
+            nn.Dropout(0.3),
         )
 
         # 特徴量融合層（128+128=256次元を256次元に統合）
         self.fusion_conv = nn.Sequential(
-            nn.Conv1d(256, 256, 1, bias=False),
-            nn.BatchNorm1d(256),
-            nn.Mish(),
-            nn.Dropout(0.2)
+            nn.Conv1d(256, 256, 1, bias=False), nn.BatchNorm1d(256), nn.Mish(), nn.Dropout(0.2)
         )
 
         # BiGRU（入力次元を256に変更）
