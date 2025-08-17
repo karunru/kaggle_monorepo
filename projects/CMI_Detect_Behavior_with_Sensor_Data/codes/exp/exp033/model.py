@@ -389,22 +389,38 @@ class IMUOnlyLSTM(nn.Module):
         self.weight_decay = weight_decay
         self.demographics_dim = demographics_dim
 
-        # IMU deep branch with FNO-1D blocks
-        self.imu_proj1 = nn.Sequential(
+        # ResidualSECNN ブランチ（exp031ベース）
+        self.residual_branch = nn.Sequential(
+            ResidualSECNNBlock(imu_dim, 64, 3, dropout=0.3, weight_decay=weight_decay),
+            ResidualSECNNBlock(64, 128, 5, dropout=0.3, weight_decay=weight_decay)
+        )
+
+        # FNO ブランチ（exp032ベース）
+        self.fno_proj = nn.Sequential(
             nn.Conv1d(imu_dim, 128, 1, bias=False),
             nn.BatchNorm1d(128),
             nn.Mish()
         )
-        self.fno_block1 = FNOBlock1D(128, modes=32, dropout=0.2)
-        self.fno_block2 = FNOBlock1D(128, modes=32, dropout=0.2)
-        self.fno_block3 = FNOBlock1D(128, modes=32, dropout=0.2)
-        self.fno_block4 = FNOBlock1D(128, modes=32, dropout=0.2)
-        self.se_after_fno = SEBlock(128)
-        self.pool_after_fno = nn.MaxPool1d(2)
-        self.dropout_after_fno = nn.Dropout(0.3)
+        self.fno_branch = nn.Sequential(
+            FNOBlock1D(128, modes=32, dropout=0.2),
+            FNOBlock1D(128, modes=32, dropout=0.2),
+            FNOBlock1D(128, modes=32, dropout=0.2),
+            FNOBlock1D(128, modes=32, dropout=0.2),
+            SEBlock(128),
+            nn.MaxPool1d(2),
+            nn.Dropout(0.3)
+        )
 
-        # BiGRU
-        self.bigru = nn.GRU(128, 128, bidirectional=True, batch_first=True)
+        # 特徴量融合層（128+128=256次元を256次元に統合）
+        self.fusion_conv = nn.Sequential(
+            nn.Conv1d(256, 256, 1, bias=False),
+            nn.BatchNorm1d(256),
+            nn.Mish(),
+            nn.Dropout(0.2)
+        )
+
+        # BiGRU（入力次元を256に変更）
+        self.bigru = nn.GRU(256, 128, bidirectional=True, batch_first=True)
         self.gru_dropout = nn.Dropout(0.4)
 
         # Attention
@@ -466,18 +482,27 @@ class IMUOnlyLSTM(nn.Module):
         # x shape: (batch, seq_len, imu_dim) -> (batch, imu_dim, seq_len)
         imu = x.transpose(1, 2)
 
-        # IMU branch with FNO-1D blocks
-        x1 = self.imu_proj1(imu)
-        x1 = self.fno_block1(x1)
-        x1 = self.fno_block2(x1)
-        x1 = self.fno_block3(x1)
-        x1 = self.fno_block4(x1)
-        x1 = self.se_after_fno(x1)
-        x1 = self.pool_after_fno(x1)
-        x1 = self.dropout_after_fno(x1)
+        # ResidualSECNN ブランチ処理
+        residual_features = self.residual_branch(imu)  # [batch, 128, seq_len//4]
+
+        # FNO ブランチ処理
+        fno_input = self.fno_proj(imu)  # [batch, 128, seq_len]
+        fno_features = self.fno_branch(fno_input)  # [batch, 128, seq_len//2]
+
+        # 系列長を合わせるため、短い方に合わせる（residual_featuresのseq_len//4）
+        target_length = residual_features.size(-1)
+        if fno_features.size(-1) != target_length:
+            # FNO特徴量をresidual特徴量の長さに合わせてpooling
+            fno_features = F.adaptive_avg_pool1d(fno_features, target_length)
+
+        # チャネル次元で結合 [batch, 256, target_length]
+        concatenated = torch.cat([residual_features, fno_features], dim=1)
+
+        # 融合層で統合 [batch, 256, target_length]
+        merged_features = self.fusion_conv(concatenated)
 
         # Transpose back for BiGRU: (batch, seq_len, hidden_dim)
-        merged = x1.transpose(1, 2)
+        merged = merged_features.transpose(1, 2)
 
         # BiGRU
         gru_out, _ = self.bigru(merged)
