@@ -127,6 +127,7 @@
 - 3回以上テストが落ちる場合、ユーザに対してテストが通らない旨を通知し、実装を中止してください。
 - テストのコマンドは../../.mise.tomlに記載されています。
 - `mise run test`を実行することで、`tests`配下のテストコードが実行されます。
+- `codes/exp/expXXX` 配下の *.py を実行してテストする際は、 `cd codes/exp/expXXX && uv run python XXX.py` で実行してテストするようにして
 
 ## kaggle Guidelines
 - kaggle.comのURLはすべて https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md を参照して `uv run kaggle` でkaggle-cliを使って取得すること
@@ -137,3 +138,6 @@
 
 ## arxiv Guidelines
 - arxiv.org のURLを参照するときは、arxiv-mcp-serverを使って参照すること
+
+## path Guidelines
+- cd や mkdir, rm など 相対パスを引数に持つbash commandを実行するときは、まず pwd で自分のいるディレクトリを確認してから実行すること
