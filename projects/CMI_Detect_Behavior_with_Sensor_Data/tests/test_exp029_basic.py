@@ -278,7 +278,7 @@ class TestLossFunctions:
             demographics_config={"enabled": False},
             loss_config={"type": "cmi"},
         )
-        
+
         # 損失関数が正しく設定されているか確認
         assert hasattr(model, "multiclass_criterion")
         assert hasattr(model, "binary_criterion")
@@ -298,7 +298,7 @@ class TestLossFunctions:
                 "acls_margin": 10.0,
             },
         )
-        
+
         # ACLS損失関数が正しく設定されているか確認
         assert hasattr(model, "multiclass_criterion")
         assert hasattr(model, "binary_criterion")
@@ -313,7 +313,7 @@ class TestLossFunctions:
             loss_config={"type": "label_smoothing"},
             acls_config={"label_smoothing_alpha": 0.1},
         )
-        
+
         # Label Smoothing損失関数が正しく設定されているか確認
         assert hasattr(model, "multiclass_criterion")
         assert hasattr(model, "binary_criterion")
@@ -332,7 +332,7 @@ class TestLossFunctions:
                 "mbls_schedule": None,
             },
         )
-        
+
         # MbLS損失関数が正しく設定されているか確認
         assert hasattr(model, "multiclass_criterion")
         assert hasattr(model, "binary_criterion")
@@ -346,7 +346,7 @@ class TestLossFunctions:
             demographics_config={"enabled": False},
             loss_config={"type": "cmi_focal", "auto_weighting": "direct"},
         )
-        
+
         # 学習可能パラメータが正しく設定されているか確認
         assert hasattr(model, "alpha_raw")
         assert hasattr(model, "w9_raw")
@@ -363,7 +363,7 @@ class TestLossFunctions:
             demographics_config={"enabled": False},
             loss_config={"type": "cmi_focal", "auto_weighting": "uncertainty"},
         )
-        
+
         # uncertainty用パラメータが正しく設定されているか確認
         assert hasattr(model, "loss_s_params")
         assert "multiclass" in model.loss_s_params
