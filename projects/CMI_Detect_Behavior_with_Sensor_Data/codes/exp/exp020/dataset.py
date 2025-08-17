@@ -828,94 +828,113 @@ class IMUDataset(Dataset):
 
         # ソートしてからグループごとに処理
         df_sorted = df.sort(["sequence_id", "sequence_counter"])
-        
+
         def process_sequence_group(group_df):
             """各sequence_idグループに対して特徴量を計算."""
-            return group_df.with_columns([
-                # 1. 累積和 (Cumulative Sums)
-                pl.col("linear_acc_x").cum_sum().alias("linear_acc_x_cumsum"),
-                pl.col("linear_acc_y").cum_sum().alias("linear_acc_y_cumsum"),
-                pl.col("linear_acc_z").cum_sum().alias("linear_acc_z_cumsum"),
-                pl.col("linear_acc_mag").cum_sum().alias("linear_acc_mag_cumsum"),
-                
-                # 2. 差分 (Diffs)
-                pl.col("linear_acc_x").diff().fill_null(0.0).alias("linear_acc_x_diff"),
-                pl.col("linear_acc_y").diff().fill_null(0.0).alias("linear_acc_y_diff"),
-                pl.col("linear_acc_z").diff().fill_null(0.0).alias("linear_acc_z_diff"),
-                pl.col("linear_acc_mag").diff().fill_null(0.0).alias("linear_acc_mag_diff"),
-                pl.col("angular_vel_x").diff().fill_null(0.0).alias("angular_vel_x_diff"),
-                pl.col("angular_vel_y").diff().fill_null(0.0).alias("angular_vel_y_diff"),
-                pl.col("angular_vel_z").diff().fill_null(0.0).alias("angular_vel_z_diff"),
-                
-                # 3. 長期差分 (Longer Ranged Diffs)
-                # lag=5
-                (pl.col("linear_acc_x") - pl.col("linear_acc_x").shift(5)).fill_null(0.0).alias("linear_acc_x_diff_5"),
-                (pl.col("linear_acc_y") - pl.col("linear_acc_y").shift(5)).fill_null(0.0).alias("linear_acc_y_diff_5"),
-                (pl.col("linear_acc_z") - pl.col("linear_acc_z").shift(5)).fill_null(0.0).alias("linear_acc_z_diff_5"),
-                (pl.col("linear_acc_mag") - pl.col("linear_acc_mag").shift(5)).fill_null(0.0).alias("linear_acc_mag_diff_5"),
-                # lag=10
-                (pl.col("linear_acc_x") - pl.col("linear_acc_x").shift(10)).fill_null(0.0).alias("linear_acc_x_diff_10"),
-                (pl.col("linear_acc_y") - pl.col("linear_acc_y").shift(10)).fill_null(0.0).alias("linear_acc_y_diff_10"),
-                (pl.col("linear_acc_z") - pl.col("linear_acc_z").shift(10)).fill_null(0.0).alias("linear_acc_z_diff_10"),
-                (pl.col("linear_acc_mag") - pl.col("linear_acc_mag").shift(10)).fill_null(0.0).alias("linear_acc_mag_diff_10"),
-                # lag=20
-                (pl.col("linear_acc_x") - pl.col("linear_acc_x").shift(20)).fill_null(0.0).alias("linear_acc_x_diff_20"),
-                (pl.col("linear_acc_y") - pl.col("linear_acc_y").shift(20)).fill_null(0.0).alias("linear_acc_y_diff_20"),
-                (pl.col("linear_acc_z") - pl.col("linear_acc_z").shift(20)).fill_null(0.0).alias("linear_acc_z_diff_20"),
-                (pl.col("linear_acc_mag") - pl.col("linear_acc_mag").shift(20)).fill_null(0.0).alias("linear_acc_mag_diff_20"),
-                
-                # 4. シフト/ラグ (Shifts/Lags)
-                # lag=1
-                pl.col("linear_acc_x").shift(1).fill_null(0.0).alias("linear_acc_x_lag_1"),
-                pl.col("linear_acc_y").shift(1).fill_null(0.0).alias("linear_acc_y_lag_1"),
-                pl.col("linear_acc_z").shift(1).fill_null(0.0).alias("linear_acc_z_lag_1"),
-                pl.col("linear_acc_mag").shift(1).fill_null(0.0).alias("linear_acc_mag_lag_1"),
-                # lag=3
-                pl.col("linear_acc_x").shift(3).fill_null(0.0).alias("linear_acc_x_lag_3"),
-                pl.col("linear_acc_y").shift(3).fill_null(0.0).alias("linear_acc_y_lag_3"),
-                pl.col("linear_acc_z").shift(3).fill_null(0.0).alias("linear_acc_z_lag_3"),
-                pl.col("linear_acc_mag").shift(3).fill_null(0.0).alias("linear_acc_mag_lag_3"),
-                # lag=5
-                pl.col("linear_acc_x").shift(5).fill_null(0.0).alias("linear_acc_x_lag_5"),
-                pl.col("linear_acc_y").shift(5).fill_null(0.0).alias("linear_acc_y_lag_5"),
-                pl.col("linear_acc_z").shift(5).fill_null(0.0).alias("linear_acc_z_lag_5"),
-                pl.col("linear_acc_mag").shift(5).fill_null(0.0).alias("linear_acc_mag_lag_5"),
-                
-                # 5. シーケンス中央値からの差分
-                (pl.col("linear_acc_x") - pl.col("linear_acc_x").median()).alias("linear_acc_x_median_diff"),
-                (pl.col("linear_acc_y") - pl.col("linear_acc_y").median()).alias("linear_acc_y_median_diff"),
-                (pl.col("linear_acc_z") - pl.col("linear_acc_z").median()).alias("linear_acc_z_median_diff"),
-                (pl.col("linear_acc_mag") - pl.col("linear_acc_mag").median()).alias("linear_acc_mag_median_diff"),
-                
-                # 6. ローリング統計（ウィンドウサイズ=10）
-                pl.col("linear_acc_mag")
-                .rolling_mean(window_size=10, min_samples=1)
-                .alias("linear_acc_mag_rolling_mean"),
-                pl.col("linear_acc_mag")
-                .rolling_std(window_size=10, min_samples=1)
-                .fill_null(0.0)
-                .alias("linear_acc_mag_rolling_std"),
-                
-                # 7. エネルギー特徴（累積二乗和）
-                (pl.col("linear_acc_x") ** 2 + pl.col("linear_acc_y") ** 2 + pl.col("linear_acc_z") ** 2)
-                .cum_sum()
-                .alias("linear_acc_energy"),
-                
-                # 8. ゼロクロス率（符号変化の累積カウント）
-                ((pl.col("linear_acc_x") * pl.col("linear_acc_x").shift(1)) < 0)
-                .cast(pl.Int32)
-                .cum_sum()
-                .alias("linear_acc_x_zero_cross"),
-                ((pl.col("linear_acc_y") * pl.col("linear_acc_y").shift(1)) < 0)
-                .cast(pl.Int32)
-                .cum_sum()
-                .alias("linear_acc_y_zero_cross"),
-                ((pl.col("linear_acc_z") * pl.col("linear_acc_z").shift(1)) < 0)
-                .cast(pl.Int32)
-                .cum_sum()
-                .alias("linear_acc_z_zero_cross"),
-            ])
-        
+            return group_df.with_columns(
+                [
+                    # 1. 累積和 (Cumulative Sums)
+                    pl.col("linear_acc_x").cum_sum().alias("linear_acc_x_cumsum"),
+                    pl.col("linear_acc_y").cum_sum().alias("linear_acc_y_cumsum"),
+                    pl.col("linear_acc_z").cum_sum().alias("linear_acc_z_cumsum"),
+                    pl.col("linear_acc_mag").cum_sum().alias("linear_acc_mag_cumsum"),
+                    # 2. 差分 (Diffs)
+                    pl.col("linear_acc_x").diff().fill_null(0.0).alias("linear_acc_x_diff"),
+                    pl.col("linear_acc_y").diff().fill_null(0.0).alias("linear_acc_y_diff"),
+                    pl.col("linear_acc_z").diff().fill_null(0.0).alias("linear_acc_z_diff"),
+                    pl.col("linear_acc_mag").diff().fill_null(0.0).alias("linear_acc_mag_diff"),
+                    pl.col("angular_vel_x").diff().fill_null(0.0).alias("angular_vel_x_diff"),
+                    pl.col("angular_vel_y").diff().fill_null(0.0).alias("angular_vel_y_diff"),
+                    pl.col("angular_vel_z").diff().fill_null(0.0).alias("angular_vel_z_diff"),
+                    # 3. 長期差分 (Longer Ranged Diffs)
+                    # lag=5
+                    (pl.col("linear_acc_x") - pl.col("linear_acc_x").shift(5))
+                    .fill_null(0.0)
+                    .alias("linear_acc_x_diff_5"),
+                    (pl.col("linear_acc_y") - pl.col("linear_acc_y").shift(5))
+                    .fill_null(0.0)
+                    .alias("linear_acc_y_diff_5"),
+                    (pl.col("linear_acc_z") - pl.col("linear_acc_z").shift(5))
+                    .fill_null(0.0)
+                    .alias("linear_acc_z_diff_5"),
+                    (pl.col("linear_acc_mag") - pl.col("linear_acc_mag").shift(5))
+                    .fill_null(0.0)
+                    .alias("linear_acc_mag_diff_5"),
+                    # lag=10
+                    (pl.col("linear_acc_x") - pl.col("linear_acc_x").shift(10))
+                    .fill_null(0.0)
+                    .alias("linear_acc_x_diff_10"),
+                    (pl.col("linear_acc_y") - pl.col("linear_acc_y").shift(10))
+                    .fill_null(0.0)
+                    .alias("linear_acc_y_diff_10"),
+                    (pl.col("linear_acc_z") - pl.col("linear_acc_z").shift(10))
+                    .fill_null(0.0)
+                    .alias("linear_acc_z_diff_10"),
+                    (pl.col("linear_acc_mag") - pl.col("linear_acc_mag").shift(10))
+                    .fill_null(0.0)
+                    .alias("linear_acc_mag_diff_10"),
+                    # lag=20
+                    (pl.col("linear_acc_x") - pl.col("linear_acc_x").shift(20))
+                    .fill_null(0.0)
+                    .alias("linear_acc_x_diff_20"),
+                    (pl.col("linear_acc_y") - pl.col("linear_acc_y").shift(20))
+                    .fill_null(0.0)
+                    .alias("linear_acc_y_diff_20"),
+                    (pl.col("linear_acc_z") - pl.col("linear_acc_z").shift(20))
+                    .fill_null(0.0)
+                    .alias("linear_acc_z_diff_20"),
+                    (pl.col("linear_acc_mag") - pl.col("linear_acc_mag").shift(20))
+                    .fill_null(0.0)
+                    .alias("linear_acc_mag_diff_20"),
+                    # 4. シフト/ラグ (Shifts/Lags)
+                    # lag=1
+                    pl.col("linear_acc_x").shift(1).fill_null(0.0).alias("linear_acc_x_lag_1"),
+                    pl.col("linear_acc_y").shift(1).fill_null(0.0).alias("linear_acc_y_lag_1"),
+                    pl.col("linear_acc_z").shift(1).fill_null(0.0).alias("linear_acc_z_lag_1"),
+                    pl.col("linear_acc_mag").shift(1).fill_null(0.0).alias("linear_acc_mag_lag_1"),
+                    # lag=3
+                    pl.col("linear_acc_x").shift(3).fill_null(0.0).alias("linear_acc_x_lag_3"),
+                    pl.col("linear_acc_y").shift(3).fill_null(0.0).alias("linear_acc_y_lag_3"),
+                    pl.col("linear_acc_z").shift(3).fill_null(0.0).alias("linear_acc_z_lag_3"),
+                    pl.col("linear_acc_mag").shift(3).fill_null(0.0).alias("linear_acc_mag_lag_3"),
+                    # lag=5
+                    pl.col("linear_acc_x").shift(5).fill_null(0.0).alias("linear_acc_x_lag_5"),
+                    pl.col("linear_acc_y").shift(5).fill_null(0.0).alias("linear_acc_y_lag_5"),
+                    pl.col("linear_acc_z").shift(5).fill_null(0.0).alias("linear_acc_z_lag_5"),
+                    pl.col("linear_acc_mag").shift(5).fill_null(0.0).alias("linear_acc_mag_lag_5"),
+                    # 5. シーケンス中央値からの差分
+                    (pl.col("linear_acc_x") - pl.col("linear_acc_x").median()).alias("linear_acc_x_median_diff"),
+                    (pl.col("linear_acc_y") - pl.col("linear_acc_y").median()).alias("linear_acc_y_median_diff"),
+                    (pl.col("linear_acc_z") - pl.col("linear_acc_z").median()).alias("linear_acc_z_median_diff"),
+                    (pl.col("linear_acc_mag") - pl.col("linear_acc_mag").median()).alias("linear_acc_mag_median_diff"),
+                    # 6. ローリング統計（ウィンドウサイズ=10）
+                    pl.col("linear_acc_mag")
+                    .rolling_mean(window_size=10, min_samples=1)
+                    .alias("linear_acc_mag_rolling_mean"),
+                    pl.col("linear_acc_mag")
+                    .rolling_std(window_size=10, min_samples=1)
+                    .fill_null(0.0)
+                    .alias("linear_acc_mag_rolling_std"),
+                    # 7. エネルギー特徴（累積二乗和）
+                    (pl.col("linear_acc_x") ** 2 + pl.col("linear_acc_y") ** 2 + pl.col("linear_acc_z") ** 2)
+                    .cum_sum()
+                    .alias("linear_acc_energy"),
+                    # 8. ゼロクロス率（符号変化の累積カウント）
+                    ((pl.col("linear_acc_x") * pl.col("linear_acc_x").shift(1)) < 0)
+                    .cast(pl.Int32)
+                    .cum_sum()
+                    .alias("linear_acc_x_zero_cross"),
+                    ((pl.col("linear_acc_y") * pl.col("linear_acc_y").shift(1)) < 0)
+                    .cast(pl.Int32)
+                    .cum_sum()
+                    .alias("linear_acc_y_zero_cross"),
+                    ((pl.col("linear_acc_z") * pl.col("linear_acc_z").shift(1)) < 0)
+                    .cast(pl.Int32)
+                    .cum_sum()
+                    .alias("linear_acc_z_zero_cross"),
+                ]
+            )
+
         # group_byとmap_groupsを使って各sequence_idごとに処理
         df_with_advanced = df_sorted.group_by("sequence_id", maintain_order=True).map_groups(process_sequence_group)
 

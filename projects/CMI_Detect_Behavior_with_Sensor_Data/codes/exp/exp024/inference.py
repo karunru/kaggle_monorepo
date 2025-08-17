@@ -246,7 +246,9 @@ def predict(sequence: pl.DataFrame, demographics: pl.DataFrame) -> str:
             for model in models:
                 # Demographics対応推論
                 if use_demographics:
-                    multiclass_logits, binary_logits, nine_class_logits = model(imu, attention_mask, demographics=demographics_batch)
+                    multiclass_logits, binary_logits, nine_class_logits = model(
+                        imu, attention_mask, demographics=demographics_batch
+                    )
                 else:
                     multiclass_logits, binary_logits, nine_class_logits = model(imu, attention_mask)
 

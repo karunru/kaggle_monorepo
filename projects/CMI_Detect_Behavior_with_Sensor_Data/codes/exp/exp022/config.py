@@ -143,10 +143,7 @@ class DemographicsConfig(BaseModel):
     # Human Normalization設定
     hn_enabled: bool = Field(default=True, description="Human Normalization機能を有効にするかどうか")
     hn_eps: float = Field(default=1e-3, description="数値安定性のためのepsilon値（大きくしてNaN防止）")
-    hn_radius_min_max: tuple[float, float] = Field(
-        default=(0.15, 0.9),
-        description="有効半径の最小値・最大値"
-    )
+    hn_radius_min_max: tuple[float, float] = Field(default=(0.15, 0.9), description="有効半径の最小値・最大値")
     hn_features: list[str] = Field(
         default=[
             "linear_acc_mag_per_h",
@@ -158,9 +155,9 @@ class DemographicsConfig(BaseModel):
             "alpha_like_rE",
             "v_over_h",
             "v_over_rS",
-            "v_over_rE"
+            "v_over_rE",
         ],
-        description="有効にするHuman Normalization特徴量のリスト"
+        description="有効にするHuman Normalization特徴量のリスト",
     )
 
 

@@ -607,7 +607,7 @@ class IMUDataset(Dataset):
                 hn_enabled=self.demographics_config.get("hn_enabled", False),
                 hn_eps=self.demographics_config.get("hn_eps", 1e-6),
                 hn_radius_min_max=self.demographics_config.get("hn_radius_min_max", (0.15, 0.9)),
-                hn_features=self.demographics_config.get("hn_features", [])
+                hn_features=self.demographics_config.get("hn_features", []),
             )
             hn_cols = get_hn_feature_columns(hn_config)
             self.imu_cols.extend(hn_cols)
@@ -826,13 +826,9 @@ class IMUDataset(Dataset):
                 hn_enabled=self.demographics_config.get("hn_enabled", False),
                 hn_eps=self.demographics_config.get("hn_eps", 1e-6),
                 hn_radius_min_max=self.demographics_config.get("hn_radius_min_max", (0.15, 0.9)),
-                hn_features=self.demographics_config.get("hn_features", [])
+                hn_features=self.demographics_config.get("hn_features", []),
             )
-            df_with_hn = compute_hn_features(
-                df_with_physics.lazy(),
-                self.demographics_data,
-                hn_config
-            ).collect()
+            df_with_hn = compute_hn_features(df_with_physics.lazy(), self.demographics_data, hn_config).collect()
             print(f"Added Human Normalization features. DataFrame shape: {df_with_hn.shape}")
             return df_with_hn
 

@@ -22,7 +22,7 @@ class TestExp026Config:
     def test_model_initialization_with_soft_f1(self):
         """SoftF1損失を使用してモデルが正常に初期化されることを確認."""
         config = Config()
-        
+
         # モデル作成
         model = CMISqueezeformer(
             d_model=config.model.d_model,
@@ -30,7 +30,7 @@ class TestExp026Config:
             n_heads=config.model.n_heads,
             d_ff=config.model.d_ff,
             num_classes=config.model.num_classes,
-            loss_config=dict(config.loss)
+            loss_config=dict(config.loss),
         )
 
         # 損失関数が正しく設定されていることを確認
@@ -41,7 +41,7 @@ class TestExp026Config:
     def test_soft_f1_loss_computation(self):
         """SoftF1損失の計算が正常に実行されることを確認."""
         config = Config()
-        
+
         # 小さなモデルで計算テスト
         model = CMISqueezeformer(
             input_dim=7,  # IMUデータのみ
@@ -50,39 +50,44 @@ class TestExp026Config:
             n_heads=4,
             d_ff=256,
             num_classes=config.model.num_classes,
-            loss_config=dict(config.loss)
+            loss_config=dict(config.loss),
         )
-        
+
         # ダミーデータでテスト
         batch_size = 2
         seq_len = 50
-        
+
         # IMUデータのみのテスト（簡素化）
         imu_data = torch.randn(batch_size, 7, seq_len)  # [batch, input_dim, seq_len]
-        
+
         # ターゲットデータ
         multiclass_targets = torch.randint(0, config.model.num_classes, (batch_size,))
         binary_targets = torch.randint(0, 2, (batch_size,))
         nine_class_targets = torch.randint(0, 9, (batch_size,))
-        
+
         # フォワードパス
         multiclass_logits, binary_logits, nine_class_logits = model(imu_data)
-        
+
         # 出力の構造を確認
-        assert multiclass_logits.shape == (batch_size, config.model.num_classes), f"Expected shape {(batch_size, config.model.num_classes)}, got {multiclass_logits.shape}"
+        assert multiclass_logits.shape == (batch_size, config.model.num_classes), (
+            f"Expected shape {(batch_size, config.model.num_classes)}, got {multiclass_logits.shape}"
+        )
         assert binary_logits.shape == (batch_size, 1), f"Expected shape {(batch_size, 1)}, got {binary_logits.shape}"
-        assert nine_class_logits.shape == (batch_size, 9), f"Expected shape {(batch_size, 9)}, got {nine_class_logits.shape}"
-        
+        assert nine_class_logits.shape == (batch_size, 9), (
+            f"Expected shape {(batch_size, 9)}, got {nine_class_logits.shape}"
+        )
+
         # SoftF1損失の計算テスト
         import torch.nn.functional as F
+
         multiclass_probs = F.softmax(multiclass_logits, dim=-1)
         binary_probs = torch.sigmoid(binary_logits.squeeze(-1))
         nine_class_probs = F.softmax(nine_class_logits, dim=-1)
-        
+
         multiclass_loss = model.multiclass_criterion(multiclass_probs, multiclass_targets)
         binary_loss = model.binary_criterion(binary_probs, binary_targets.float())
         nine_class_loss = model.nine_class_criterion(nine_class_probs, nine_class_targets)
-        
+
         # 損失値が有効であることを確認
         assert torch.isfinite(multiclass_loss), f"Multiclass loss is not finite: {multiclass_loss}"
         assert torch.isfinite(binary_loss), f"Binary loss is not finite: {binary_loss}"

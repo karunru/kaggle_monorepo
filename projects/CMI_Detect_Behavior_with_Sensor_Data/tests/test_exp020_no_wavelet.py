@@ -1,7 +1,6 @@
 """exp020からpywtを使った特徴量が削除されていることを確認するテスト."""
 
 import ast
-import sys
 from pathlib import Path
 
 import pytest
@@ -23,11 +22,11 @@ def test_no_pywt_import():
 def test_no_wavelet_features_in_imu_cols():
     """imu_colsにウェーブレット特徴量が含まれていないことを確認."""
     dataset_path = Path(__file__).parent.parent / "codes" / "exp" / "exp020" / "dataset.py"
-    
+
     # ファイルの内容を読み込んで、imu_cols定義を探す
     with open(dataset_path) as f:
         content = f.read()
-    
+
     # ウェーブレット特徴量の名前パターン
     wavelet_patterns = [
         "wavelet_cA",
@@ -35,14 +34,15 @@ def test_no_wavelet_features_in_imu_cols():
         "wavelet_cD2",
         "wavelet_cD3",
     ]
-    
+
     # imu_colsの定義を探す（self.imu_cols = [ で始まる部分）
     import re
-    imu_cols_match = re.search(r'self\.imu_cols = \[(.*?)\]', content, re.DOTALL)
-    
+
+    imu_cols_match = re.search(r"self\.imu_cols = \[(.*?)\]", content, re.DOTALL)
+
     if imu_cols_match:
         imu_cols_str = imu_cols_match.group(1)
-        
+
         # ウェーブレット特徴量が含まれていないことを確認
         for pattern in wavelet_patterns:
             assert pattern not in imu_cols_str, f"Wavelet feature pattern {pattern} should not be in imu_cols"

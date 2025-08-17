@@ -716,7 +716,7 @@ class CMISqueezeformer(pl.LightningModule):
                 nn.init.constant_(module.bias, 0.0)
             elif isinstance(module, nn.Conv1d):
                 # Conv1d の初期化
-                nn.init.kaiming_normal_(module.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(module.weight, mode="fan_out", nonlinearity="relu")
                 if module.bias is not None:
                     nn.init.constant_(module.bias, 0.0)
             elif isinstance(module, nn.BatchNorm1d):
@@ -728,11 +728,11 @@ class CMISqueezeformer(pl.LightningModule):
                 nn.init.normal_(module.weight, mean=0.0, std=0.1)
 
         # 特別な層の初期化
-        if hasattr(self, 'cls_token'):
+        if hasattr(self, "cls_token"):
             nn.init.normal_(self.cls_token, std=0.02)
 
         # Input projection の重み初期化を強化
-        if hasattr(self, 'input_projection'):
+        if hasattr(self, "input_projection"):
             nn.init.xavier_uniform_(self.input_projection.weight, gain=0.5)  # より小さなgain
             nn.init.constant_(self.input_projection.bias, 0.0)
 

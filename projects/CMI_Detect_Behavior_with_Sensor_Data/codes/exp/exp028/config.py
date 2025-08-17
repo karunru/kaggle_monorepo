@@ -58,7 +58,9 @@ class ModelConfig(BaseModel):
     """モデル設定."""
 
     name: str = Field(default="cmi_squeezeformer_bert", description="モデル名")
-    input_dim: int = Field(default=20, description="入力次元数（基本IMU 7 + 物理特徴量 13 = 20、jiazhuang notebook compatible）")
+    input_dim: int = Field(
+        default=20, description="入力次元数（基本IMU 7 + 物理特徴量 13 = 20、jiazhuang notebook compatible）"
+    )
     d_model: int = Field(default=256, description="モデル次元")
     n_layers: int = Field(default=8, description="レイヤー数")
     n_heads: int = Field(default=8, description="アテンションヘッド数")

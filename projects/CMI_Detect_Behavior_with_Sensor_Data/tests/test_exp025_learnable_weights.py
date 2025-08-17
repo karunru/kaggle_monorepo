@@ -2,9 +2,9 @@
 
 import pytest
 import torch
-import torch.nn as nn
 from codes.exp.exp025.config import LossConfig
 from codes.exp.exp025.model import CMISqueezeformer
+from torch import nn
 
 
 class TestExp025LearnableWeights:
@@ -137,9 +137,7 @@ class TestExp025LearnableWeights:
         kl_loss = model.compute_kl_loss(multiclass_logits, nine_class_logits)
 
         # 不確かさ重み付き損失の計算
-        total_loss = model._compute_uncertainty_weighted_loss(
-            multiclass_loss, binary_loss, nine_class_loss, kl_loss
-        )
+        total_loss = model._compute_uncertainty_weighted_loss(multiclass_loss, binary_loss, nine_class_loss, kl_loss)
 
         # 損失が正の値であることを確認
         assert total_loss.item() > 0.0
@@ -165,9 +163,7 @@ class TestExp025LearnableWeights:
         kl_loss = model.compute_kl_loss(multiclass_logits, nine_class_logits)
 
         # 直接的重み付き損失の計算
-        total_loss = model._compute_direct_weighted_loss(
-            multiclass_loss, binary_loss, nine_class_loss, kl_loss
-        )
+        total_loss = model._compute_direct_weighted_loss(multiclass_loss, binary_loss, nine_class_loss, kl_loss)
 
         # 損失が正の値であることを確認
         assert total_loss.item() > 0.0

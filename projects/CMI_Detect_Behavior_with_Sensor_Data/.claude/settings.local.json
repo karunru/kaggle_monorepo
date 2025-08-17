@@ -51,7 +51,8 @@
       "WebFetch(domain:www.sktime.net)",
       "mcp__arxiv-mcp-server",
       "mcp__gemini-cli",
-      "WebFetch(domain:docs.pytorch.org)"
+      "WebFetch(domain:docs.pytorch.org)",
+      "Bash(git add:*)"
     ],
     "deny": [
       "Bash(uv sync:*)",

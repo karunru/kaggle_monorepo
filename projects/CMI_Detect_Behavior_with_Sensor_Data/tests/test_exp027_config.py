@@ -1,6 +1,5 @@
 """exp027の設定テスト."""
 
-
 from codes.exp.exp027.config import Config, config
 
 

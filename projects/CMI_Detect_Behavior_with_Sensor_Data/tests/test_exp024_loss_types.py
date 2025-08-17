@@ -6,14 +6,7 @@ from codes.exp.exp024.config import Config
 from codes.exp.exp024.model import CMISqueezeformer
 
 
-@pytest.mark.parametrize("loss_type", [
-    "cmi",
-    "cmi_focal",
-    "soft_f1",
-    "acls",
-    "label_smoothing",
-    "mbls"
-])
+@pytest.mark.parametrize("loss_type", ["cmi", "cmi_focal", "soft_f1", "acls", "label_smoothing", "mbls"])
 def test_loss_type_initialization(loss_type):
     """各loss typeでモデルが正しく初期化されることを確認."""
     config = Config()
@@ -30,22 +23,15 @@ def test_loss_type_initialization(loss_type):
     )
 
     # 3つの損失関数が設定されていることを確認
-    assert hasattr(model, 'multiclass_criterion')
-    assert hasattr(model, 'binary_criterion')
-    assert hasattr(model, 'nine_class_criterion')
+    assert hasattr(model, "multiclass_criterion")
+    assert hasattr(model, "binary_criterion")
+    assert hasattr(model, "nine_class_criterion")
     assert model.multiclass_criterion is not None
     assert model.binary_criterion is not None
     assert model.nine_class_criterion is not None
 
 
-@pytest.mark.parametrize("loss_type", [
-    "cmi",
-    "cmi_focal",
-    "soft_f1",
-    "acls",
-    "label_smoothing",
-    "mbls"
-])
+@pytest.mark.parametrize("loss_type", ["cmi", "cmi_focal", "soft_f1", "acls", "label_smoothing", "mbls"])
 def test_training_step_with_different_loss_types(loss_type):
     """各loss typeでtraining_stepが正常に動作することを確認."""
     config = Config()
@@ -85,7 +71,10 @@ def test_nine_class_criterion_consistency():
     # label_smoothingの場合
     config.loss.type = "label_smoothing"
     model_ls = CMISqueezeformer(
-        input_dim=7, d_model=64, num_classes=18, learning_rate=1e-4,
+        input_dim=7,
+        d_model=64,
+        num_classes=18,
+        learning_rate=1e-4,
         loss_config=config.loss.model_dump(),
         acls_config=config.acls.model_dump(),
     )
@@ -96,7 +85,10 @@ def test_nine_class_criterion_consistency():
     # mblsの場合
     config.loss.type = "mbls"
     model_mbls = CMISqueezeformer(
-        input_dim=7, d_model=64, num_classes=18, learning_rate=1e-4,
+        input_dim=7,
+        d_model=64,
+        num_classes=18,
+        learning_rate=1e-4,
         loss_config=config.loss.model_dump(),
         acls_config=config.acls.model_dump(),
     )
@@ -111,7 +103,10 @@ def test_helper_methods():
     config.demographics.enabled = False
 
     model = CMISqueezeformer(
-        input_dim=7, d_model=64, num_classes=18, learning_rate=1e-4,
+        input_dim=7,
+        d_model=64,
+        num_classes=18,
+        learning_rate=1e-4,
         loss_config=config.loss.model_dump(),
         acls_config=config.acls.model_dump(),
     )
@@ -143,7 +138,10 @@ def test_kl_loss_with_different_loss_types():
         config.loss.type = loss_type
 
         model = CMISqueezeformer(
-            input_dim=7, d_model=64, num_classes=18, learning_rate=1e-4,
+            input_dim=7,
+            d_model=64,
+            num_classes=18,
+            learning_rate=1e-4,
             loss_config=config.loss.model_dump(),
             acls_config=config.acls.model_dump(),
         )

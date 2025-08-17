@@ -37,8 +37,8 @@ def debug_hn_features():
     # バッチ構造は大きすぎるので表示しない
 
     # バッチの構造を確認（辞書形式）
-    if isinstance(batch, dict) and 'imu' in batch:
-        x_batch = batch['imu']
+    if isinstance(batch, dict) and "imu" in batch:
+        x_batch = batch["imu"]
         print(f"X batch shape: {x_batch.shape}")
         print(f"X batch contains NaN: {torch.isnan(x_batch).any()}")
         print(f"X batch contains Inf: {torch.isinf(x_batch).any()}")
@@ -55,8 +55,7 @@ def debug_hn_features():
             nan_count = torch.isnan(values).sum().item()
             inf_count = torch.isinf(values).sum().item()
 
-            print(f"{col_name:30}: min={min_val:12.6f}, max={max_val:12.6f}, "
-                  f"nan={nan_count:3}, inf={inf_count:3}")
+            print(f"{col_name:30}: min={min_val:12.6f}, max={max_val:12.6f}, nan={nan_count:3}, inf={inf_count:3}")
 
             # 異常値が検出された場合の詳細情報
             if nan_count > 0 or inf_count > 0 or abs(max_val) > 1e6 or abs(min_val) > 1e6:
@@ -82,32 +81,36 @@ def debug_raw_hn_computation():
     config = Config()
 
     # サンプルデータ作成
-    sample_data = pl.DataFrame({
-        "subject": ["S001"] * 10,
-        "sequence_id": [1] * 10,
-        "linear_acc_x": [1.0, 2.0, 0.0, -1.0, 5.0, 0.1, -0.1, 10.0, -10.0, 0.001],
-        "linear_acc_y": [0.0, 0.0, 1.0, 2.0, -1.0, 0.2, -0.2, 0.0, 0.0, 0.0],
-        "linear_acc_z": [0.0, 0.0, 0.0, 0.0, 1.0, 0.1, 0.1, 0.0, 0.0, 0.0],
-        "linear_acc_mag": [1.0, 2.0, 1.0, 2.236, 5.196, 0.245, 0.245, 10.0, 10.0, 0.001],
-        "angular_vel_x": [0.0, 0.0, 0.0, 0.0, 1.0, 0.1, -0.1, 0.0, 0.0, 0.0],
-        "angular_vel_y": [0.0, 0.0, 0.0, 0.0, 1.0, 0.1, 0.1, 0.0, 0.0, 0.0],
-        "angular_vel_z": [1.0, 2.0, 0.0, 0.0, 1.0, 0.1, 0.1, 0.0, 0.0, 0.0],  # ゼロも含む
-    }).lazy()
+    sample_data = pl.DataFrame(
+        {
+            "subject": ["S001"] * 10,
+            "sequence_id": [1] * 10,
+            "linear_acc_x": [1.0, 2.0, 0.0, -1.0, 5.0, 0.1, -0.1, 10.0, -10.0, 0.001],
+            "linear_acc_y": [0.0, 0.0, 1.0, 2.0, -1.0, 0.2, -0.2, 0.0, 0.0, 0.0],
+            "linear_acc_z": [0.0, 0.0, 0.0, 0.0, 1.0, 0.1, 0.1, 0.0, 0.0, 0.0],
+            "linear_acc_mag": [1.0, 2.0, 1.0, 2.236, 5.196, 0.245, 0.245, 10.0, 10.0, 0.001],
+            "angular_vel_x": [0.0, 0.0, 0.0, 0.0, 1.0, 0.1, -0.1, 0.0, 0.0, 0.0],
+            "angular_vel_y": [0.0, 0.0, 0.0, 0.0, 1.0, 0.1, 0.1, 0.0, 0.0, 0.0],
+            "angular_vel_z": [1.0, 2.0, 0.0, 0.0, 1.0, 0.1, 0.1, 0.0, 0.0, 0.0],  # ゼロも含む
+        }
+    ).lazy()
 
     # Demographics データ
-    demo_df = pl.DataFrame({
-        "subject": ["S001"],
-        "height_cm": [170.0],
-        "shoulder_to_wrist_cm": [60.0],
-        "elbow_to_wrist_cm": [25.0],
-    })
+    demo_df = pl.DataFrame(
+        {
+            "subject": ["S001"],
+            "height_cm": [170.0],
+            "shoulder_to_wrist_cm": [60.0],
+            "elbow_to_wrist_cm": [25.0],
+        }
+    )
 
     # HN設定
     hn_config = HNConfig(
         hn_enabled=True,
         hn_eps=config.demographics.hn_eps,
         hn_radius_min_max=config.demographics.hn_radius_min_max,
-        hn_features=config.demographics.hn_features
+        hn_features=config.demographics.hn_features,
     )
 
     # HN特徴量計算
@@ -139,24 +142,28 @@ def debug_intermediate_values():
     print("\n=== 中間計算値の確認 ===")
 
     # 極端なケースでテスト
-    sample_data = pl.DataFrame({
-        "subject": ["S001"] * 5,
-        "sequence_id": [1] * 5,
-        "linear_acc_x": [0.0, 1.0, 1000.0, -1000.0, 0.001],
-        "linear_acc_y": [0.0, 0.0, 0.0, 0.0, 0.0],
-        "linear_acc_z": [0.0, 0.0, 0.0, 0.0, 0.0],
-        "linear_acc_mag": [0.0, 1.0, 1000.0, 1000.0, 0.001],
-        "angular_vel_x": [0.0, 0.0, 0.0, 0.0, 0.0],
-        "angular_vel_y": [0.0, 0.0, 0.0, 0.0, 0.0],
-        "angular_vel_z": [0.0, 1.0, 0.0, 0.0, 0.0],  # omega=0のケースも
-    }).lazy()
+    sample_data = pl.DataFrame(
+        {
+            "subject": ["S001"] * 5,
+            "sequence_id": [1] * 5,
+            "linear_acc_x": [0.0, 1.0, 1000.0, -1000.0, 0.001],
+            "linear_acc_y": [0.0, 0.0, 0.0, 0.0, 0.0],
+            "linear_acc_z": [0.0, 0.0, 0.0, 0.0, 0.0],
+            "linear_acc_mag": [0.0, 1.0, 1000.0, 1000.0, 0.001],
+            "angular_vel_x": [0.0, 0.0, 0.0, 0.0, 0.0],
+            "angular_vel_y": [0.0, 0.0, 0.0, 0.0, 0.0],
+            "angular_vel_z": [0.0, 1.0, 0.0, 0.0, 0.0],  # omega=0のケースも
+        }
+    ).lazy()
 
-    demo_df = pl.DataFrame({
-        "subject": ["S001"],
-        "height_cm": [170.0],
-        "shoulder_to_wrist_cm": [60.0],
-        "elbow_to_wrist_cm": [25.0],
-    })
+    demo_df = pl.DataFrame(
+        {
+            "subject": ["S001"],
+            "height_cm": [170.0],
+            "shoulder_to_wrist_cm": [60.0],
+            "elbow_to_wrist_cm": [25.0],
+        }
+    )
 
     from human_normalization import derive_hn_channels, join_subject_anthro
 
@@ -188,4 +195,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Error during debugging: {e}")
         import traceback
+
         traceback.print_exc()

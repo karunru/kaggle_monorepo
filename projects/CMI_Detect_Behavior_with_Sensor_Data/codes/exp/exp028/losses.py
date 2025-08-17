@@ -472,16 +472,16 @@ class ACLSBinary(nn.Module):
 def mixup_criterion(criterion, pred, y_a, y_b, lam):
     """
     Mixup criterion for combining two targets with lambda weighting.
-    
+
     Compatible with jiazhuang notebook implementation.
-    
+
     Args:
         criterion: Loss function to apply
         pred: Model predictions [batch_size, ...]
         y_a: First set of targets [batch_size]
         y_b: Second set of targets [batch_size]
         lam: Mixing parameter [0, 1]
-        
+
     Returns:
         Mixed loss: lam * criterion(pred, y_a) + (1 - lam) * criterion(pred, y_b)
     """
@@ -518,7 +518,7 @@ class MulticlassSoftF1Loss(nn.Module):
         """
         # Convert logits to probabilities
         probs = F.softmax(inputs, dim=-1)
-        
+
         # one-hotエンコーディング
         targets_onehot = F.one_hot(targets, num_classes=self.num_classes).float()
 
@@ -550,14 +550,14 @@ class MulticlassSoftF1Loss(nn.Module):
 class MixupLoss(nn.Module):
     """
     Mixup-compatible loss wrapper for jiazhuang notebook compatibility.
-    
+
     Automatically handles both regular and mixup training.
     """
 
     def __init__(self, base_criterion):
         """
         Initialize mixup loss wrapper.
-        
+
         Args:
             base_criterion: Base loss function (e.g., CrossEntropyLoss, FocalLoss)
         """
@@ -567,13 +567,13 @@ class MixupLoss(nn.Module):
     def forward(self, pred, target, mixup_target=None, mixup_lam=None):
         """
         Forward pass supporting both regular and mixup training.
-        
+
         Args:
             pred: Model predictions [batch_size, num_classes]
             target: Primary targets [batch_size]
             mixup_target: Secondary targets for mixup (optional) [batch_size]
             mixup_lam: Mixup lambda parameter (optional)
-            
+
         Returns:
             Loss value
         """

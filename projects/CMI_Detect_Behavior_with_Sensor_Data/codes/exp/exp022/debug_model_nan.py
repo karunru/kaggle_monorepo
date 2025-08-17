@@ -26,7 +26,7 @@ def debug_demographics_processing():
     train_loader = data_module.train_dataloader()
     batch = next(iter(train_loader))
 
-    demographics = batch.get('demographics', None)
+    demographics = batch.get("demographics", None)
     if demographics is None:
         print("Demographics data not found")
         return
@@ -91,9 +91,9 @@ def debug_model_step_by_step():
     train_loader = data_module.train_dataloader()
     batch = next(iter(train_loader))
 
-    imu_data = batch['imu']
-    attention_mask = batch.get('missing_mask', None)
-    demographics = batch.get('demographics', None)
+    imu_data = batch["imu"]
+    attention_mask = batch.get("missing_mask", None)
+    demographics = batch.get("demographics", None)
 
     print("Input shapes:")
     print(f"  IMU: {imu_data.shape}")
@@ -135,6 +135,7 @@ def debug_model_step_by_step():
             except Exception as e:
                 print(f"Error in demographics processing: {e}")
                 import traceback
+
                 traceback.print_exc()
 
         # ステップ5: Transformer layers

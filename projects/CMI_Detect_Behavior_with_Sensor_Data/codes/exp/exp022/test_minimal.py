@@ -21,7 +21,7 @@ def test_minimal_model():
     # 設定読み込み（HN・demographics無効化）
     config = Config()
     config.demographics.hn_enabled = False  # HN無効化
-    config.demographics.enabled = False     # Demographics無効化
+    config.demographics.enabled = False  # Demographics無効化
 
     print(f"HN enabled: {config.demographics.hn_enabled}")
     print(f"Demographics enabled: {config.demographics.enabled}")
@@ -78,8 +78,8 @@ def test_minimal_model():
     with torch.no_grad():
         try:
             # バッチから適切な要素を抽出
-            imu_data = batch['imu']
-            attention_mask = batch.get('missing_mask', None)
+            imu_data = batch["imu"]
+            attention_mask = batch.get("missing_mask", None)
             demographics = None  # Demographics完全無効化
 
             print(f"IMU shape: {imu_data.shape}")
@@ -91,8 +91,12 @@ def test_minimal_model():
             print("✅ Forward pass successful!")
 
             # 各出力をチェック
-            print(f"multiclass_logits: shape={multiclass_logits.shape}, nan={torch.isnan(multiclass_logits).any()}, inf={torch.isinf(multiclass_logits).any()}")
-            print(f"binary_logits: shape={binary_logits.shape}, nan={torch.isnan(binary_logits).any()}, inf={torch.isinf(binary_logits).any()}")
+            print(
+                f"multiclass_logits: shape={multiclass_logits.shape}, nan={torch.isnan(multiclass_logits).any()}, inf={torch.isinf(multiclass_logits).any()}"
+            )
+            print(
+                f"binary_logits: shape={binary_logits.shape}, nan={torch.isnan(binary_logits).any()}, inf={torch.isinf(binary_logits).any()}"
+            )
 
             if torch.isnan(multiclass_logits).any():
                 print("  ⚠️ NaN detected in multiclass_logits")
@@ -113,6 +117,7 @@ def test_minimal_model():
         except Exception as e:
             print(f"❌ Forward pass failed: {e}")
             import traceback
+
             traceback.print_exc()
             return False
 

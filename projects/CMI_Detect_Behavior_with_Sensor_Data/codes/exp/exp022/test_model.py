@@ -73,9 +73,9 @@ def test_model_forward_pass():
     with torch.no_grad():
         try:
             # バッチから適切な要素を抽出
-            imu_data = batch['imu']
-            attention_mask = batch.get('missing_mask', None)
-            demographics = batch.get('demographics', None)
+            imu_data = batch["imu"]
+            attention_mask = batch.get("missing_mask", None)
+            demographics = batch.get("demographics", None)
 
             print(f"IMU shape: {imu_data.shape}")
             print(f"Mask shape: {attention_mask.shape if attention_mask is not None else None}")
@@ -85,8 +85,12 @@ def test_model_forward_pass():
             print("✅ Forward pass successful!")
 
             # 各出力をチェック
-            print(f"multiclass_logits: shape={multiclass_logits.shape}, nan={torch.isnan(multiclass_logits).any()}, inf={torch.isinf(multiclass_logits).any()}")
-            print(f"binary_logits: shape={binary_logits.shape}, nan={torch.isnan(binary_logits).any()}, inf={torch.isinf(binary_logits).any()}")
+            print(
+                f"multiclass_logits: shape={multiclass_logits.shape}, nan={torch.isnan(multiclass_logits).any()}, inf={torch.isinf(multiclass_logits).any()}"
+            )
+            print(
+                f"binary_logits: shape={binary_logits.shape}, nan={torch.isnan(binary_logits).any()}, inf={torch.isinf(binary_logits).any()}"
+            )
 
             if torch.isnan(multiclass_logits).any():
                 print("  ⚠️ NaN detected in multiclass_logits")
@@ -100,6 +104,7 @@ def test_model_forward_pass():
         except Exception as e:
             print(f"❌ Forward pass failed: {e}")
             import traceback
+
             traceback.print_exc()
             return False
 

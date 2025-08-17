@@ -30,7 +30,7 @@ def test_dataset():
         dataset = IMUDataset(
             train_csv="dummy",  # 実際のファイルパスではない
             config=config,
-            is_train=True
+            is_train=True,
         )
         print("✓ Dataset initialization test would pass with real data")
     except Exception as e:
@@ -126,9 +126,11 @@ def test_model():
     binary_loss = model.binary_criterion(binary_logits.squeeze(-1), binary_labels)
     nine_class_loss = model.nine_class_criterion(nine_class_logits, nine_class_labels)
 
-    total_loss = (model.loss_alpha * multiclass_loss +
-                 (1 - model.loss_alpha) * binary_loss +
-                 model.nine_class_loss_weight * nine_class_loss)
+    total_loss = (
+        model.loss_alpha * multiclass_loss
+        + (1 - model.loss_alpha) * binary_loss
+        + model.nine_class_loss_weight * nine_class_loss
+    )
 
     print(f"Multiclass loss: {multiclass_loss.item():.4f}")
     print(f"Binary loss: {binary_loss.item():.4f}")

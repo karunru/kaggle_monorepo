@@ -3,9 +3,6 @@
 import numpy as np
 import polars as pl
 import pytest
-import torch
-
-from codes.exp.exp019.config import Config
 from codes.exp.exp019.dataset import IMUDataset
 
 
@@ -13,7 +10,7 @@ from codes.exp.exp019.dataset import IMUDataset
 def sample_train_data():
     """テスト用の訓練データ."""
     np.random.seed(42)
-    
+
     # 簡単なサンプルデータを作成
     data = []
     for seq_id in ["seq001", "seq002", "seq003"]:
@@ -37,7 +34,7 @@ def sample_train_data():
                     "rot_z": np.random.normal(0, 0.1),
                 }
             )
-    
+
     return pl.DataFrame(data)
 
 
@@ -72,29 +69,29 @@ class TestIMUDatasetHandednessAugmentationUpdated:
             enable_handedness_aug=True,
             handedness_flip_prob=1.0,  # 常に反転
         )
-        
+
         # 元のdemographicsを確認
-        original_handedness = sample_demographics_data.filter(
-            pl.col("subject") == "S001"
-        )["handedness"].item()
-        
+        original_handedness = sample_demographics_data.filter(pl.col("subject") == "S001")["handedness"].item()
+
         # 複数回実行して反転の統計を取る（確率的なため）
         flip_count = 0
         no_flip_count = 0
-        
+
         for i in range(20):  # 十分な回数実行
             np.random.seed(i)  # 異なるシードを使用
             item = dataset[0]  # S001のデータ
-            
+
             if "demographics" in item and "handedness" in item["demographics"]:
                 flipped_handedness = item["demographics"]["handedness"].item()
                 if flipped_handedness == 1 - original_handedness:
                     flip_count += 1
                 else:
                     no_flip_count += 1
-        
+
         # flip_prob=1.0なので、大部分は反転されているはず（確率的要素があるため完全ではない）
-        assert flip_count > no_flip_count, f"Expected more flips but got flip_count={flip_count}, no_flip_count={no_flip_count}"
+        assert flip_count > no_flip_count, (
+            f"Expected more flips but got flip_count={flip_count}, no_flip_count={no_flip_count}"
+        )
 
     def test_demographics_handedness_no_flip_consistency(self, sample_train_data, sample_demographics_data):
         """利き手反転無しの場合のdemographics handenessの整合性テスト."""
@@ -107,29 +104,29 @@ class TestIMUDatasetHandednessAugmentationUpdated:
             enable_handedness_aug=True,
             handedness_flip_prob=0.0,  # 反転しない
         )
-        
+
         # 元のdemographicsを確認
-        original_handedness = sample_demographics_data.filter(
-            pl.col("subject") == "S001"
-        )["handedness"].item()
-        
+        original_handedness = sample_demographics_data.filter(pl.col("subject") == "S001")["handedness"].item()
+
         # 複数回実行して統計的にチェック
         flip_count = 0
         no_flip_count = 0
-        
+
         for i in range(20):  # 十分な回数実行
             np.random.seed(i)  # 異なるシードを使用
             item = dataset[0]  # S001のデータ
-            
+
             if "demographics" in item and "handedness" in item["demographics"]:
                 handedness = item["demographics"]["handedness"].item()
                 if handedness == original_handedness:
                     no_flip_count += 1
                 else:
                     flip_count += 1
-        
+
         # flip_prob=0.0なので、大部分は反転されていないはず
-        assert no_flip_count > flip_count, f"Expected more no-flips but got no_flip_count={no_flip_count}, flip_count={flip_count}"
+        assert no_flip_count > flip_count, (
+            f"Expected more no-flips but got no_flip_count={no_flip_count}, flip_count={flip_count}"
+        )
 
     def test_apply_augmentation_returns_tuple(self, sample_train_data, sample_demographics_data):
         """_apply_augmentationがタプルを返すことのテスト."""
@@ -142,17 +139,17 @@ class TestIMUDatasetHandednessAugmentationUpdated:
             enable_handedness_aug=True,
             handedness_flip_prob=0.5,
         )
-        
+
         # サンプルIMUデータ
         sample_imu = np.random.rand(16, 30).astype(np.float32)
-        
+
         # _apply_augmentationを直接呼び出し
         result = dataset._apply_augmentation(sample_imu, "S001")
-        
+
         # タプルが返されることを確認
         assert isinstance(result, tuple)
         assert len(result) == 2
-        
+
         imu_data, was_flipped = result
         assert isinstance(imu_data, np.ndarray)
         assert isinstance(was_flipped, bool)
@@ -169,19 +166,19 @@ class TestIMUDatasetHandednessAugmentationUpdated:
             enable_handedness_aug=True,
             handedness_flip_prob=0.5,
         )
-        
+
         # 通常の取得
         demographics_normal = dataset._get_demographics_for_subject("S001", flip_handedness=False)
         # 反転取得
         demographics_flipped = dataset._get_demographics_for_subject("S001", flip_handedness=True)
-        
+
         assert demographics_normal is not None
         assert demographics_flipped is not None
-        
+
         # 元のS001は右利き（1）なので、反転後は左利き（0）になるはず
         assert demographics_normal["handedness"].item() == 1
         assert demographics_flipped["handedness"].item() == 0
-        
+
         # 他の特徴量は変わらない
         assert demographics_normal["age"].item() == demographics_flipped["age"].item()
         assert demographics_normal["sex"].item() == demographics_flipped["sex"].item()
@@ -197,10 +194,10 @@ class TestIMUDatasetHandednessAugmentationUpdated:
             enable_handedness_aug=True,
             handedness_flip_prob=1.0,  # 常に反転
         )
-        
+
         # S002は左利き（0）
         demographics_flipped = dataset._get_demographics_for_subject("S002", flip_handedness=True)
-        
+
         assert demographics_flipped is not None
         # 左利き（0）から右利き（1）に反転
         assert demographics_flipped["handedness"].item() == 1
@@ -216,10 +213,10 @@ class TestIMUDatasetHandednessAugmentationUpdated:
             enable_handedness_aug=True,
             handedness_flip_prob=1.0,
         )
-        
+
         sample_imu = np.random.rand(16, 30).astype(np.float32)
         imu_data, was_flipped = dataset._apply_augmentation(sample_imu, "S001")
-        
+
         # augment=Falseなので反転フラグはFalse
         assert was_flipped is False
         # データも変更されていない
@@ -236,10 +233,10 @@ class TestIMUDatasetHandednessAugmentationUpdated:
             enable_handedness_aug=False,  # 利き手反転無効
             handedness_flip_prob=1.0,
         )
-        
+
         sample_imu = np.random.rand(16, 30).astype(np.float32)
         imu_data, was_flipped = dataset._apply_augmentation(sample_imu, "S001")
-        
+
         # handedness_augがNoneなので反転フラグはFalse
         assert was_flipped is False
 
@@ -254,15 +251,15 @@ class TestIMUDatasetHandednessAugmentationUpdated:
             enable_handedness_aug=True,
             handedness_flip_prob=0.5,  # 50%の確率
         )
-        
+
         sample_imu = np.random.rand(16, 30).astype(np.float32)
-        
+
         # 複数回実行して確率的動作を確認
         flip_results = []
         for _ in range(100):
             _, was_flipped = dataset._apply_augmentation(sample_imu.copy(), "S001")
             flip_results.append(was_flipped)
-        
+
         flip_ratio = sum(flip_results) / len(flip_results)
         # 50%前後になることを確認（±20%の範囲で許容）
         assert 0.3 <= flip_ratio <= 0.7
