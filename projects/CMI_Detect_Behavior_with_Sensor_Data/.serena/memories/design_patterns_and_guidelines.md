@@ -11,6 +11,7 @@
 - Pydantic Settingsによる設定管理
 - 厳密な型ヒント（mypy strict mode）
 - 実行時バリデーション
+- **設定は辞書ではなくPydanticオブジェクトとして直接扱う**
 
 ### 3. GPU最適化とスケーラビリティ
 - CuPy/PyTorch統合
@@ -81,6 +82,56 @@ class ExperimentConfig(BaseSettings):
 
 **利点**: 複雑な設定の段階的構築
 
+### Dependency Injection Pattern（Pydantic設定管理）
+**使用箇所**: モデル・データセット初期化
+
+```python
+# ✅ 正しいパターン：必須設定を明示的に要求
+class CMISqueezeformer(pl.LightningModule):
+    def __init__(
+        self,
+        loss_config: LossConfig,           # 必須引数
+        acls_config: ACLSConfig,           # 必須引数  
+        demographics_config: DemographicsConfig,  # 必須引数
+        bert_config: BertConfig,           # 必須引数
+        # その他のオプション引数...
+    ):
+        # 設定を直接使用（.get()は使わない）
+        if self.loss_config.type == "focal":
+            self.criterion = FocalLoss(
+                gamma=self.loss_config.focal_gamma,
+                alpha=self.loss_config.focal_alpha
+            )
+
+# ✅ 正しい呼び出し方
+config = Config()
+model = CMISqueezeformer(
+    loss_config=config.loss,        # Pydanticオブジェクトを直接渡す
+    acls_config=config.acls,
+    demographics_config=config.demographics,
+    bert_config=config.bert
+)
+```
+
+**禁止パターン**:
+```python
+# ❌ 辞書的アクセス
+value = config.get("key", default)
+
+# ❌ 両対応関数
+def _safe_get_attr(obj, attr, default):
+    return getattr(obj, attr, default) if hasattr(obj, attr) else obj.get(attr, default)
+
+# ❌ 辞書化してから渡す
+model = Model(config=config.loss.model_dump())
+
+# ❌ オプション扱い（設定ミスを隠蔽）
+def __init__(self, config: Config | None = None):
+    self.config = config or Config()
+```
+
+**利点**: 型安全性、設定ミスの早期発見、IDEサポート
+
 ## コーディングガイドライン
 
 ### 1. 命名規約
@@ -114,6 +165,7 @@ def train_single_fold(
 - 明示的な例外処理
 - ログによる詳細情報記録
 - ユーザフレンドリーなエラーメッセージ
+- **設定エラーは実行開始時に即座に検出する**
 
 ### 4. テスト駆動開発
 - 各実験にtest_exp{番号}.pyを必須配置
@@ -143,6 +195,7 @@ def train_single_fold(
 - mypy strictモードによる厳密チェック
 - Pydanticによる実行時バリデーション
 - 型ヒント必須化
+- **設定クラスの直接使用による静的解析強化**
 
 ### 2. 再現性保証
 - seed_everything.pyによるシード固定

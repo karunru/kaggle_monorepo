@@ -54,3 +54,32 @@
 - 各実験はexp{番号}ディレクトリに独立配置
 - config.py, model.py, dataset.py, train.py, inference.pyの構造統一
 - 実験メタデータはpydantic設定で管理
+
+## Pydantic設定規約（重要！）
+
+### 禁止事項
+1. **`config.get("key", default_value)` の使用禁止**
+   - ❌ `config.get("learning_rate", 0.001)`
+   - ✅ `config.learning_rate`
+   - Pydanticクラスでは直接属性アクセスを使用
+
+2. **辞書とPydanticオブジェクトの両対応関数の禁止**
+   - ❌ `_safe_get_attr(obj, "attr", default)`
+   - ❌ `_convert_dict_to_config(dict_config, ConfigClass)`
+   - 型安全性を損なうため、最初からPydanticオブジェクトとして扱う
+
+3. **`.model_dump()`でPydanticを辞書化してから渡すことの禁止**
+   - ❌ `model = Model(config=config.loss.model_dump())`
+   - ✅ `model = Model(config=config.loss)`
+   - 直接Pydanticオブジェクトを渡す
+
+4. **必須設定に`| None = None`デフォルト値の禁止**
+   - ❌ `def __init__(self, config: Config | None = None)`
+   - ✅ `def __init__(self, config: Config)`
+   - 設定が不適切な場合は明示的にエラーを発生させる
+
+### 推奨パターン
+- 設定クラスは必須引数として受け取る
+- 設定の検証はPydanticのバリデーション機能を活用
+- デフォルト値はPydanticクラス定義内で設定
+- 型ヒントを活用してIDEの補完とエラー検出を有効化

@@ -1,13 +1,18 @@
-"""IMU-only model with ResidualSE-CNN and AFNO mixer - exp034用 (AFNOによるBiGRU+Attention置換)."""
-
-import math
+"""IMU-only LSTM with ResidualSE-CNN and BiGRU attention - exp029用 (ヒューマンノーマライゼーション、デモグラフィック、マルチヘッドKL divergence付き)."""
 
 import numpy as np
 import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
-
-# ACLS losses import
+from config import (
+    ACLSConfig,
+    BertConfig,
+    DemographicsConfig,
+    EMAConfig,
+    LossConfig,
+    ScheduleFreeConfig,
+    SchedulerConfig,
+)
 from losses import (
     ACLS,
     ACLSBinary,
@@ -18,18 +23,12 @@ from losses import (
     MbLSBinary,
     MulticlassSoftF1ACLS,
 )
+from schedulefree import AdamWScheduleFree, RAdamScheduleFree, SGDScheduleFree
 from sklearn.metrics import f1_score
 from torch import nn
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingLR, ReduceLROnPlateau
-
-# Schedule Free optimizer imports (optional)
-try:
-    from schedulefree import AdamWScheduleFree, RAdamScheduleFree, SGDScheduleFree
-
-    SCHEDULEFREE_AVAILABLE = True
-except ImportError:
-    SCHEDULEFREE_AVAILABLE = False
+from transformers import BertConfig as HFBertConfig, BertModel
 
 
 def compute_cmi_score(gesture_true, gesture_pred, target_gestures, non_target_gestures):
@@ -312,93 +311,8 @@ class AttentionLayer(nn.Module):
         return context
 
 
-class AFNOMixer1D(nn.Module):
-    """AFNO: seq次元にFFT→周波数領域でMLP→iFFT (Adaptive Fourier Neural Operator mixer)."""
-
-    def __init__(self, hidden_dim, ff_mult=2, dropout=0.1):
-        """
-        初期化.
-
-        Args:
-            hidden_dim: 隠れ層の次元数
-            ff_mult: フィードフォワード層の倍率
-            dropout: ドロップアウト率
-        """
-        super().__init__()
-        self.hidden_dim = hidden_dim
-        self.ff_dim = hidden_dim * ff_mult
-
-        # 周波数領域でのMLP（実部・虚部を分離して処理）
-        self.ff1 = nn.Linear(hidden_dim * 2, self.ff_dim, bias=False)  # 実部+虚部 -> 拡張次元
-        self.ff2 = nn.Linear(self.ff_dim, hidden_dim, bias=False)  # 拡張次元 -> 元次元
-        self.dropout = nn.Dropout(dropout)
-        self.norm = nn.LayerNorm(hidden_dim)
-
-        # 活性化関数
-        self.activation = nn.GELU()
-
-    def forward(self, x):
-        """
-        前向き計算.
-
-        Args:
-            x: 入力テンソル [batch, seq_len, hidden_dim]
-
-        Returns:
-            出力テンソル [batch, seq_len, hidden_dim]
-        """
-        # 残差接続のための元入力を保存
-        x_residual = x
-
-        # 元のデータ型とシーケンス長を保存
-        original_dtype = x.dtype
-        original_seq_len = x.size(1)
-
-        # 次の2の累乗を計算（半精度FFTの制約対応）
-        next_power_of_2 = 2 ** math.ceil(math.log2(original_seq_len))
-
-        # 必要に応じてパディング
-        if original_seq_len != next_power_of_2:
-            padding = next_power_of_2 - original_seq_len
-            x = F.pad(x, (0, 0, 0, padding))  # [batch, padded_seq_len, hidden_dim]
-
-        # FFT計算を安定させるためfloat32で実行
-        x = x.float()
-
-        # seq次元にFFTを適用
-        x_ft = torch.fft.rfft(x, dim=1)  # [batch, freq, hidden_dim] 複素数
-
-        # 実部と虚部を分離して結合
-        real_part = x_ft.real  # [batch, freq, hidden_dim]
-        imag_part = x_ft.imag  # [batch, freq, hidden_dim]
-        x_complex = torch.cat([real_part, imag_part], dim=-1)  # [batch, freq, hidden_dim*2]
-
-        # 周波数領域でのMLP処理
-        y = self.ff1(x_complex)  # [batch, freq, ff_dim]
-        y = self.activation(y)
-        y = self.dropout(y)
-        y = self.ff2(y)  # [batch, freq, hidden_dim]
-
-        # 複素数として復元（虚部はゼロ近似）
-        y_complex = torch.complex(y, torch.zeros_like(y))
-
-        # 逆FFTで時間領域に戻す
-        x_reconstructed = torch.fft.irfft(y_complex, n=next_power_of_2, dim=1)  # [batch, padded_seq_len, hidden_dim]
-
-        # 元のシーケンス長に戻す
-        x_reconstructed = x_reconstructed[:, :original_seq_len, :]
-
-        # 元のデータ型に戻す
-        x_reconstructed = x_reconstructed.to(original_dtype)
-
-        # 残差接続 + LayerNorm
-        out = self.norm(self.dropout(x_reconstructed) + x_residual)
-
-        return out
-
-
 class IMUOnlyLSTM(nn.Module):
-    """IMU-only model with ResidualSE-CNN and AFNO mixer (exp034: AFNOによるBiGRU+Attention置換)."""
+    """IMU-only LSTM model with ResidualSE-CNN and BiGRU attention (exp029: demographics + multi-head support)."""
 
     def __init__(
         self,
@@ -418,11 +332,12 @@ class IMUOnlyLSTM(nn.Module):
         self.imu_block1 = ResidualSECNNBlock(imu_dim, 64, 3, dropout=0.3, weight_decay=weight_decay)
         self.imu_block2 = ResidualSECNNBlock(64, 128, 5, dropout=0.3, weight_decay=weight_decay)
 
-        # AFNO Mixer (BiGRU + Attentionの置換)
-        self.token_proj = nn.Linear(128, 256)  # 128 -> 256次元への投影
-        self.afno1 = AFNOMixer1D(256, ff_mult=2, dropout=0.2)
-        self.afno2 = AFNOMixer1D(256, ff_mult=2, dropout=0.2)
-        self.seq_pool = nn.AdaptiveAvgPool1d(1)  # シーケンス集約
+        # BiGRU
+        self.bigru = nn.GRU(128, 128, bidirectional=True, batch_first=True)
+        self.gru_dropout = nn.Dropout(0.4)
+
+        # Attention
+        self.attention = AttentionLayer(256)  # 128*2 for bidirectional
 
         # Dense layers (基本特徴量抽出)
         self.dense1 = nn.Linear(256, 256, bias=False)
@@ -484,14 +399,15 @@ class IMUOnlyLSTM(nn.Module):
         x1 = self.imu_block1(imu)
         x1 = self.imu_block2(x1)
 
-        # Transpose back for AFNO: (batch, seq_len, hidden_dim)
+        # Transpose back for BiGRU: (batch, seq_len, hidden_dim)
         merged = x1.transpose(1, 2)
 
-        # AFNO Mixer (FFTベースの長距離依存処理)
-        h = self.token_proj(merged)  # [batch, seq_len, 128] -> [batch, seq_len, 256]
-        h = self.afno1(h)  # 1層目のAFNOミキサ
-        h = self.afno2(h)  # 2層目のAFNOミキサ
-        attended = self.seq_pool(h.transpose(1, 2)).squeeze(-1)  # [batch, 256]
+        # BiGRU
+        gru_out, _ = self.bigru(merged)
+        gru_out = self.gru_dropout(gru_out)
+
+        # Attention
+        attended = self.attention(gru_out)
 
         # Dense layers (基本特徴量抽出)
         x = F.mish(self.bn_dense1(self.dense1(attended)))
@@ -519,17 +435,18 @@ class CMISqueezeformer(pl.LightningModule):
 
     def __init__(
         self,
+        loss_config: LossConfig,
+        acls_config: ACLSConfig,
+        demographics_config: DemographicsConfig,
+        bert_config: BertConfig,
+        schedule_free_config: ScheduleFreeConfig,
+        ema_config: EMAConfig,
+        scheduler_config: SchedulerConfig,
         input_dim: int = 20,  # IMU: 20次元（物理特徴量含む、jiazhuang compatible）
         num_classes: int = 18,
         learning_rate: float = 3e-4,
         weight_decay: float = 1e-5,
         dropout: float = 0.1,
-        scheduler_config: dict | None = None,
-        loss_config: dict | None = None,
-        acls_config: dict | None = None,
-        schedule_free_config: dict | None = None,
-        ema_config: dict | None = None,
-        demographics_config: dict | None = None,
         target_gestures: list[str] | None = None,
         non_target_gestures: list[str] | None = None,
         id_to_gesture: dict[int, str] | None = None,
@@ -561,39 +478,36 @@ class CMISqueezeformer(pl.LightningModule):
         self.num_classes = num_classes
         self.learning_rate = learning_rate
         self.weight_decay = weight_decay
-        self.scheduler_config = scheduler_config or {}
-        self.loss_config = loss_config or {}
-        self.acls_config = acls_config or {}
-        self.schedule_free_config = schedule_free_config or {}
-        self.ema_config = ema_config or {}
-        self.demographics_config = demographics_config or {}
+        self.scheduler_config = scheduler_config
+
+        # Store pydantic config objects directly (required parameters)
+        self.loss_config = loss_config
+        self.acls_config = acls_config
+        self.schedule_free_config = schedule_free_config
+        self.ema_config = ema_config
+        self.demographics_config = demographics_config
+        self.bert_config = bert_config
 
         # Demographics統合の設定
-        self.use_demographics = self.demographics_config.get("enabled", False)
+        self.use_demographics = self.demographics_config.enabled
         if self.use_demographics:
             self.demographics_embedding = DemographicsEmbedding(
-                categorical_features=self.demographics_config.get(
-                    "categorical_features", ["adult_child", "sex", "handedness"]
-                ),
-                numerical_features=self.demographics_config.get(
-                    "numerical_features", ["age", "height_cm", "shoulder_to_wrist_cm", "elbow_to_wrist_cm"]
-                ),
-                categorical_embedding_dims=self.demographics_config.get(
-                    "categorical_embedding_dims", {"adult_child": 2, "sex": 2, "handedness": 2}
-                ),
-                embedding_dim=self.demographics_config.get("embedding_dim", 16),
+                categorical_features=self.demographics_config.categorical_features,
+                numerical_features=self.demographics_config.numerical_features,
+                categorical_embedding_dims=self.demographics_config.categorical_embedding_dims,
+                embedding_dim=self.demographics_config.embedding_dim,
                 dropout=dropout,
                 # 設定値ベースのスケーリングパラメータを追加
-                age_min=self.demographics_config.get("age_min", 8.0),
-                age_max=self.demographics_config.get("age_max", 60.0),
-                height_min=self.demographics_config.get("height_min", 130.0),
-                height_max=self.demographics_config.get("height_max", 195.0),
-                shoulder_to_wrist_min=self.demographics_config.get("shoulder_to_wrist_min", 35.0),
-                shoulder_to_wrist_max=self.demographics_config.get("shoulder_to_wrist_max", 75.0),
-                elbow_to_wrist_min=self.demographics_config.get("elbow_to_wrist_min", 15.0),
-                elbow_to_wrist_max=self.demographics_config.get("elbow_to_wrist_max", 50.0),
+                age_min=self.demographics_config.age_min,
+                age_max=self.demographics_config.age_max,
+                height_min=self.demographics_config.height_min,
+                height_max=self.demographics_config.height_max,
+                shoulder_to_wrist_min=self.demographics_config.shoulder_to_wrist_min,
+                shoulder_to_wrist_max=self.demographics_config.shoulder_to_wrist_max,
+                elbow_to_wrist_min=self.demographics_config.elbow_to_wrist_min,
+                elbow_to_wrist_max=self.demographics_config.elbow_to_wrist_max,
             )
-            self.demographics_dim = self.demographics_config.get("embedding_dim", 16)
+            self.demographics_dim = self.demographics_config.embedding_dim
         else:
             self.demographics_embedding = None
             self.demographics_dim = 0
@@ -632,11 +546,63 @@ class CMISqueezeformer(pl.LightningModule):
             dropout=dropout,
         )
 
+        # BERT設定
+        bert_hidden_size = self.bert_config.hidden_size or 256
+        bert_num_layers = self.bert_config.num_layers
+        bert_num_heads = self.bert_config.num_heads
+        bert_intermediate_size = self.bert_config.intermediate_size or (bert_hidden_size * 4)
+
+        # BERT integration
+        self.cls_token = nn.Parameter(torch.zeros(1, 1, bert_hidden_size))
+
+        # BiGRU出力(256次元)からbert_hidden_sizeへの投影層
+        self.bert_projection = nn.Linear(256, bert_hidden_size)
+
+        bert_config = HFBertConfig(
+            hidden_size=bert_hidden_size,
+            num_hidden_layers=bert_num_layers,
+            num_attention_heads=bert_num_heads,
+            intermediate_size=bert_intermediate_size,
+            hidden_dropout_prob=dropout,
+            attention_probs_dropout_prob=dropout,
+        )
+        self.bert = BertModel(bert_config)
+
+        # 新しい分類ヘッド (BERT + Demographics特徴量を結合)
+        classification_input_dim = bert_hidden_size + self.demographics_dim
+
+        self.bert_multiclass_head = nn.Sequential(
+            nn.LayerNorm(classification_input_dim),
+            nn.Dropout(dropout),
+            nn.Linear(classification_input_dim, 128),
+            nn.Mish(inplace=True),
+            nn.Dropout(dropout),
+            nn.Linear(128, num_classes),
+        )
+
+        self.bert_binary_head = nn.Sequential(
+            nn.LayerNorm(classification_input_dim),
+            nn.Dropout(dropout),
+            nn.Linear(classification_input_dim, 64),
+            nn.Mish(inplace=True),
+            nn.Dropout(dropout),
+            nn.Linear(64, 1),
+        )
+
+        self.bert_nine_class_head = nn.Sequential(
+            nn.LayerNorm(classification_input_dim),
+            nn.Dropout(dropout),
+            nn.Linear(classification_input_dim, 64),
+            nn.Mish(inplace=True),
+            nn.Dropout(dropout),
+            nn.Linear(64, 9),
+        )
+
         # KL divergence loss関連の設定
-        self.kl_weight = self.loss_config.get("kl_weight", 0.1)
-        self.kl_temperature = self.loss_config.get("kl_temperature", 1.0)
-        self.nine_class_loss_weight = self.loss_config.get("nine_class_loss_weight", 0.2)
-        self.loss_alpha = self.loss_config.get("alpha", 0.5)
+        self.kl_weight = self.loss_config.kl_weight
+        self.kl_temperature = self.loss_config.kl_temperature
+        self.nine_class_loss_weight = self.loss_config.nine_class_loss_weight
+        self.loss_alpha = self.loss_config.alpha
 
         # 損失関数の設定
         self._setup_loss_functions()
@@ -649,11 +615,11 @@ class CMISqueezeformer(pl.LightningModule):
 
     def _setup_loss_functions(self):
         """損失関数の設定."""
-        loss_type = self.loss_config.get("type", "cmi")
+        loss_type = self.loss_config.type
 
         if loss_type == "cmi":
             # 基本的なクロスエントロピー損失
-            label_smoothing = self.loss_config.get("label_smoothing", 0.0)
+            label_smoothing = self.loss_config.label_smoothing
             self.multiclass_criterion = nn.CrossEntropyLoss(label_smoothing=label_smoothing)
             self.binary_criterion = nn.BCEWithLogitsLoss()
             self.nine_class_criterion = nn.CrossEntropyLoss(label_smoothing=label_smoothing)
@@ -661,16 +627,16 @@ class CMISqueezeformer(pl.LightningModule):
         elif loss_type == "cmi_focal":
             # Focal Loss
             self.multiclass_criterion = FocalLoss(
-                gamma=self.loss_config.get("focal_gamma", 2.0),
-                alpha=self.loss_config.get("focal_alpha", 1.0),
-                label_smoothing=self.loss_config.get("label_smoothing", 0.0),
+                gamma=self.loss_config.focal_gamma,
+                alpha=self.loss_config.focal_alpha,
+                label_smoothing=self.loss_config.label_smoothing,
             )
             self.binary_criterion = nn.BCEWithLogitsLoss()
             # 9クラス用もFocalLoss
             self.nine_class_criterion = FocalLoss(
-                gamma=self.loss_config.get("focal_gamma", 2.0),
-                alpha=self.loss_config.get("focal_alpha", 1.0),
-                label_smoothing=self.loss_config.get("label_smoothing", 0.0),
+                gamma=self.loss_config.focal_gamma,
+                alpha=self.loss_config.focal_alpha,
+                label_smoothing=self.loss_config.label_smoothing,
             )
 
         elif loss_type == "soft_f1":
@@ -693,68 +659,68 @@ class CMISqueezeformer(pl.LightningModule):
 
         elif loss_type == "label_smoothing":
             # Label Smoothing Cross-Entropy
-            alpha = self.acls_config.get("label_smoothing_alpha", 0.1)
+            alpha = self.acls_config.label_smoothing_alpha
             self.multiclass_criterion = LabelSmoothingCrossEntropy(alpha=alpha)
             self.binary_criterion = LabelSmoothingBCE(alpha=alpha)
             self.nine_class_criterion = LabelSmoothingCrossEntropy(alpha=alpha)
 
         elif loss_type == "mbls":
             # Margin-based Label Smoothing
-            margin = self.acls_config.get("mbls_margin", 10.0)
-            alpha = self.acls_config.get("mbls_alpha", 0.1)
-            alpha_schedule = self.acls_config.get("mbls_schedule", None)
+            margin = self.acls_config.mbls_margin
+            alpha = self.acls_config.mbls_alpha
+            alpha_schedule = self.acls_config.mbls_schedule
             self.multiclass_criterion = MbLS(margin=margin, alpha=alpha, alpha_schedule=alpha_schedule)
             self.binary_criterion = MbLSBinary(margin=margin, alpha=alpha)
             self.nine_class_criterion = MbLS(margin=margin, alpha=alpha, alpha_schedule=alpha_schedule)
 
         else:
             # デフォルト：基本的なクロスエントロピー
-            label_smoothing = self.loss_config.get("label_smoothing", 0.0)
+            label_smoothing = self.loss_config.label_smoothing
             self.multiclass_criterion = nn.CrossEntropyLoss(label_smoothing=label_smoothing)
             self.binary_criterion = nn.BCEWithLogitsLoss()
             self.nine_class_criterion = nn.CrossEntropyLoss(label_smoothing=label_smoothing)
 
         # 共通設定
-        self.loss_alpha = self.loss_config.get("alpha", 0.5)
-        self.nine_class_loss_weight = self.loss_config.get("nine_class_loss_weight", 0.2)
+        self.loss_alpha = self.loss_config.alpha
+        self.nine_class_loss_weight = self.loss_config.nine_class_loss_weight
 
         # KL divergence loss設定
         self.kl_criterion = nn.KLDivLoss(reduction="batchmean")
-        self.kl_weight = self.loss_config.get("kl_weight", 0.1)
-        self.kl_temperature = self.loss_config.get("kl_temperature", 1.0)
+        self.kl_weight = self.loss_config.kl_weight
+        self.kl_temperature = self.loss_config.kl_temperature
 
         # 学習可能重み付けの設定
         self._setup_learnable_weights()
 
     def _create_soft_f1_criterion(self, num_classes: int) -> "MulticlassSoftF1Loss":
         """SoftF1Loss criterion作成の共通化."""
-        beta = self.loss_config.get("soft_f1_beta", 1.0)
-        eps = self.loss_config.get("soft_f1_eps", 1e-6)
+        beta = self.loss_config.soft_f1_beta
+        eps = self.loss_config.soft_f1_eps
         return MulticlassSoftF1Loss(num_classes=num_classes, beta=beta, eps=eps)
 
     def _create_binary_soft_f1_criterion(self) -> "BinarySoftF1Loss":
         """Binary SoftF1Loss criterion作成の共通化."""
-        beta = self.loss_config.get("soft_f1_beta", 1.0)
-        eps = self.loss_config.get("soft_f1_eps", 1e-6)
+        beta = self.loss_config.soft_f1_beta
+        eps = self.loss_config.soft_f1_eps
         return BinarySoftF1Loss(beta=beta, eps=eps)
 
     def _create_acls_criterion(self, num_classes: int) -> "ACLS":
         """ACLS criterion作成の共通化."""
         return ACLS(
-            pos_lambda=self.acls_config.get("acls_pos_lambda", 1.0),
-            neg_lambda=self.acls_config.get("acls_neg_lambda", 0.1),
-            alpha=self.acls_config.get("acls_alpha", 0.1),
-            margin=self.acls_config.get("acls_margin", 10.0),
+            pos_lambda=self.acls_config.acls_pos_lambda,
+            neg_lambda=self.acls_config.acls_neg_lambda,
+            alpha=self.acls_config.acls_alpha,
+            margin=self.acls_config.acls_margin,
             num_classes=num_classes,
         )
 
     def _create_acls_binary_criterion(self) -> "ACLSBinary":
         """ACLS Binary criterion作成の共通化."""
         return ACLSBinary(
-            pos_lambda=self.acls_config.get("acls_pos_lambda", 1.0),
-            neg_lambda=self.acls_config.get("acls_neg_lambda", 0.1),
-            alpha=self.acls_config.get("acls_alpha", 0.1),
-            margin=self.acls_config.get("acls_margin", 10.0),
+            pos_lambda=self.acls_config.acls_pos_lambda,
+            neg_lambda=self.acls_config.acls_neg_lambda,
+            alpha=self.acls_config.acls_alpha,
+            margin=self.acls_config.acls_margin,
             num_classes=2,
         )
 
@@ -762,23 +728,23 @@ class CMISqueezeformer(pl.LightningModule):
         """SoftF1ACLS criterion作成の共通化."""
         return MulticlassSoftF1ACLS(
             num_classes=num_classes,
-            beta=self.loss_config.get("soft_f1_beta", 1.0),
-            eps=self.loss_config.get("soft_f1_eps", 1e-6),
-            pos_lambda=self.acls_config.get("acls_pos_lambda", 1.0),
-            neg_lambda=self.acls_config.get("acls_neg_lambda", 0.1),
-            alpha=self.acls_config.get("acls_alpha", 0.1),
-            margin=self.acls_config.get("acls_margin", 10.0),
+            beta=self.loss_config.soft_f1_beta,
+            eps=self.loss_config.soft_f1_eps,
+            pos_lambda=self.acls_config.acls_pos_lambda,
+            neg_lambda=self.acls_config.acls_neg_lambda,
+            alpha=self.acls_config.acls_alpha,
+            margin=self.acls_config.acls_margin,
         )
 
     def _create_binary_soft_f1_acls_criterion(self) -> "BinarySoftF1ACLS":
         """Binary SoftF1ACLS criterion作成の共通化."""
         return BinarySoftF1ACLS(
-            beta=self.loss_config.get("soft_f1_beta", 1.0),
-            eps=self.loss_config.get("soft_f1_eps", 1e-6),
-            pos_lambda=self.acls_config.get("acls_pos_lambda", 1.0),
-            neg_lambda=self.acls_config.get("acls_neg_lambda", 0.1),
-            alpha=self.acls_config.get("acls_alpha", 0.1),
-            margin=self.acls_config.get("acls_margin", 10.0),
+            beta=self.loss_config.soft_f1_beta,
+            eps=self.loss_config.soft_f1_eps,
+            pos_lambda=self.acls_config.acls_pos_lambda,
+            neg_lambda=self.acls_config.acls_neg_lambda,
+            alpha=self.acls_config.acls_alpha,
+            margin=self.acls_config.acls_margin,
         )
 
     def forward(
@@ -788,11 +754,11 @@ class CMISqueezeformer(pl.LightningModule):
         demographics: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """
-        前向き計算.
+        前向き計算（BERT統合版）.
 
         Args:
             imu: IMUデータ [batch, input_dim, seq_len] or [batch, seq_len, input_dim]
-            attention_mask: アテンションマスク（無視される）
+            attention_mask: アテンションマスク
             demographics: Demographics特徴量（オプショナル）
 
         Returns:
@@ -805,12 +771,62 @@ class CMISqueezeformer(pl.LightningModule):
                 imu = imu.transpose(1, 2)
             # else: already [batch, seq_len, input_dim]
 
-        # Demographics埋め込み
-        demographics_embedding = None
-        if self.use_demographics and demographics is not None:
-            demographics_embedding = self.demographics_embedding(demographics)
+        # IMUOnlyLSTMの処理を手動で実行（Attention出力まで）
+        # IMU処理: (batch, seq_len, imu_dim) -> (batch, imu_dim, seq_len)
+        imu_transposed = imu.transpose(1, 2)
 
-        return self.model(imu, demographics_embedding)
+        # ResidualSE-CNN blocks
+        x1 = self.model.imu_block1(imu_transposed)
+        x1 = self.model.imu_block2(x1)
+
+        # BiGRU処理: (batch, seq_len, hidden_dim)
+        merged = x1.transpose(1, 2)
+        lstm_out, _ = self.model.bigru(merged)
+        lstm_out = self.model.gru_dropout(lstm_out)
+
+        # Attention処理（ここでAttention出力を取得）
+        attention_output = self.model.attention(lstm_out)  # [batch, 256]
+
+        # BERT processing with CLS token
+        # Attention出力を系列データとして扱うため、次元を拡張
+        x = attention_output.unsqueeze(1)  # [batch, 1, 256]
+
+        # bert_hidden_sizeに投影
+        x = self.bert_projection(x)  # [batch, 1, bert_hidden_size]
+
+        # CLSトークンを追加
+        batch_size = x.size(0)
+        cls_tokens = self.cls_token.expand(batch_size, -1, -1)  # [batch, 1, bert_hidden_size]
+        x = torch.cat([cls_tokens, x], dim=1)  # [batch, 2, bert_hidden_size]
+
+        # attention_maskの調整（CLSトークン + attention出力のため、長さ2）
+        if attention_mask is not None:
+            # attention_maskが提供されていても、今回は単一の特徴量なので無視
+            bert_attention_mask = torch.ones(batch_size, 2, dtype=torch.long, device=x.device)
+        else:
+            bert_attention_mask = torch.ones(batch_size, 2, dtype=torch.long, device=x.device)
+
+        # BERT処理
+        bert_output = self.bert(inputs_embeds=x, attention_mask=bert_attention_mask)
+        x = bert_output.last_hidden_state[:, 0, :]  # CLSトークンの出力を取得 [batch, bert_hidden_size]
+
+        # Demographics特徴量の統合
+        if self.use_demographics and demographics is not None:
+            demographics_embedding = self.demographics_embedding(demographics)  # [batch, demographics_dim]
+            # BERT特徴量とdemographics特徴量を結合
+            x = torch.cat([x, demographics_embedding], dim=-1)  # [batch, bert_hidden_size + demographics_dim]
+        elif self.use_demographics:
+            # Demographics使用設定だが、データがない場合はゼロパディング
+            batch_size = x.size(0)
+            demographics_padding = torch.zeros(batch_size, self.demographics_dim, device=x.device)
+            x = torch.cat([x, demographics_padding], dim=-1)
+
+        # 新しいBERT統合分類ヘッド
+        multiclass_logits = self.bert_multiclass_head(x)
+        binary_logits = self.bert_binary_head(x)
+        nine_class_logits = self.bert_nine_class_head(x)
+
+        return multiclass_logits, binary_logits, nine_class_logits
 
     def compute_kl_loss(self, multiclass_logits: torch.Tensor, nine_class_logits: torch.Tensor) -> torch.Tensor:
         """
@@ -845,19 +861,19 @@ class CMISqueezeformer(pl.LightningModule):
 
     def _setup_learnable_weights(self):
         """学習可能重み付けの設定."""
-        aw_type = self.loss_config.get("auto_weighting", "none")
+        aw_type = self.loss_config.auto_weighting
 
         if aw_type == "uncertainty":
             # 不確かさベース自動重み付け
             self.loss_s_params = nn.ParameterDict()
-            init_val = self.loss_config.get("uncertainty_init_value", 0.0)
+            init_val = self.loss_config.uncertainty_init_value
 
             # 基本的な損失項
             self.loss_s_params["multiclass"] = nn.Parameter(torch.tensor(init_val, dtype=torch.float32))
             self.loss_s_params["binary"] = nn.Parameter(torch.tensor(init_val, dtype=torch.float32))
 
             # 9クラス損失項（有効な場合のみ）
-            if self.loss_config.get("nine_class_head_enabled", True):
+            if self.loss_config.nine_class_head_enabled:
                 self.loss_s_params["nine_class"] = nn.Parameter(torch.tensor(init_val, dtype=torch.float32))
 
             # KL損失項（有効な場合のみ）
@@ -866,9 +882,9 @@ class CMISqueezeformer(pl.LightningModule):
 
         elif aw_type == "direct":
             # 直接的な学習可能重み
-            init_alpha = self.loss_config.get("alpha", 0.5)
-            init_w9 = self.loss_config.get("nine_class_loss_weight", 0.2)
-            init_wkl = self.loss_config.get("kl_weight", 0.1)
+            init_alpha = self.loss_config.alpha
+            init_w9 = self.loss_config.nine_class_loss_weight
+            init_wkl = self.loss_config.kl_weight
 
             # alpha用（logit parameterization: alpha = sigmoid(alpha_raw)）
             alpha_logit = np.log(init_alpha / (1 - init_alpha + 1e-8))
@@ -895,7 +911,7 @@ class CMISqueezeformer(pl.LightningModule):
         multiclass_logits, binary_logits, nine_class_logits = self(imu, attention_mask, demographics)
 
         # 損失計算
-        loss_type = self.loss_config.get("type", "cmi")
+        loss_type = self.loss_config.type
 
         if loss_type == "soft_f1":
             # SoftF1Lossは確率値を期待するため、sigmoid/softmaxを適用
@@ -924,7 +940,7 @@ class CMISqueezeformer(pl.LightningModule):
             kl_loss = torch.tensor(0.0, device=multiclass_logits.device)
 
         # 学習可能重み付き損失の計算
-        aw_type = self.loss_config.get("auto_weighting", "none")
+        aw_type = self.loss_config.auto_weighting
         if aw_type == "direct":
             # 直接学習可能重み
             alpha_clamped = torch.clamp(self.alpha_raw, self.clamp_min, self.clamp_max)
@@ -974,7 +990,7 @@ class CMISqueezeformer(pl.LightningModule):
         multiclass_logits, binary_logits, nine_class_logits = self(imu, attention_mask, demographics)
 
         # 損失計算
-        loss_type = self.loss_config.get("type", "cmi")
+        loss_type = self.loss_config.type
 
         if loss_type == "soft_f1":
             # SoftF1Lossは確率値を期待するため、sigmoid/softmaxを適用
@@ -998,7 +1014,7 @@ class CMISqueezeformer(pl.LightningModule):
             kl_loss = torch.tensor(0.0, device=multiclass_logits.device)
 
         # 学習可能重み付き損失の計算
-        aw_type = self.loss_config.get("auto_weighting", "none")
+        aw_type = self.loss_config.auto_weighting
         if aw_type == "direct":
             # 直接学習可能重み
             alpha_clamped = torch.clamp(self.alpha_raw, self.clamp_min, self.clamp_max)
@@ -1108,16 +1124,16 @@ class CMISqueezeformer(pl.LightningModule):
     def configure_optimizers(self):
         """オプティマイザとスケジューラの設定."""
         # Schedule Free optimizer使用時
-        if self.schedule_free_config.get("enabled", False) and SCHEDULEFREE_AVAILABLE:
+        if self.schedule_free_config.enabled:
             # 学習可能重みパラメータの分離
             aw_params = []
-            aw_type = self.loss_config.get("auto_weighting", "none")
+            aw_type = self.loss_config.auto_weighting
 
             if aw_type == "direct" and hasattr(self, "alpha_raw"):
                 aw_params = [self.alpha_raw, self.w9_raw, self.wkl_raw]
 
-            optimizer_type = self.schedule_free_config.get("optimizer_type", "RAdamScheduleFree")
-            lr_multiplier = self.schedule_free_config.get("learning_rate_multiplier", 5.0)
+            optimizer_type = self.schedule_free_config.optimizer_type
+            lr_multiplier = self.schedule_free_config.learning_rate_multiplier
             effective_lr = self.learning_rate * lr_multiplier
 
             # パラメータの準備
@@ -1136,21 +1152,21 @@ class CMISqueezeformer(pl.LightningModule):
                     params,
                     lr=effective_lr,
                     weight_decay=self.weight_decay,
-                    warmup_steps=self.schedule_free_config.get("warmup_steps", 1000),
+                    warmup_steps=self.schedule_free_config.warmup_steps,
                 )
             elif optimizer_type == "AdamWScheduleFree":
                 optimizer = AdamWScheduleFree(
                     params,
                     lr=effective_lr,
                     weight_decay=self.weight_decay,
-                    warmup_steps=self.schedule_free_config.get("warmup_steps", 1000),
+                    warmup_steps=self.schedule_free_config.warmup_steps,
                 )
             elif optimizer_type == "SGDScheduleFree":
                 optimizer = SGDScheduleFree(
                     params,
                     lr=effective_lr,
                     weight_decay=self.weight_decay,
-                    warmup_steps=self.schedule_free_config.get("warmup_steps", 1000),
+                    warmup_steps=self.schedule_free_config.warmup_steps,
                 )
             else:
                 print(f"Unknown Schedule Free optimizer: {optimizer_type}, fallback to RAdamScheduleFree")
@@ -1158,7 +1174,7 @@ class CMISqueezeformer(pl.LightningModule):
                     params,
                     lr=effective_lr,
                     weight_decay=self.weight_decay,
-                    warmup_steps=self.schedule_free_config.get("warmup_steps", 1000),
+                    warmup_steps=self.schedule_free_config.warmup_steps,
                 )
 
             print(f"Using {optimizer_type} with learning rate: {effective_lr:.2e}")
@@ -1168,7 +1184,7 @@ class CMISqueezeformer(pl.LightningModule):
 
         # 学習可能重みパラメータの分離
         aw_params = []
-        aw_type = self.loss_config.get("auto_weighting", "none")
+        aw_type = self.loss_config.auto_weighting
 
         if aw_type == "direct" and hasattr(self, "alpha_raw"):
             aw_params = [self.alpha_raw, self.w9_raw, self.wkl_raw]
@@ -1190,11 +1206,11 @@ class CMISqueezeformer(pl.LightningModule):
         else:
             optimizer = AdamW(self.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay)
 
-        scheduler_type = self.scheduler_config.get("type")
+        scheduler_type = self.scheduler_config.type
 
         if scheduler_type == "cosine":
             scheduler = CosineAnnealingLR(
-                optimizer, T_max=self.trainer.max_epochs, eta_min=self.scheduler_config.get("min_lr", 1e-6)
+                optimizer, T_max=self.trainer.max_epochs, eta_min=self.scheduler_config.min_lr
             )
             return [optimizer], [scheduler]
 
@@ -1202,8 +1218,8 @@ class CMISqueezeformer(pl.LightningModule):
             scheduler = ReduceLROnPlateau(
                 optimizer,
                 mode="max",
-                factor=self.scheduler_config.get("factor", 0.5),
-                patience=self.scheduler_config.get("patience", 5),
+                factor=self.scheduler_config.factor,
+                patience=self.scheduler_config.patience,
                 verbose=True,
             )
             return {
