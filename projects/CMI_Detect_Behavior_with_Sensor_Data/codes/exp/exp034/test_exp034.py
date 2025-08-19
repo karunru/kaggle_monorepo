@@ -89,15 +89,15 @@ class TestIMUOnlyLSTM:
         model = IMUOnlyLSTM(imu_dim=20, n_classes=18)
 
         # AFNOコンポーネントが存在することを確認
-        assert hasattr(model, 'token_proj')
-        assert hasattr(model, 'afno1')
-        assert hasattr(model, 'afno2')
-        assert hasattr(model, 'seq_pool')
+        assert hasattr(model, "token_proj")
+        assert hasattr(model, "afno1")
+        assert hasattr(model, "afno2")
+        assert hasattr(model, "seq_pool")
 
         # BiGRUとAttentionが削除されていることを確認
-        assert not hasattr(model, 'bigru')
-        assert not hasattr(model, 'gru_dropout')
-        assert not hasattr(model, 'attention')
+        assert not hasattr(model, "bigru")
+        assert not hasattr(model, "gru_dropout")
+        assert not hasattr(model, "attention")
 
     def test_different_input_dimensions(self):
         """異なる入力次元でのテスト."""
