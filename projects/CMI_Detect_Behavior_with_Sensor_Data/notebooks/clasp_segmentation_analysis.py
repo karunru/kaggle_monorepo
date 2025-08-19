@@ -682,10 +682,10 @@ class SegmentationComparisonTool:
             ax_gt.legend(loc="upper left")
 
         plt.tight_layout()
-        
+
         # ファイル保存
         output_file = OUTPUT_DIR / f"segmentation_comparison_{sequence_id}.png"
-        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(output_file, dpi=300, bbox_inches="tight", facecolor="white")
         plt.close()
         print(f"✅ 比較プロットを保存: {output_file}")
 
@@ -781,10 +781,10 @@ class SegmentationComparisonTool:
         axes[2].grid(True, alpha=0.3)
 
         plt.tight_layout()
-        
+
         # ファイル保存
         output_file = OUTPUT_DIR / "performance_comparison_summary.png"
-        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(output_file, dpi=300, bbox_inches="tight", facecolor="white")
         plt.close()
         print(f"✅ 性能比較プロットを保存: {output_file}")
 
