@@ -255,17 +255,18 @@ class SEBlock(nn.Module):
         y = self.excitation(y).view(b, c, 1)
         return x * y.expand_as(x)
 
+
 class LayerNorm1d(nn.Module):
     """LayerNorm for (B, C, T) by applying LN over channel dim in channels-last."""
-    
+
     def __init__(self, num_channels: int, eps: float = 1e-6):
         super().__init__()
         self.ln = nn.LayerNorm(num_channels, eps=eps)
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:  # (B, C, T)
-        x_perm = x.transpose(1, 2)          # (B, T, C)
+        x_perm = x.transpose(1, 2)  # (B, T, C)
         x_norm = self.ln(x_perm)
-        return x_norm.transpose(1, 2)       # (B, C, T)
+        return x_norm.transpose(1, 2)  # (B, C, T)
 
 
 class ConvNeXt1DBlock(nn.Module):
@@ -276,7 +277,7 @@ class ConvNeXt1DBlock(nn.Module):
       - Pointwise MLP: Linear( C -> 4C ) + GELU + Linear( 4C -> C )
       - Optional LayerScale (gamma) and StochasticDepth
     """
-    
+
     def __init__(self, channels: int, kernel_size: int = 7, drop_path: float = 0.0, layer_scale_init: float = 1e-6):
         super().__init__()
         pad = kernel_size // 2
@@ -287,11 +288,11 @@ class ConvNeXt1DBlock(nn.Module):
         self.pw2 = nn.Conv1d(4 * channels, channels, kernel_size=1)
         self.gamma = nn.Parameter(layer_scale_init * torch.ones(channels)) if layer_scale_init > 0 else None
         self.drop_path = drop_path
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:  # (B, C, T)
         shortcut = x
         x = self.dwconv(x)
-        x = self.norm(x)                # (B, C, T)
+        x = self.norm(x)  # (B, C, T)
         x = self.pw1(x)
         x = self.act(x)
         x = self.pw2(x)
@@ -301,73 +302,83 @@ class ConvNeXt1DBlock(nn.Module):
         x = stochastic_depth(x, p=self.drop_path, mode="row", training=self.training) + shortcut
         return x
 
+
 class ResidualSEConvNeXtBlock(nn.Module):
     """Residual ConvNeXt1D block with Squeeze-and-Excitation attention."""
 
-    def __init__(self, in_channels, out_channels, kernel_size=7, num_blocks=2, drop_path=0.1, 
-                 pool_size=2, dropout=0.3, weight_decay=1e-4, layer_scale_init=1e-6):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size=7,
+        num_blocks=2,
+        drop_path=0.1,
+        pool_size=2,
+        dropout=0.3,
+        weight_decay=1e-4,
+        layer_scale_init=1e-6,
+    ):
         super().__init__()
-        
+
         # Input projection if needed
         self.input_proj = None
         if in_channels != out_channels:
             self.input_proj = nn.Sequential(
-                nn.Conv1d(in_channels, out_channels, 1, bias=False),
-                nn.BatchNorm1d(out_channels)
+                nn.Conv1d(in_channels, out_channels, 1, bias=False), nn.BatchNorm1d(out_channels)
             )
-        
+
         # ConvNeXt1D blocks
-        self.convnext_blocks = nn.ModuleList([
-            ConvNeXt1DBlock(
-                channels=out_channels, 
-                kernel_size=kernel_size, 
-                drop_path=drop_path * (i + 1) / num_blocks,  # Progressive drop path
-                layer_scale_init=layer_scale_init
-            ) 
-            for i in range(num_blocks)
-        ])
-        
+        self.convnext_blocks = nn.ModuleList(
+            [
+                ConvNeXt1DBlock(
+                    channels=out_channels,
+                    kernel_size=kernel_size,
+                    drop_path=drop_path * (i + 1) / num_blocks,  # Progressive drop path
+                    layer_scale_init=layer_scale_init,
+                )
+                for i in range(num_blocks)
+            ]
+        )
+
         # SE block
         self.se = SEBlock(out_channels)
-        
+
         # Shortcut connection
         self.shortcut = nn.Sequential()
         if in_channels != out_channels:
             self.shortcut = nn.Sequential(
-                nn.Conv1d(in_channels, out_channels, 1, bias=False), 
-                nn.BatchNorm1d(out_channels)
+                nn.Conv1d(in_channels, out_channels, 1, bias=False), nn.BatchNorm1d(out_channels)
             )
-        
+
         self.pool = nn.MaxPool1d(pool_size)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
         # Store shortcut
         shortcut = self.shortcut(x)
-        
+
         # Input projection if needed
         if self.input_proj is not None:
             x = self.input_proj(x)
-        
+
         # ConvNeXt blocks
         for block in self.convnext_blocks:
             x = block(x)
-        
+
         # SE block
         x = self.se(x)
-        
+
         # Add shortcut
         x = x + shortcut
-        
+
         # Final activation (keeping Mish like the original)
         x = F.mish(x)
-        
+
         # Pool and dropout
         x = self.pool(x)
         x = self.dropout(x)
-        
-        return x
 
+        return x
 
 
 class AttentionLayer(nn.Module):
@@ -404,22 +415,22 @@ class IMUOnlyLSTM(nn.Module):
 
         # IMU deep branch with ResidualSE-ConvNeXt blocks
         self.imu_block1 = ResidualSEConvNeXtBlock(
-            in_channels=imu_dim, 
-            out_channels=64, 
-            kernel_size=3, 
+            in_channels=imu_dim,
+            out_channels=64,
+            kernel_size=3,
             num_blocks=2,
             drop_path=0.1,
-            dropout=0.3, 
-            weight_decay=weight_decay
+            dropout=0.3,
+            weight_decay=weight_decay,
         )
         self.imu_block2 = ResidualSEConvNeXtBlock(
-            in_channels=64, 
-            out_channels=128, 
-            kernel_size=5, 
+            in_channels=64,
+            out_channels=128,
+            kernel_size=5,
             num_blocks=2,
             drop_path=0.15,
-            dropout=0.3, 
-            weight_decay=weight_decay
+            dropout=0.3,
+            weight_decay=weight_decay,
         )
 
         # BiGRU
@@ -666,8 +677,6 @@ class CMISqueezeformer(pl.LightningModule):
         18クラス中のターゲット8クラスの列indexと、9クラス側のnon列indexを登録。
         例) target_idx18=[0,1,2,3,4,5,6,7], non_idx9=8 など
         """
-        import torch
-
         self.register_buffer("target_idx18", torch.tensor(target_idx18, dtype=torch.long), persistent=False)
         self.register_buffer("target_idx9", torch.arange(8, dtype=torch.long), persistent=False)
         self.non_idx9 = int(non_idx9)
