@@ -80,7 +80,7 @@ class ModelConfig(BaseModel):
     num_classes: int = Field(default=18, description="クラス数")
     kernel_size: int = Field(default=31, description="Convolutionカーネルサイズ")
     dropout: float = Field(default=0.1, description="ドロップアウト率")
-    
+
     # IMUOnlyLSTM specific configuration
     imu_block1_out_channels: int = Field(default=64, description="IMU Block1出力チャネル数")
     imu_block1_kernel_size: int = Field(default=3, description="IMU Block1カーネルサイズ")
