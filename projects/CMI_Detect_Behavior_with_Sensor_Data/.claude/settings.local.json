@@ -53,7 +53,8 @@
       "mcp__gemini-cli",
       "WebFetch(domain:docs.pytorch.org)",
       "Bash(git add:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(uvx ruff@latest check:*)"
     ],
     "deny": [
       "Bash(uv sync:*)",
