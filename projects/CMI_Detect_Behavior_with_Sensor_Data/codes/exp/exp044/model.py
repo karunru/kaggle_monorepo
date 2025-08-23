@@ -1214,7 +1214,7 @@ class CMISqueezeformer(lightning.LightningModule):
     def clear_fold_results(self):
         """Fold開始時に前のFoldの結果をクリア."""
         self.fold_validation_results.clear()
-        print(f"Cleared fold validation results")
+        print("Cleared fold validation results")
 
     def save_fold_validation_results_to_csv(self, fold: int):
         """Fold終了時に最良エポックの検証結果をCSVに保存."""

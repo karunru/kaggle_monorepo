@@ -364,8 +364,9 @@ class TestFoldValidationResults:
                 epoch=None,
             ):
                 """検証結果をCSVに保存."""
-                import polars as pl
                 from pathlib import Path
+
+                import polars as pl
 
                 # 出力ディレクトリの作成
                 output_dir = Path(self.paths_config.output_dir) / "validation_results"
