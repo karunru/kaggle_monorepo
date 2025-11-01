@@ -1,0 +1,229 @@
+[{"stream_name":"stderr","time":6.039351398,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.03940589,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.039412932,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.039417418,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":6.771220223,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.771259624,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.771266086,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.7712708379999995,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":14.073453165,"data":"2025-08-27 05:49:07.468763: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered\n"}
+,{"stream_name":"stderr","time":14.073524522,"data":"WARNING: All log messages before absl::InitializeLog() is called are written to STDERR\n"}
+,{"stream_name":"stderr","time":14.073530299,"data":"E0000 00:00:1756273747.668217      19 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered\n"}
+,{"stream_name":"stderr","time":14.073534479,"data":"E0000 00:00:1756273747.722324      19 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered\n"}
+,{"stream_name":"stderr","time":14.277144221,"data":"2025-08-27 05:49:07.468763: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered\n"}
+,{"stream_name":"stderr","time":14.277177513,"data":"WARNING: All log messages before absl::InitializeLog() is called are written to STDERR\n"}
+,{"stream_name":"stderr","time":14.277183267,"data":"E0000 00:00:1756273747.668217      19 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered\n"}
+,{"stream_name":"stderr","time":14.277188268,"data":"E0000 00:00:1756273747.722324      19 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered\n"}
+,{"stream_name":"stderr","time":25.916021379,"data":"I0000 00:00:1756273760.070796      19 gpu_device.cc:2022] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 13942 MB memory:  -\u003e device: 0, name: Tesla T4, pci bus id: 0000:00:04.0, compute capability: 7.5\n"}
+,{"stream_name":"stderr","time":25.916089752,"data":"I0000 00:00:1756273760.071562      19 gpu_device.cc:2022] Created device /job:localhost/replica:0/task:0/device:GPU:1 with 13942 MB memory:  -\u003e device: 1, name: Tesla T4, pci bus id: 0000:00:05.0, compute capability: 7.5\n"}
+,{"stream_name":"stdout","time":25.91704301,"data":"▶ imports ready · tensorflow 2.18.0\n"}
+,{"stream_name":"stderr","time":26.118277759,"data":"I0000 00:00:1756273760.070796      19 gpu_device.cc:2022] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 13942 MB memory:  -\u003e device: 0, name: Tesla T4, pci bus id: 0000:00:04.0, compute capability: 7.5\n"}
+,{"stream_name":"stderr","time":26.11830701,"data":"I0000 00:00:1756273760.071562      19 gpu_device.cc:2022] Created device /job:localhost/replica:0/task:0/device:GPU:1 with 13942 MB memory:  -\u003e device: 1, name: Tesla T4, pci bus id: 0000:00:05.0, compute capability: 7.5\n"}
+,{"stream_name":"stdout","time":27.772636763,"data":"▶ INFERENCE MODE 1,2 – loading artefacts from /kaggle/input/cmi-d-111\n"}
+,{"stream_name":"stdout","time":27.772675354,"data":"  Loading models for ensemble inference...\n"}
+,{"stream_name":"stdout","time":27.772680688,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_0.h5\n"}
+,{"stream_name":"stdout","time":28.521501383,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_1.h5\n"}
+,{"stream_name":"stdout","time":29.009484042,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_2.h5\n"}
+,{"stream_name":"stdout","time":29.525880342,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_3.h5\n"}
+,{"stream_name":"stdout","time":30.01353088,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_4.h5\n"}
+,{"stream_name":"stdout","time":30.512763864,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_5.h5\n"}
+,{"stream_name":"stdout","time":31.046782857,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_6.h5\n"}
+,{"stream_name":"stdout","time":31.605338551,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_7.h5\n"}
+,{"stream_name":"stdout","time":32.114975097,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_8.h5\n"}
+,{"stream_name":"stdout","time":32.609443338,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/D-111_9.h5\n"}
+,{"stream_name":"stdout","time":33.086195597,"data":"--------------------------------------------------\n"}
+,{"stream_name":"stdout","time":33.086231321,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_0.h5\n"}
+,{"stream_name":"stdout","time":33.556370161,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_1.h5\n"}
+,{"stream_name":"stdout","time":34.237488145,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_2.h5\n"}
+,{"stream_name":"stdout","time":34.830057757,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_3.h5\n"}
+,{"stream_name":"stdout","time":35.378954856,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_4.h5\n"}
+,{"stream_name":"stdout","time":35.909104123,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_5.h5\n"}
+,{"stream_name":"stdout","time":36.399422433,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_6.h5\n"}
+,{"stream_name":"stdout","time":36.903978025,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_7.h5\n"}
+,{"stream_name":"stdout","time":37.442971008,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_8.h5\n"}
+,{"stream_name":"stdout","time":37.932492522,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-d-111/v0629_9.h5\n"}
+,{"stream_name":"stdout","time":38.436410488,"data":"--------------------------------------------------\n"}
+,{"stream_name":"stdout","time":38.436464869,"data":"[INFO]NumUseModels:20\n"}
+,{"stream_name":"stdout","time":38.436471307,"data":"▶ INFERENCE MODE 3 – loading artefacts from /kaggle/input/n-splits-10\n"}
+,{"stream_name":"stdout","time":38.436476402,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_0.h5\n"}
+,{"stream_name":"stdout","time":38.885045947,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_1.h5\n"}
+,{"stream_name":"stdout","time":39.326137092,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_2.h5\n"}
+,{"stream_name":"stdout","time":39.775214624,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_3.h5\n"}
+,{"stream_name":"stdout","time":40.213511529,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_4.h5\n"}
+,{"stream_name":"stdout","time":40.657969037,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_5.h5\n"}
+,{"stream_name":"stdout","time":41.133946951,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_6.h5\n"}
+,{"stream_name":"stdout","time":41.740414049,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_7.h5\n"}
+,{"stream_name":"stdout","time":42.39339229,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_8.h5\n"}
+,{"stream_name":"stdout","time":42.815183183,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/n-splits-10/gesture_model_fold_9.h5\n"}
+,{"stream_name":"stdout","time":43.288363381,"data":"--------------------------------------------------\n"}
+,{"stream_name":"stdout","time":43.288403085,"data":"[INFO]NumUseModels:30\n"}
+,{"stream_name":"stdout","time":43.288409909,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_0.h5\n"}
+,{"stream_name":"stdout","time":43.738712061,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_1.h5\n"}
+,{"stream_name":"stdout","time":44.178629716,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_2.h5\n"}
+,{"stream_name":"stdout","time":44.645718405,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_3.h5\n"}
+,{"stream_name":"stdout","time":45.098228097,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_4.h5\n"}
+,{"stream_name":"stdout","time":45.537760814,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_5.h5\n"}
+,{"stream_name":"stdout","time":45.98439631,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_6.h5\n"}
+,{"stream_name":"stdout","time":46.464083941,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_7.h5\n"}
+,{"stream_name":"stdout","time":46.945614314,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_8.h5\n"}
+,{"stream_name":"stdout","time":47.42652942,"data":"\u003e\u003e\u003eLoadModel\u003e\u003e\u003e /kaggle/input/cmi-data-tensorflow-train/gesture_model_fold_9.h5\n"}
+,{"stream_name":"stdout","time":47.69282411,"data":"--------------------------------------------------\n"}
+,{"stream_name":"stdout","time":47.692862397,"data":"[INFO]NumUseModels:40\n"}
+,{"stream_name":"stdout","time":158.65801539,"data":"Have precomputed, skip compute.\n"}
+,{"stream_name":"stdout","time":195.111540234,"data":"\n"}
+,{"stream_name":"stdout","time":195.111572486,"data":"交叉验证折叠统计:\n"}
+,{"stream_name":"stdout","time":195.111578271,"data":"\n"}
+,{"stream_name":"stdout","time":195.11159282,"data":"Fold 1:\n"}
+,{"stream_name":"stdout","time":195.111610695,"data":"类别                                                 训练集        验证集       \n"}
+,{"stream_name":"stdout","time":195.111614499,"data":"Above ear - pull hair                              511        127       \n"}
+,{"stream_name":"stdout","time":195.111617638,"data":"Cheek - pinch skin                                 509        128       \n"}
+,{"stream_name":"stdout","time":195.111620998,"data":"Drink from bottle/cup                              129        32        \n"}
+,{"stream_name":"stdout","time":195.111624111,"data":"Eyebrow - pull hair                                510        128       \n"}
+,{"stream_name":"stdout","time":195.111627359,"data":"Eyelash - pull hair                                512        128       \n"}
+,{"stream_name":"stdout","time":195.111630555,"data":"Feel around in tray and pull out an object         129        32        \n"}
+,{"stream_name":"stdout","time":195.111633992,"data":"Forehead - pull hairline                           512        128       \n"}
+,{"stream_name":"stdout","time":195.11163757,"data":"Forehead - scratch                                 512        128       \n"}
+,{"stream_name":"stdout","time":195.111640704,"data":"Glasses on/off                                     128        33        \n"}
+,{"stream_name":"stdout","time":195.111643829,"data":"Neck - pinch skin                                  512        128       \n"}
+,{"stream_name":"stdout","time":195.111646991,"data":"Neck - scratch                                     512        128       \n"}
+,{"stream_name":"stdout","time":195.111650085,"data":"Pinch knee/leg skin                                129        32        \n"}
+,{"stream_name":"stdout","time":195.111653358,"data":"Pull air toward your face                          381        96        \n"}
+,{"stream_name":"stdout","time":195.111656556,"data":"Scratch knee/leg skin                              129        32        \n"}
+,{"stream_name":"stdout","time":195.111659741,"data":"Text on phone                                      512        128       \n"}
+,{"stream_name":"stdout","time":195.11166284,"data":"Wave hello                                         382        96        \n"}
+,{"stream_name":"stdout","time":195.111666187,"data":"Write name in air                                  382        95        \n"}
+,{"stream_name":"stdout","time":195.111669385,"data":"Write name on leg                                  129        32        \n"}
+,{"stream_name":"stdout","time":195.111672426,"data":"\n"}
+,{"stream_name":"stdout","time":195.111675533,"data":"Fold 2:\n"}
+,{"stream_name":"stdout","time":195.111678706,"data":"类别                                                 训练集        验证集       \n"}
+,{"stream_name":"stdout","time":195.111682052,"data":"Above ear - pull hair                              511        127       \n"}
+,{"stream_name":"stdout","time":195.11168513,"data":"Cheek - pinch skin                                 509        128       \n"}
+,{"stream_name":"stdout","time":195.111688239,"data":"Drink from bottle/cup                              129        32        \n"}
+,{"stream_name":"stdout","time":195.111691547,"data":"Eyebrow - pull hair                                510        128       \n"}
+,{"stream_name":"stdout","time":195.111694666,"data":"Eyelash - pull hair                                512        128       \n"}
+,{"stream_name":"stdout","time":195.111697776,"data":"Feel around in tray and pull out an object         129        32        \n"}
+,{"stream_name":"stdout","time":195.111701337,"data":"Forehead - pull hairline                           512        128       \n"}
+,{"stream_name":"stdout","time":195.111710571,"data":"Forehead - scratch                                 512        128       \n"}
+,{"stream_name":"stdout","time":195.111713913,"data":"Glasses on/off                                     129        32        \n"}
+,{"stream_name":"stdout","time":195.111717093,"data":"Neck - pinch skin                                  512        128       \n"}
+,{"stream_name":"stdout","time":195.111720365,"data":"Neck - scratch                                     512        128       \n"}
+,{"stream_name":"stdout","time":195.111723432,"data":"Pinch knee/leg skin                                129        32        \n"}
+,{"stream_name":"stdout","time":195.111726633,"data":"Pull air toward your face                          381        96        \n"}
+,{"stream_name":"stdout","time":195.11172978,"data":"Scratch knee/leg skin                              129        32        \n"}
+,{"stream_name":"stdout","time":195.111733029,"data":"Text on phone                                      512        128       \n"}
+,{"stream_name":"stdout","time":195.11173615,"data":"Wave hello                                         382        96        \n"}
+,{"stream_name":"stdout","time":195.111739441,"data":"Write name in air                                  382        95        \n"}
+,{"stream_name":"stdout","time":195.11174264,"data":"Write name on leg                                  129        32        \n"}
+,{"stream_name":"stdout","time":195.111745888,"data":"\n"}
+,{"stream_name":"stdout","time":195.111748948,"data":"Fold 3:\n"}
+,{"stream_name":"stdout","time":195.111751979,"data":"类别                                                 训练集        验证集       \n"}
+,{"stream_name":"stdout","time":195.11175523,"data":"Above ear - pull hair                              510        128       \n"}
+,{"stream_name":"stdout","time":195.111758319,"data":"Cheek - pinch skin                                 510        127       \n"}
+,{"stream_name":"stdout","time":195.11176143,"data":"Drink from bottle/cup                              129        32        \n"}
+,{"stream_name":"stdout","time":195.111764593,"data":"Eyebrow - pull hair                                511        127       \n"}
+,{"stream_name":"stdout","time":195.111767717,"data":"Eyelash - pull hair                                512        128       \n"}
+,{"stream_name":"stdout","time":195.111770838,"data":"Feel around in tray and pull out an object         129        32        \n"}
+,{"stream_name":"stdout","time":195.111774068,"data":"Forehead - pull hairline                           512        128       \n"}
+,{"stream_name":"stdout","time":195.112058435,"data":"Forehead - scratch                                 512        128       \n"}
+,{"stream_name":"stdout","time":195.112083489,"data":"Glasses on/off                                     129        32        \n"}
+,{"stream_name":"stdout","time":195.112100805,"data":"Neck - pinch skin                                  512        128       \n"}
+,{"stream_name":"stdout","time":195.112140387,"data":"Neck - scratch                                     512        128       \n"}
+,{"stream_name":"stdout","time":195.112170346,"data":"Pinch knee/leg skin                                128        33        \n"}
+,{"stream_name":"stdout","time":195.112193712,"data":"Pull air toward your face                          382        95        \n"}
+,{"stream_name":"stdout","time":195.112226593,"data":"Scratch knee/leg skin                              129        32        \n"}
+,{"stream_name":"stdout","time":195.112246469,"data":"Text on phone                                      512        128       \n"}
+,{"stream_name":"stdout","time":195.11226727,"data":"Wave hello                                         382        96        \n"}
+,{"stream_name":"stdout","time":195.112283323,"data":"Write name in air                                  382        95        \n"}
+,{"stream_name":"stdout","time":195.112287598,"data":"Write name on leg                                  128        33        \n"}
+,{"stream_name":"stdout","time":195.112291675,"data":"\n"}
+,{"stream_name":"stdout","time":195.112295491,"data":"Fold 4:\n"}
+,{"stream_name":"stdout","time":195.112299413,"data":"类别                                                 训练集        验证集       \n"}
+,{"stream_name":"stdout","time":195.112303831,"data":"Above ear - pull hair                              510        128       \n"}
+,{"stream_name":"stdout","time":195.112307715,"data":"Cheek - pinch skin                                 510        127       \n"}
+,{"stream_name":"stdout","time":195.112311825,"data":"Drink from bottle/cup                              129        32        \n"}
+,{"stream_name":"stdout","time":195.112315755,"data":"Eyebrow - pull hair                                511        127       \n"}
+,{"stream_name":"stdout","time":195.112319651,"data":"Eyelash - pull hair                                512        128       \n"}
+,{"stream_name":"stdout","time":195.112323777,"data":"Feel around in tray and pull out an object         128        33        \n"}
+,{"stream_name":"stdout","time":195.11232785,"data":"Forehead - pull hairline                           512        128       \n"}
+,{"stream_name":"stdout","time":195.112331854,"data":"Forehead - scratch                                 512        128       \n"}
+,{"stream_name":"stdout","time":195.112335735,"data":"Glasses on/off                                     129        32        \n"}
+,{"stream_name":"stdout","time":195.112339646,"data":"Neck - pinch skin                                  512        128       \n"}
+,{"stream_name":"stdout","time":195.112343549,"data":"Neck - scratch                                     512        128       \n"}
+,{"stream_name":"stdout","time":195.112347658,"data":"Pinch knee/leg skin                                129        32        \n"}
+,{"stream_name":"stdout","time":195.112351637,"data":"Pull air toward your face                          382        95        \n"}
+,{"stream_name":"stdout","time":195.112355593,"data":"Scratch knee/leg skin                              128        33        \n"}
+,{"stream_name":"stdout","time":195.112359482,"data":"Text on phone                                      512        128       \n"}
+,{"stream_name":"stdout","time":195.112363353,"data":"Wave hello                                         383        95        \n"}
+,{"stream_name":"stdout","time":195.112367431,"data":"Write name in air                                  381        96        \n"}
+,{"stream_name":"stdout","time":195.112371363,"data":"Write name on leg                                  129        32        \n"}
+,{"stream_name":"stdout","time":195.112375227,"data":"\n"}
+,{"stream_name":"stdout","time":195.11237882,"data":"Fold 5:\n"}
+,{"stream_name":"stdout","time":195.112382519,"data":"类别                                                 训练集        验证集       \n"}
+,{"stream_name":"stdout","time":195.112386736,"data":"Above ear - pull hair                              510        128       \n"}
+,{"stream_name":"stdout","time":195.112390662,"data":"Cheek - pinch skin                                 510        127       \n"}
+,{"stream_name":"stdout","time":195.11239472,"data":"Drink from bottle/cup                              128        33        \n"}
+,{"stream_name":"stdout","time":195.112398584,"data":"Eyebrow - pull hair                                510        128       \n"}
+,{"stream_name":"stdout","time":195.112407454,"data":"Eyelash - pull hair                                512        128       \n"}
+,{"stream_name":"stdout","time":195.112412534,"data":"Feel around in tray and pull out an object         129        32        \n"}
+,{"stream_name":"stdout","time":195.11241646,"data":"Forehead - pull hairline                           512        128       \n"}
+,{"stream_name":"stdout","time":195.112420346,"data":"Forehead - scratch                                 512        128       \n"}
+,{"stream_name":"stdout","time":195.112424598,"data":"Glasses on/off                                     129        32        \n"}
+,{"stream_name":"stdout","time":195.112428574,"data":"Neck - pinch skin                                  512        128       \n"}
+,{"stream_name":"stdout","time":195.11243248,"data":"Neck - scratch                                     512        128       \n"}
+,{"stream_name":"stdout","time":195.112436364,"data":"Pinch knee/leg skin                                129        32        \n"}
+,{"stream_name":"stdout","time":195.112440332,"data":"Pull air toward your face                          382        95        \n"}
+,{"stream_name":"stdout","time":195.112444484,"data":"Scratch knee/leg skin                              129        32        \n"}
+,{"stream_name":"stdout","time":195.112448611,"data":"Text on phone                                      512        128       \n"}
+,{"stream_name":"stdout","time":195.112453404,"data":"Wave hello                                         383        95        \n"}
+,{"stream_name":"stdout","time":195.112457475,"data":"Write name in air                                  381        96        \n"}
+,{"stream_name":"stdout","time":195.112461194,"data":"Write name on leg                                  129        32        \n"}
+,{"stream_name":"stdout","time":204.3212319,"data":"CompetitionMetric could not be imported. OOF/CV score will not be calculated.\n"}
+,{"stream_name":"stdout","time":204.32126294,"data":"▶ ライブラリのインポート完了\n"}
+,{"stream_name":"stdout","time":204.321268561,"data":"  - TensorFlow: 2.18.0\n"}
+,{"stream_name":"stdout","time":204.321272521,"data":"  - PyTorch: 2.6.0+cu124\n"}
+,{"stream_name":"stdout","time":204.32127625,"data":"▶ TRAINモード: False\n"}
+,{"stream_name":"stdout","time":204.321280898,"data":"▶ 推論モード開始 – 学習済みモデルとアーティファクトを読み込みます...\n"}
+,{"stream_name":"stdout","time":204.32128518,"data":"  モデル群A (自作5-Fold Gated GRUモデル) を読み込み中...\n"}
+,{"stream_name":"stdout","time":209.641663466,"data":"  \u003e 10個のモデルを正常に読み込みました。\n"}
+,{"stream_name":"stdout","time":209.641705128,"data":"\n"}
+,{"stream_name":"stdout","time":209.641710633,"data":"  モデル群B (公開TF/Kerasモデル) を読み込み中...\n"}
+,{"stream_name":"stdout","time":210.113677289,"data":"  \u003e 1個のモデルを正常に読み込みました。\n"}
+,{"stream_name":"stdout","time":210.113707269,"data":"\n"}
+,{"stream_name":"stdout","time":210.113713309,"data":"  モデル群C (公開PyTorchモデル) を読み込み中...\n"}
+,{"stream_name":"stdout","time":210.337232885,"data":"  \u003e 5個のモデルを正常に読み込みました。\n"}
+,{"stream_name":"stderr","time":211.597585331,"data":"2025-08-27 05:52:25.776596: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":211.805212191,"data":"2025-08-27 05:52:25.776596: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":212.532828739,"data":"I0000 00:00:1756273946.711803      64 cuda_dnn.cc:529] Loaded cuDNN version 90300\n"}
+,{"stream_name":"stderr","time":212.734975194,"data":"I0000 00:00:1756273946.711803      64 cuda_dnn.cc:529] Loaded cuDNN version 90300\n"}
+,{"stream_name":"stderr","time":216.629385513,"data":"2025-08-27 05:52:30.808393: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":216.832749685,"data":"2025-08-27 05:52:30.808393: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":221.872505279,"data":"2025-08-27 05:52:36.051496: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":222.07590467,"data":"2025-08-27 05:52:36.051496: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":226.924994065,"data":"2025-08-27 05:52:41.103995: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":227.130923418,"data":"2025-08-27 05:52:41.103995: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":232.090164556,"data":"2025-08-27 05:52:46.269181: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":232.293533561,"data":"2025-08-27 05:52:46.269181: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":237.344893494,"data":"2025-08-27 05:52:51.523896: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":237.547718314,"data":"2025-08-27 05:52:51.523896: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":242.601559629,"data":"2025-08-27 05:52:56.780534: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":242.814169122,"data":"2025-08-27 05:52:56.780534: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":247.821256802,"data":"2025-08-27 05:53:02.000285: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":248.024332276,"data":"2025-08-27 05:53:02.000285: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":253.007475148,"data":"2025-08-27 05:53:07.186440: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":253.210550516,"data":"2025-08-27 05:53:07.186440: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":258.19202199,"data":"2025-08-27 05:53:12.371033: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":258.396669997,"data":"2025-08-27 05:53:12.371033: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":263.500011993,"data":"2025-08-27 05:53:17.678936: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stderr","time":263.702463308,"data":"2025-08-27 05:53:17.678936: E tensorflow/core/framework/node_def_util.cc:676] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op\u003cname=MapDataset; signature=input_dataset:variant, other_arguments: -\u003e handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=\"\"\u003e This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}\n"}
+,{"stream_name":"stdout","time":270.132088479,"data":"  sequence_id              gesture\n"}
+,{"stream_name":"stdout","time":270.132131012,"data":"0  SEQ_000001  Eyebrow - pull hair\n"}
+,{"stream_name":"stdout","time":270.132138713,"data":"1  SEQ_000011  Eyelash - pull hair\n"}
+,{"stream_name":"stderr","time":276.087117566,"data":"/usr/local/lib/python3.11/dist-packages/traitlets/traitlets.py:2915: FutureWarning: --Exporter.preprocessors=[\"remove_papermill_header.RemovePapermillHeader\"] for containers is deprecated in traitlets 5.0. You can pass `--Exporter.preprocessors item` ... multiple times to add items to a list.\n"}
+,{"stream_name":"stderr","time":276.087171727,"data":"  warn(\n"}
+,{"stream_name":"stderr","time":276.120211612,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":276.402190694,"data":"[NbConvertApp] Writing 135742 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":277.758229698,"data":"/usr/local/lib/python3.11/dist-packages/traitlets/traitlets.py:2915: FutureWarning: --Exporter.preprocessors=[\"nbconvert.preprocessors.ExtractOutputPreprocessor\"] for containers is deprecated in traitlets 5.0. You can pass `--Exporter.preprocessors item` ... multiple times to add items to a list.\n"}
+,{"stream_name":"stderr","time":277.758274025,"data":"  warn(\n"}
+,{"stream_name":"stderr","time":277.785304083,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":278.85714127,"data":"[NbConvertApp] Writing 774669 bytes to __results__.html\n"}
+]

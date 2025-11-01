@@ -237,7 +237,7 @@ def calculate_sequence_statistics(df):
     """
     base_feats = [
         "acc_x",
-        "acc_y", 
+        "acc_y",
         "acc_z",
         "rot_w",
         "rot_x",
@@ -259,54 +259,55 @@ def calculate_sequence_statistics(df):
     ]
 
     # Convert to LazyFrame if needed (from pandas or Polars DataFrame)
-    if hasattr(df, 'lazy'):
+    if hasattr(df, "lazy"):
         # Polars DataFrame
         lf = df.lazy()
-    elif hasattr(df, 'to_pandas'):
+    elif hasattr(df, "to_pandas"):
         # Polars LazyFrame (already lazy)
         lf = df
     else:
         # pandas DataFrame - convert to Polars LazyFrame
         lf = pl.from_pandas(df).lazy()
-    
+
     # Filter base_feats to only include columns that exist in the dataframe
     # Use collect_schema() to avoid performance warning
     schema_columns = lf.collect_schema().names()
     available_feats = [feat for feat in base_feats if feat in schema_columns]
-    
+
     # Build aggregation expressions
     agg_exprs = []
-    
+
     # Basic statistics for each feature
     for feat in available_feats:
-        agg_exprs.extend([
-            pl.col(feat).min().alias(f"{feat}_min"),
-            pl.col(feat).max().alias(f"{feat}_max"),
-            pl.col(feat).mean().alias(f"{feat}_mean"),
-            pl.col(feat).median().alias(f"{feat}_median"),
-            pl.col(feat).quantile(0.25).alias(f"{feat}_q25"),
-            pl.col(feat).quantile(0.75).alias(f"{feat}_q75"),
-            pl.col(feat).std().alias(f"{feat}_std"),
-            pl.col(feat).skew().alias(f"{feat}_skew"),
-            # Zero crossing count: count sign changes
-            (pl.col(feat).sign().diff().abs() == 2).sum().alias(f"{feat}_zero_crossings"),
-        ])
-    
+        agg_exprs.extend(
+            [
+                pl.col(feat).min().alias(f"{feat}_min"),
+                pl.col(feat).max().alias(f"{feat}_max"),
+                pl.col(feat).mean().alias(f"{feat}_mean"),
+                pl.col(feat).median().alias(f"{feat}_median"),
+                pl.col(feat).quantile(0.25).alias(f"{feat}_q25"),
+                pl.col(feat).quantile(0.75).alias(f"{feat}_q75"),
+                pl.col(feat).std().alias(f"{feat}_std"),
+                pl.col(feat).skew().alias(f"{feat}_skew"),
+                # Zero crossing count: count sign changes
+                (pl.col(feat).sign().diff().abs() == 2).sum().alias(f"{feat}_zero_crossings"),
+            ]
+        )
+
     # Sequence length
     agg_exprs.append(pl.len().alias("sequence_length"))
-    
+
     # Sequence counter range (if column exists)
     if "sequence_counter" in schema_columns:
         agg_exprs.append(
-            (pl.col("sequence_counter").max() - pl.col("sequence_counter").min())
-            .alias("sequence_counter_range")
+            (pl.col("sequence_counter").max() - pl.col("sequence_counter").min()).alias("sequence_counter_range")
         )
     else:
         agg_exprs.append(pl.lit(0).alias("sequence_counter_range"))
-    
+
     # Execute the group_by aggregation
     stats_df = lf.group_by("sequence_id").agg(agg_exprs).collect()
-    
+
     return stats_df
 
 
@@ -327,14 +328,13 @@ def normalize_statistical_features(stats_df, scaling_params=None):
     if scaling_params is None:
         # Calculate scaling parameters using Polars efficient operations
         scaling_params = {}
-        
+
         # Calculate all means and stds in one pass for efficiency
-        stats = stats_df.select([
-            pl.col(col).mean().alias(f"{col}_mean") for col in feature_cols
-        ] + [
-            pl.col(col).std().alias(f"{col}_std") for col in feature_cols
-        ]).row(0)
-        
+        stats = stats_df.select(
+            [pl.col(col).mean().alias(f"{col}_mean") for col in feature_cols]
+            + [pl.col(col).std().alias(f"{col}_std") for col in feature_cols]
+        ).row(0)
+
         # Create scaling_params dictionary
         for i, col in enumerate(feature_cols):
             mean_val = stats[i]  # means come first
@@ -343,20 +343,18 @@ def normalize_statistical_features(stats_df, scaling_params=None):
 
     # Apply normalization using Polars expressions
     normalized_exprs = [pl.col("sequence_id")]  # Keep sequence_id as is
-    
+
     for col in feature_cols:
         mean_val = scaling_params[col]["mean"]
         std_val = scaling_params[col]["std"]
-        
+
         if std_val > 0:
             # Standard normalization: (x - mean) / std
-            normalized_exprs.append(
-                ((pl.col(col) - mean_val) / std_val).alias(col)
-            )
+            normalized_exprs.append(((pl.col(col) - mean_val) / std_val).alias(col))
         else:
             # Handle zero std case
             normalized_exprs.append(pl.lit(0.0).alias(col))
-    
+
     # Apply all normalizations in one select operation
     normalized_df = stats_df.select(normalized_exprs)
 
@@ -1099,7 +1097,7 @@ class IMUDataset(Dataset):
         """統計量特徴量を計算し、正規化パラメータを設定（Polars高速化版）."""
         # 物理特徴量を含むデータフレームを作成（_preprocess_dataと同じ処理）
         df_with_physics = self._add_physics_features(self.df)
-        
+
         # 統計量特徴量を計算（物理特徴量を含むデータフレームを使用）
         self.stats_df = calculate_sequence_statistics(df_with_physics)
 
@@ -1108,14 +1106,13 @@ class IMUDataset(Dataset):
 
         # sequence_idをキーとした辞書に変換（Polars to_dict使用で高速化）
         stats_dict = self.stats_df_normalized.to_dict(as_series=False)
-        
+
         self.sequence_to_stats = {}
         for i, seq_id in enumerate(stats_dict["sequence_id"]):
             # sequence_id以外の列を特徴量として取得
-            stats_features = np.array([
-                stats_dict[col][i] for col in stats_dict.keys() 
-                if col != "sequence_id"
-            ], dtype=np.float32)
+            stats_features = np.array(
+                [stats_dict[col][i] for col in stats_dict.keys() if col != "sequence_id"], dtype=np.float32
+            )
             self.sequence_to_stats[seq_id] = stats_features
 
         # 統計量特徴量の次元数を記録

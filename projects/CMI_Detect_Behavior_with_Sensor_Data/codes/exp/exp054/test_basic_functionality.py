@@ -9,9 +9,7 @@ from pathlib import Path
 # Add codes directory to path for direct execution
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-import numpy as np
 import pandas as pd
-import polars as pl
 import torch
 from dataset import calculate_sequence_statistics, normalize_statistical_features
 
@@ -101,12 +99,12 @@ def test_model_forward():
     # Test forward pass
     multiclass_logits, binary_logits, nine_class_logits = model(imu_data, demographics_embedding, statistical_features)
 
-    print(f"Input shapes:")
+    print("Input shapes:")
     print(f"  IMU: {imu_data.shape}")
     print(f"  Demographics: {demographics_embedding.shape}")
     print(f"  Statistical: {statistical_features.shape}")
 
-    print(f"Output shapes:")
+    print("Output shapes:")
     print(f"  Multiclass logits: {multiclass_logits.shape}")
     print(f"  Binary logits: {binary_logits.shape}")
     print(f"  Nine class logits: {nine_class_logits.shape}")
@@ -133,10 +131,10 @@ def main():
         print("\n🎉 All tests passed! exp054 implementation is working correctly.")
 
         # Summary
-        print(f"\nSummary:")
+        print("\nSummary:")
         print(f"  Statistical features per sequence: {stats_df.shape[1] - 1}")
-        print(f"  Expected total feature dimension: IMU features + Demographics + Statistical features")
-        print(f"  Model successfully processes all feature types")
+        print("  Expected total feature dimension: IMU features + Demographics + Statistical features")
+        print("  Model successfully processes all feature types")
 
     except Exception as e:
         print(f"\n❌ Test failed with error: {e}")

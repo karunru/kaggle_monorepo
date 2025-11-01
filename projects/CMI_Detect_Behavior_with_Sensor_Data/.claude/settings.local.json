@@ -13,8 +13,7 @@
       "WebFetch(domain:pandas.pydata.org)",
       "WebFetch(domain:numpy.org)",
       "Bash(mkdir:*)",
-      "mcp__playwright__browser_navigate",
-      "mcp__playwright__browser_snapshot",
+      "mcp__playwright",
       "WebFetch(domain:www.kaggle.com)",
       "Bash(cut:*)",
       "Bash(find:*)",
@@ -59,15 +58,15 @@
     "deny": [
       "Bash(uv sync:*)",
       "Bash(python:*)",
-      "Read(pattern:**/__pycache__/**)",
-      "Read(pattern:.coverage)",
-      "Read(pattern:**/.mypy_cache/**)",
-      "Read(pattern:**/.pytest_cache/**)",
-      "Read(pattern:**/.ruff_cache/**)",
-      "Read(pattern:**/.ipynb_checkpoints/**)",
-      "Read(pattern:**/.venv/**)",
-      "Read(pattern:**/*.egg-info/**)",
-      "Read(pattern:.env)"
+      "Read(**/__pycache__/**)",
+      "Read(**/.mypy_cache/**)",
+      "Read(**/.pytest_cache/**)",
+      "Read(**/.ruff_cache/**)",
+      "Read(**/.ipynb_checkpoints/**)",
+      "Read(**/.venv/**)",
+      "Read(**/*.egg-info/**)",
+      "Read(**/.coverage)",
+      "Read(**/.env)"
     ]
   }
 }

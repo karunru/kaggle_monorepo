@@ -1,0 +1,5571 @@
+{
+  "pytorch_models": [
+    {
+      "file_name": "fold_1_model.pth",
+      "file_size_mb": 5.26229190826416,
+      "unsafe_globals": [
+        "numpy.core.multiarray.scalar",
+        "numpy.dtype"
+      ],
+      "checkpoint_keys": [
+        "model_state_dict",
+        "optimizer_state_dict",
+        "epoch",
+        "val_loss",
+        "val_acc",
+        "val_score",
+        "model_config"
+      ],
+      "success": true,
+      "error": null,
+      "model_info": {
+        "total_parameters": 456475,
+        "trainable_parameters": 0,
+        "non_trainable_parameters": 456475,
+        "num_layers": 64,
+        "layer_categories": {
+          "convolutional": 4,
+          "linear": 0,
+          "normalization": 30,
+          "attention": 2,
+          "embedding": 0,
+          "other": 28
+        },
+        "layer_details": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.0.weight",
+            "shape": [
+              8,
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.2.weight",
+            "shape": [
+              64,
+              8
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.0.weight",
+            "shape": [
+              64,
+              20,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1280,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.0.weight",
+            "shape": [
+              16,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.2.weight",
+            "shape": [
+              128,
+              16
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.0.weight",
+            "shape": [
+              128,
+              64,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 8192,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense1.weight",
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 65536,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense2.weight",
+            "shape": [
+              128,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 32768,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.weight",
+            "shape": [
+              18,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2304,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.bias",
+            "shape": [
+              18
+            ],
+            "dtype": "torch.float32",
+            "param_count": 18,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "architecture_analysis": {
+          "primary_type": "Attention-based (Transformer-like)",
+          "sub_components": [
+            "Self-Attention"
+          ],
+          "input_size_estimate": null,
+          "output_size_estimate": null,
+          "depth_estimate": 9,
+          "special_features": [
+            "Normalization"
+          ]
+        },
+        "conv_layers": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "linear_layers": [],
+        "norm_layers": [
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "attention_layers": [
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "embedding_layers": []
+      },
+      "optimizer_info": {
+        "keys": [
+          "state",
+          "param_groups"
+        ]
+      },
+      "epoch": 66,
+      "val_loss": 1.2644926570355892,
+      "val_acc": 0.6989528795811518,
+      "val_score": 0.8071991665390703,
+      "model_config": {
+        "imu_dim": 20,
+        "tof_dim": 0,
+        "n_classes": 18,
+        "weight_decay": 0.003
+      }
+    },
+    {
+      "file_name": "fold_2_model.pth",
+      "file_size_mb": 5.26229190826416,
+      "unsafe_globals": [
+        "numpy.core.multiarray.scalar",
+        "numpy.dtype"
+      ],
+      "checkpoint_keys": [
+        "model_state_dict",
+        "optimizer_state_dict",
+        "epoch",
+        "val_loss",
+        "val_acc",
+        "val_score",
+        "model_config"
+      ],
+      "success": true,
+      "error": null,
+      "model_info": {
+        "total_parameters": 456475,
+        "trainable_parameters": 0,
+        "non_trainable_parameters": 456475,
+        "num_layers": 64,
+        "layer_categories": {
+          "convolutional": 4,
+          "linear": 0,
+          "normalization": 30,
+          "attention": 2,
+          "embedding": 0,
+          "other": 28
+        },
+        "layer_details": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.0.weight",
+            "shape": [
+              8,
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.2.weight",
+            "shape": [
+              64,
+              8
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.0.weight",
+            "shape": [
+              64,
+              20,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1280,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.0.weight",
+            "shape": [
+              16,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.2.weight",
+            "shape": [
+              128,
+              16
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.0.weight",
+            "shape": [
+              128,
+              64,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 8192,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense1.weight",
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 65536,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense2.weight",
+            "shape": [
+              128,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 32768,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.weight",
+            "shape": [
+              18,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2304,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.bias",
+            "shape": [
+              18
+            ],
+            "dtype": "torch.float32",
+            "param_count": 18,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "architecture_analysis": {
+          "primary_type": "Attention-based (Transformer-like)",
+          "sub_components": [
+            "Self-Attention"
+          ],
+          "input_size_estimate": null,
+          "output_size_estimate": null,
+          "depth_estimate": 9,
+          "special_features": [
+            "Normalization"
+          ]
+        },
+        "conv_layers": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "linear_layers": [],
+        "norm_layers": [
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "attention_layers": [
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "embedding_layers": []
+      },
+      "optimizer_info": {
+        "keys": [
+          "state",
+          "param_groups"
+        ]
+      },
+      "epoch": 49,
+      "val_loss": 1.2928734025096191,
+      "val_acc": 0.6458333333333334,
+      "val_score": 0.7666217920864523,
+      "model_config": {
+        "imu_dim": 20,
+        "tof_dim": 0,
+        "n_classes": 18,
+        "weight_decay": 0.003
+      }
+    },
+    {
+      "file_name": "fold_3_model.pth",
+      "file_size_mb": 5.26229190826416,
+      "unsafe_globals": [
+        "numpy.core.multiarray.scalar",
+        "numpy.dtype"
+      ],
+      "checkpoint_keys": [
+        "model_state_dict",
+        "optimizer_state_dict",
+        "epoch",
+        "val_loss",
+        "val_acc",
+        "val_score",
+        "model_config"
+      ],
+      "success": true,
+      "error": null,
+      "model_info": {
+        "total_parameters": 456475,
+        "trainable_parameters": 0,
+        "non_trainable_parameters": 456475,
+        "num_layers": 64,
+        "layer_categories": {
+          "convolutional": 4,
+          "linear": 0,
+          "normalization": 30,
+          "attention": 2,
+          "embedding": 0,
+          "other": 28
+        },
+        "layer_details": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.0.weight",
+            "shape": [
+              8,
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.2.weight",
+            "shape": [
+              64,
+              8
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.0.weight",
+            "shape": [
+              64,
+              20,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1280,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.0.weight",
+            "shape": [
+              16,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.2.weight",
+            "shape": [
+              128,
+              16
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.0.weight",
+            "shape": [
+              128,
+              64,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 8192,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense1.weight",
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 65536,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense2.weight",
+            "shape": [
+              128,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 32768,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.weight",
+            "shape": [
+              18,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2304,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.bias",
+            "shape": [
+              18
+            ],
+            "dtype": "torch.float32",
+            "param_count": 18,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "architecture_analysis": {
+          "primary_type": "Attention-based (Transformer-like)",
+          "sub_components": [
+            "Self-Attention"
+          ],
+          "input_size_estimate": null,
+          "output_size_estimate": null,
+          "depth_estimate": 9,
+          "special_features": [
+            "Normalization"
+          ]
+        },
+        "conv_layers": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "linear_layers": [],
+        "norm_layers": [
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "attention_layers": [
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "embedding_layers": []
+      },
+      "optimizer_info": {
+        "keys": [
+          "state",
+          "param_groups"
+        ]
+      },
+      "epoch": 65,
+      "val_loss": 1.5023149383418701,
+      "val_acc": 0.6387692307692308,
+      "val_score": 0.7704692389048624,
+      "model_config": {
+        "imu_dim": 20,
+        "tof_dim": 0,
+        "n_classes": 18,
+        "weight_decay": 0.003
+      }
+    },
+    {
+      "file_name": "fold_4_model.pth",
+      "file_size_mb": 5.26229190826416,
+      "unsafe_globals": [
+        "numpy.core.multiarray.scalar",
+        "numpy.dtype"
+      ],
+      "checkpoint_keys": [
+        "model_state_dict",
+        "optimizer_state_dict",
+        "epoch",
+        "val_loss",
+        "val_acc",
+        "val_score",
+        "model_config"
+      ],
+      "success": true,
+      "error": null,
+      "model_info": {
+        "total_parameters": 456475,
+        "trainable_parameters": 0,
+        "non_trainable_parameters": 456475,
+        "num_layers": 64,
+        "layer_categories": {
+          "convolutional": 4,
+          "linear": 0,
+          "normalization": 30,
+          "attention": 2,
+          "embedding": 0,
+          "other": 28
+        },
+        "layer_details": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.0.weight",
+            "shape": [
+              8,
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.2.weight",
+            "shape": [
+              64,
+              8
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.0.weight",
+            "shape": [
+              64,
+              20,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1280,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.0.weight",
+            "shape": [
+              16,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.2.weight",
+            "shape": [
+              128,
+              16
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.0.weight",
+            "shape": [
+              128,
+              64,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 8192,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense1.weight",
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 65536,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense2.weight",
+            "shape": [
+              128,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 32768,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.weight",
+            "shape": [
+              18,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2304,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.bias",
+            "shape": [
+              18
+            ],
+            "dtype": "torch.float32",
+            "param_count": 18,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "architecture_analysis": {
+          "primary_type": "Attention-based (Transformer-like)",
+          "sub_components": [
+            "Self-Attention"
+          ],
+          "input_size_estimate": null,
+          "output_size_estimate": null,
+          "depth_estimate": 9,
+          "special_features": [
+            "Normalization"
+          ]
+        },
+        "conv_layers": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "linear_layers": [],
+        "norm_layers": [
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "attention_layers": [
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "embedding_layers": []
+      },
+      "optimizer_info": {
+        "keys": [
+          "state",
+          "param_groups"
+        ]
+      },
+      "epoch": 60,
+      "val_loss": 1.5366887681405335,
+      "val_acc": 0.647671568627451,
+      "val_score": 0.7654802987468692,
+      "model_config": {
+        "imu_dim": 20,
+        "tof_dim": 0,
+        "n_classes": 18,
+        "weight_decay": 0.003
+      }
+    },
+    {
+      "file_name": "fold_5_model.pth",
+      "file_size_mb": 5.26229190826416,
+      "unsafe_globals": [
+        "numpy.core.multiarray.scalar",
+        "numpy.dtype"
+      ],
+      "checkpoint_keys": [
+        "model_state_dict",
+        "optimizer_state_dict",
+        "epoch",
+        "val_loss",
+        "val_acc",
+        "val_score",
+        "model_config"
+      ],
+      "success": true,
+      "error": null,
+      "model_info": {
+        "total_parameters": 456475,
+        "trainable_parameters": 0,
+        "non_trainable_parameters": 456475,
+        "num_layers": 64,
+        "layer_categories": {
+          "convolutional": 4,
+          "linear": 0,
+          "normalization": 30,
+          "attention": 2,
+          "embedding": 0,
+          "other": 28
+        },
+        "layer_details": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.0.weight",
+            "shape": [
+              8,
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.se.excitation.2.weight",
+            "shape": [
+              64,
+              8
+            ],
+            "dtype": "torch.float32",
+            "param_count": 512,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.0.weight",
+            "shape": [
+              64,
+              20,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1280,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.0.weight",
+            "shape": [
+              16,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.se.excitation.2.weight",
+            "shape": [
+              128,
+              16
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2048,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.0.weight",
+            "shape": [
+              128,
+              64,
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 8192,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.shortcut.1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_ih_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.weight_hh_l0_reverse",
+            "shape": [
+              384,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 49152,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_ih_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bigru.bias_hh_l0_reverse",
+            "shape": [
+              384
+            ],
+            "dtype": "torch.float32",
+            "param_count": 384,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense1.weight",
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 65536,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "dense2.weight",
+            "shape": [
+              128,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 32768,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.weight",
+            "shape": [
+              18,
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 2304,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "classifier.bias",
+            "shape": [
+              18
+            ],
+            "dtype": "torch.float32",
+            "param_count": 18,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "architecture_analysis": {
+          "primary_type": "Attention-based (Transformer-like)",
+          "sub_components": [
+            "Self-Attention"
+          ],
+          "input_size_estimate": null,
+          "output_size_estimate": null,
+          "depth_estimate": 9,
+          "special_features": [
+            "Normalization"
+          ]
+        },
+        "conv_layers": [
+          {
+            "name": "imu_block1.conv1.weight",
+            "shape": [
+              64,
+              20,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 3840,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.conv2.weight",
+            "shape": [
+              64,
+              64,
+              3
+            ],
+            "dtype": "torch.float32",
+            "param_count": 12288,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv1.weight",
+            "shape": [
+              128,
+              64,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 40960,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.conv2.weight",
+            "shape": [
+              128,
+              128,
+              5
+            ],
+            "dtype": "torch.float32",
+            "param_count": 81920,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "linear_layers": [],
+        "norm_layers": [
+          {
+            "name": "imu_block1.bn1.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.weight",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.bias",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_mean",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.running_var",
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "param_count": 64,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block1.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "imu_block2.bn2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.weight",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.bias",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_mean",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.running_var",
+            "shape": [
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense1.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.weight",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.bias",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_mean",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.running_var",
+            "shape": [
+              128
+            ],
+            "dtype": "torch.float32",
+            "param_count": 128,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "bn_dense2.num_batches_tracked",
+            "shape": [],
+            "dtype": "torch.int64",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "attention_layers": [
+          {
+            "name": "attention.attention.weight",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "torch.float32",
+            "param_count": 256,
+            "requires_grad": false,
+            "device": "cpu"
+          },
+          {
+            "name": "attention.attention.bias",
+            "shape": [
+              1
+            ],
+            "dtype": "torch.float32",
+            "param_count": 1,
+            "requires_grad": false,
+            "device": "cpu"
+          }
+        ],
+        "embedding_layers": []
+      },
+      "optimizer_info": {
+        "keys": [
+          "state",
+          "param_groups"
+        ]
+      },
+      "epoch": 49,
+      "val_loss": 1.290984153336492,
+      "val_acc": 0.6597462514417531,
+      "val_score": 0.7785616443575947,
+      "model_config": {
+        "imu_dim": 20,
+        "tof_dim": 0,
+        "n_classes": 18,
+        "weight_decay": 0.003
+      }
+    }
+  ],
+  "feature_scaler": {
+    "file_name": "feature_scaler.joblib",
+    "scaler_type": "StandardScaler",
+    "success": true,
+    "error": null,
+    "scale_": [
+      5.781253985376394,
+      5.00394105835772,
+      6.096484699468416,
+      0.22552991244423354,
+      0.4660512952326753,
+      0.5435876901502548,
+      0.504214351335047,
+      1.2126133644931487,
+      0.5301479564833341,
+      1.7309751365375463,
+      0.12728845550450513,
+      1.83589668421267,
+      1.5717217762794697,
+      1.924774374737576,
+      2.6248114231506996,
+      1.8952015318701538,
+      24.05546405864241,
+      29.359679659260816,
+      25.349660212943014,
+      0.19787320992834004
+    ],
+    "mean_": [
+      1.6399796189744236,
+      1.790703594474254,
+      -0.45981063270182365,
+      0.35958859231406104,
+      -0.11926189211916466,
+      -0.059806513230851156,
+      -0.18737280680872873,
+      10.013320958848437,
+      2.372767511479796,
+      0.0008451366402964106,
+      0.004022196532256568,
+      0.08406385649710173,
+      -0.18859805539029062,
+      0.11646480983451085,
+      1.6468598524539257,
+      0.027649335892331376,
+      1.1488308586022138,
+      -1.0211869537947342,
+      -1.4633036038864575,
+      0.11419424417524601
+    ],
+    "var_": [
+      33.422897643430446,
+      25.03942611551818,
+      37.1671256908525,
+      0.050863741407103646,
+      0.2172038097880543,
+      0.29548757688288935,
+      0.25423211209222224,
+      1.470431171747394,
+      0.2810568557634551,
+      2.996274923311177,
+      0.01620235090472238,
+      3.3705166351030766,
+      2.4703093420310918,
+      3.7047563936464267,
+      6.889635007102401,
+      3.5917888464029777,
+      578.6653510766369,
+      861.9907896944133,
+      642.605272911666,
+      0.03915380720734493
+    ],
+    "n_features": 20
+  },
+  "kfold_results": {
+    "file_name": "kfold_results.json",
+    "content": {
+      "n_folds": 5,
+      "fold_results": [
+        {
+          "fold": 1,
+          "model_path": "./saved_models/fold_1_model.pth",
+          "final_train_acc": 0.9039710101162615,
+          "final_val_acc": 0.6825916230366492,
+          "final_val_score": 0.7958179060842316,
+          "test_accuracy": 0.6989528795811518,
+          "test_score": 0.8071991665390703,
+          "num_epochs": 87,
+          "train_subjects": 65,
+          "val_subjects": 16
+        },
+        {
+          "fold": 2,
+          "model_path": "./saved_models/fold_2_model.pth",
+          "final_train_acc": 0.8630157999693204,
+          "final_val_acc": 0.6458333333333334,
+          "final_val_score": 0.7641187174692758,
+          "test_accuracy": 0.6458333333333334,
+          "test_score": 0.7666217920864523,
+          "num_epochs": 70,
+          "train_subjects": 65,
+          "val_subjects": 16
+        },
+        {
+          "fold": 3,
+          "model_path": "./saved_models/fold_3_model.pth",
+          "final_train_acc": 0.8974869751762182,
+          "final_val_acc": 0.6289230769230769,
+          "final_val_score": 0.7621208865754785,
+          "test_accuracy": 0.6387692307692308,
+          "test_score": 0.7704692389048624,
+          "num_epochs": 86,
+          "train_subjects": 65,
+          "val_subjects": 16
+        },
+        {
+          "fold": 4,
+          "model_path": "./saved_models/fold_4_model.pth",
+          "final_train_acc": 0.8969167050161068,
+          "final_val_acc": 0.6427696078431373,
+          "final_val_score": 0.7642586733599424,
+          "test_accuracy": 0.647671568627451,
+          "test_score": 0.7654802987468692,
+          "num_epochs": 81,
+          "train_subjects": 65,
+          "val_subjects": 16
+        },
+        {
+          "fold": 5,
+          "model_path": "./saved_models/fold_5_model.pth",
+          "final_train_acc": 0.8736169549633785,
+          "final_val_acc": 0.657439446366782,
+          "final_val_score": 0.7760615681133552,
+          "test_accuracy": 0.6597462514417531,
+          "test_score": 0.7785616443575947,
+          "num_epochs": 70,
+          "train_subjects": 64,
+          "val_subjects": 17
+        }
+      ],
+      "summary": {
+        "val_acc_mean": 0.6515114175005957,
+        "val_acc_std": 0.018000076157313333,
+        "val_score_mean": 0.7724755503204568,
+        "val_score_std": 0.012667263949030156,
+        "test_acc_mean": 0.658194652750584,
+        "test_acc_std": 0.021468698373315182,
+        "test_score_mean": 0.7776664281269697,
+        "test_score_std": 0.01546136680537655
+      }
+    },
+    "success": true,
+    "error": null
+  },
+  "submission": {
+    "file_name": "submission.parquet",
+    "shape": [
+      2,
+      2
+    ],
+    "columns": [
+      "sequence_id",
+      "gesture"
+    ],
+    "dtypes": {
+      "sequence_id": "object",
+      "gesture": "object"
+    },
+    "memory_usage_mb": 0.0003681182861328125,
+    "success": true,
+    "error": null,
+    "sequence_id_stats": {
+      "unique_count": 2,
+      "null_count": "0",
+      "most_common": {
+        "SEQ_000011": 1,
+        "SEQ_000001": 1
+      }
+    },
+    "gesture_stats": {
+      "unique_count": 2,
+      "null_count": "0",
+      "most_common": {
+        "Eyelash - pull hair": 1,
+        "Eyebrow - pull hair": 1
+      }
+    }
+  }
+}

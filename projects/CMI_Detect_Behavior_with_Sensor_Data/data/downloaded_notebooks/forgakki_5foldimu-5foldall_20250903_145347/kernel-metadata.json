@@ -1,0 +1,24 @@
+{
+  "id": "forgakki/5foldimu-5foldall",
+  "id_no": 85258389,
+  "title": "5foldIMU+5foldALL",
+  "code_file": "5foldimu-5foldall.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "",
+    ""
+  ],
+  "kernel_sources": [],
+  "competition_sources": [
+    "cmi-detect-behavior-with-sensor-data"
+  ],
+  "model_sources": []
+}

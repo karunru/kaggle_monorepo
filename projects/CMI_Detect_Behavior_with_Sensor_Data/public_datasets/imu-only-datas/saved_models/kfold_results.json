@@ -1,0 +1,75 @@
+{
+  "n_folds": 5,
+  "fold_results": [
+    {
+      "fold": 1,
+      "model_path": "./saved_models/fold_1_model.pth",
+      "final_train_acc": 0.9039710101162615,
+      "final_val_acc": 0.6825916230366492,
+      "final_val_score": 0.7958179060842316,
+      "test_accuracy": 0.6989528795811518,
+      "test_score": 0.8071991665390703,
+      "num_epochs": 87,
+      "train_subjects": 65,
+      "val_subjects": 16
+    },
+    {
+      "fold": 2,
+      "model_path": "./saved_models/fold_2_model.pth",
+      "final_train_acc": 0.8630157999693204,
+      "final_val_acc": 0.6458333333333334,
+      "final_val_score": 0.7641187174692758,
+      "test_accuracy": 0.6458333333333334,
+      "test_score": 0.7666217920864523,
+      "num_epochs": 70,
+      "train_subjects": 65,
+      "val_subjects": 16
+    },
+    {
+      "fold": 3,
+      "model_path": "./saved_models/fold_3_model.pth",
+      "final_train_acc": 0.8974869751762182,
+      "final_val_acc": 0.6289230769230769,
+      "final_val_score": 0.7621208865754785,
+      "test_accuracy": 0.6387692307692308,
+      "test_score": 0.7704692389048624,
+      "num_epochs": 86,
+      "train_subjects": 65,
+      "val_subjects": 16
+    },
+    {
+      "fold": 4,
+      "model_path": "./saved_models/fold_4_model.pth",
+      "final_train_acc": 0.8969167050161068,
+      "final_val_acc": 0.6427696078431373,
+      "final_val_score": 0.7642586733599424,
+      "test_accuracy": 0.647671568627451,
+      "test_score": 0.7654802987468692,
+      "num_epochs": 81,
+      "train_subjects": 65,
+      "val_subjects": 16
+    },
+    {
+      "fold": 5,
+      "model_path": "./saved_models/fold_5_model.pth",
+      "final_train_acc": 0.8736169549633785,
+      "final_val_acc": 0.657439446366782,
+      "final_val_score": 0.7760615681133552,
+      "test_accuracy": 0.6597462514417531,
+      "test_score": 0.7785616443575947,
+      "num_epochs": 70,
+      "train_subjects": 64,
+      "val_subjects": 17
+    }
+  ],
+  "summary": {
+    "val_acc_mean": 0.6515114175005957,
+    "val_acc_std": 0.018000076157313333,
+    "val_score_mean": 0.7724755503204568,
+    "val_score_std": 0.012667263949030156,
+    "test_acc_mean": 0.658194652750584,
+    "test_acc_std": 0.021468698373315182,
+    "test_score_mean": 0.7776664281269697,
+    "test_score_std": 0.01546136680537655
+  }
+}
