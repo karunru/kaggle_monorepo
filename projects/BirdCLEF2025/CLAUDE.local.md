@@ -1,0 +1,1 @@
+- パッケージの追加はuv addで行うこと。pyproject.tomlを編集してからuv syncすることは禁止する。
