@@ -1,0 +1,312 @@
+[tools]
+python = ["3.12"]
+uv = "0.6.9"
+hadolint = "2.12.0"
+pre-commit = "4.2.0"
+actionlint = "1.7.7"
+
+[env]
+USERNAME = "karunru"
+
+############################################
+# Tasks for workspace uv run kaggle
+############################################
+
+[tasks.update-requirements]
+description=""
+run="""
+REPO_ROOT=$(git rev-parse --show-toplevel)
+CURRENT_PATH=$(pwd)
+REL_PATH=${CURRENT_PATH#${REPO_ROOT}/projects/}
+PROJECT_NAME=$(echo ${REL_PATH} | cut -d'/' -f1)
+PROJECT_DIR=${REPO_ROOT}/projects/${PROJECT_NAME}
+
+cd ${PROJECT_DIR}/requirements
+uv pip freeze | sed "s/+cu124//g" > requirements.txt
+
+# Check if dataset exists
+if [ -f dataset-metadata.json ]; then
+    DATASET_ID=$(jq -r '.id' dataset-metadata.json)
+    if ! uv run kaggle d status $DATASET_ID 2>/dev/null; then
+        echo "Dataset not found. Creating new dataset..."
+        uv run kaggle d create -p . -r zip
+    else
+        echo "Dataset exists. Updating version..."
+        uv run kaggle d version -m "update" -r zip
+    fi
+else
+    echo "Error: dataset-metadata.json not found"
+    exit 1
+fi
+"""
+
+[tasks.update-deps]
+description=""
+run="""
+REPO_ROOT=$(git rev-parse --show-toplevel)
+CURRENT_PATH=$(pwd)
+REL_PATH=${CURRENT_PATH#${REPO_ROOT}/projects/}
+PROJECT_NAME=$(echo ${REL_PATH} | cut -d'/' -f1)
+PROJECT_DIR=${REPO_ROOT}/projects/${PROJECT_NAME}
+
+cd ${PROJECT_DIR}/deps
+uv run kaggle k push
+"""
+
+
+[tasks.update-subs]
+description="Update subs kernel for uv run kaggle"
+run="""
+EXPERIMENT_NAME="{{arg(name=\"experiment_name\", required=false)}}"
+REPO_ROOT=$(git rev-parse --show-toplevel)
+CURRENT_PATH=$(pwd)
+REL_PATH=${CURRENT_PATH#${REPO_ROOT}/projects/}
+PROJECT_NAME=$(echo ${REL_PATH} | cut -d'/' -f1)
+PROJECT_DIR=${REPO_ROOT}/projects/${PROJECT_NAME}
+
+# Update sub/ files if experiment name is provided
+if [ -n "$EXPERIMENT_NAME" ]; then
+    echo "Updating sub/ files for experiment: $EXPERIMENT_NAME"
+    
+    # Update kernel-metadata.json dataset_sources
+    cd ${PROJECT_DIR}/sub
+    if [ -f kernel-metadata.json ]; then
+        echo "Updating kernel-metadata.json dataset_sources..."
+        jq --arg exp "$EXPERIMENT_NAME" '
+            .dataset_sources = [
+                .dataset_sources[] | 
+                if test("^karunru/cmi-exp[0-9]+$") then 
+                    "karunru/cmi-" + $exp 
+                else 
+                    . 
+                end
+            ]
+        ' kernel-metadata.json > tmp.json && mv tmp.json kernel-metadata.json
+        echo "kernel-metadata.json updated successfully."
+    else
+        echo "Warning: kernel-metadata.json not found in sub/ directory"
+    fi
+    
+    # Update sub.ipynb experiment references
+    if [ -f sub.ipynb ]; then
+        echo "Updating sub.ipynb experiment references..."
+        sed -E -i "s|/exp/exp[0-9]+/|/exp/$EXPERIMENT_NAME/|g" sub.ipynb
+        echo "sub.ipynb updated successfully."
+    else
+        echo "Warning: sub.ipynb not found in sub/ directory"
+    fi
+fi
+
+cd ${PROJECT_DIR}/sub
+uv run kaggle k push
+"""
+
+[tasks.update-codes]
+description="Update codes dataset for uv run kaggle"
+run="""
+REPO_ROOT=$(git rev-parse --show-toplevel)
+CURRENT_PATH=$(pwd)
+REL_PATH=${CURRENT_PATH#${REPO_ROOT}/projects/}
+PROJECT_NAME=$(echo ${REL_PATH} | cut -d'/' -f1)
+PROJECT_DIR=${REPO_ROOT}/projects/${PROJECT_NAME}
+
+cd ${PROJECT_DIR}/codes
+
+# Check if dataset-metadata.json exists
+if [ ! -f dataset-metadata.json ]; then
+    echo "dataset-metadata.json not found. Initializing..."
+    uv run kaggle datasets init -p .
+    
+    # Auto-configure dataset metadata
+    DATASET_TITLE="cmi-codes"
+    DATASET_ID="${USERNAME}/cmi-codes"
+    
+    echo "Auto-configuring dataset metadata:"
+    echo "  Title: ${DATASET_TITLE}"
+    echo "  ID: ${DATASET_ID}"
+    
+    # Update the JSON file using jq
+    if command -v jq >/dev/null 2>&1; then
+        jq --arg title "$DATASET_TITLE" --arg id "$DATASET_ID" \
+           '.title = $title | .id = $id' dataset-metadata.json > tmp.json && \
+        mv tmp.json dataset-metadata.json
+        echo "Dataset metadata configured successfully."
+    else
+        echo "Error: jq command not found. Please install jq or edit dataset-metadata.json manually."
+        echo "Required values:"
+        echo "  title: ${DATASET_TITLE}"
+        echo "  id: ${DATASET_ID}"
+        exit 1
+    fi
+fi
+
+# Check if dataset exists
+DATASET_ID=$(jq -r '.id' dataset-metadata.json)
+if ! uv run kaggle d status $DATASET_ID 2>/dev/null; then
+    echo "Dataset not found. Creating new dataset..."
+    uv run kaggle d create -p . -r zip
+else
+    echo "Dataset exists. Updating version..."
+    uv run kaggle d version -m "update" -r zip
+fi
+"""
+
+[tasks.create-output-dataset]
+description="Create or update Kaggle dataset from experiment output directory"
+run="""
+EXPERIMENT_NAME="{{arg(name="experiment_name")}}"
+REPO_ROOT=$(git rev-parse --show-toplevel)
+CURRENT_PATH=$(pwd)
+REL_PATH=${CURRENT_PATH#${REPO_ROOT}/projects/}
+PROJECT_NAME=$(echo ${REL_PATH} | cut -d'/' -f1)
+PROJECT_DIR=${REPO_ROOT}/projects/${PROJECT_NAME}
+OUTPUT_DIR=${PROJECT_DIR}/outputs/${EXPERIMENT_NAME}
+
+# Check if output directory exists
+if [ ! -d "${OUTPUT_DIR}" ]; then
+    echo "Error: Directory ${OUTPUT_DIR} does not exist"
+    exit 1
+fi
+
+cd ${OUTPUT_DIR}
+
+# Check if directory is empty
+if [ -z "$(ls -A .)" ]; then
+    echo "Warning: Directory ${OUTPUT_DIR} is empty"
+fi
+
+# Check if dataset-metadata.json exists
+if [ ! -f dataset-metadata.json ]; then
+    echo "dataset-metadata.json not found. Initializing..."
+    uv run kaggle datasets init -p .
+    
+    # Auto-configure dataset metadata
+    DATASET_TITLE="cmi-${EXPERIMENT_NAME}"
+    DATASET_ID="${USERNAME}/cmi-${EXPERIMENT_NAME}"
+    
+    echo "Auto-configuring dataset metadata:"
+    echo "  Title: ${DATASET_TITLE}"
+    echo "  ID: ${DATASET_ID}"
+    
+    # Update the JSON file using jq
+    if command -v jq >/dev/null 2>&1; then
+        jq --arg title "$DATASET_TITLE" --arg id "$DATASET_ID" \
+           '.title = $title | .id = $id' dataset-metadata.json > tmp.json && \
+        mv tmp.json dataset-metadata.json
+        echo "Dataset metadata configured successfully."
+    else
+        echo "Error: jq command not found. Please install jq or edit dataset-metadata.json manually."
+        echo "Required values:"
+        echo "  title: ${DATASET_TITLE}"
+        echo "  id: ${DATASET_ID}"
+        exit 1
+    fi
+fi
+
+# Check if dataset exists
+DATASET_ID=$(jq -r '.id' dataset-metadata.json)
+if ! uv run kaggle d status $DATASET_ID 2>/dev/null; then
+    echo "Dataset not found. Creating new dataset..."
+    uv run kaggle d create -p . -r zip
+else
+    echo "Dataset exists. Updating version..."
+    uv run kaggle d version -m "Update ${EXPERIMENT_NAME} results" -r zip
+fi
+"""
+
+[tasks.track-submission]
+description="Track Kaggle submission execution time and display progress"
+run="""
+COMPETITION_NAME="${1:-cmi-detect-behavior-with-sensor-data}"
+
+echo "🚀 Tracking submission for competition: ${COMPETITION_NAME}"
+echo "📊 Fetching latest submission..."
+
+# Get latest submission
+SUBMISSION_DATA=$(uv run kaggle competitions submissions "${COMPETITION_NAME}" --csv | head -n 2 | tail -n 1)
+
+if [ -z "$SUBMISSION_DATA" ]; then
+    echo "❌ No submissions found for competition: ${COMPETITION_NAME}"
+    exit 1
+fi
+
+# Parse submission data (fileName,date,description,status,publicScore,privateScore)
+SUBMISSION_FILE=$(echo "$SUBMISSION_DATA" | cut -d',' -f1 | tr -d '"')
+SUBMISSION_STATUS=$(echo "$SUBMISSION_DATA" | cut -d',' -f4 | tr -d '"')
+SUBMISSION_DATE=$(echo "$SUBMISSION_DATA" | cut -d',' -f2 | tr -d '"')
+PUBLIC_SCORE=$(echo "$SUBMISSION_DATA" | cut -d',' -f5 | tr -d '"')
+
+echo "📋 Submission File: ${SUBMISSION_FILE}"
+echo "📅 Submitted: ${SUBMISSION_DATE}"
+echo "🔄 Initial Status: ${SUBMISSION_STATUS}"
+
+# If already complete, show result immediately
+if [ "$SUBMISSION_STATUS" = "SubmissionStatus.COMPLETE" ]; then
+    echo "✅ Submission already completed!"
+    echo "🏆 Public Score: ${PUBLIC_SCORE}"
+    exit 0
+fi
+
+# Track submission progress
+# Convert submission date to Unix timestamp (assuming Kaggle API returns UTC)
+SUBMISSION_TIME=$(date -u -d "$SUBMISSION_DATE" +%s 2>/dev/null)
+if [ $? -ne 0 ]; then
+    # Fallback: if date parsing fails, use current time
+    echo "⚠️  Warning: Could not parse submission date, using current time as start"
+    SUBMISSION_TIME=$(date -u +%s)
+fi
+
+LAST_STATUS=""
+
+echo ""
+echo "⏱️  Starting time tracking from submission time..."
+echo "🔄 Checking every 30 seconds..."
+echo ""
+
+while true; do
+    # Get current submission status
+    CURRENT_DATA=$(uv run kaggle competitions submissions "${COMPETITION_NAME}" --csv | head -n 2 | tail -n 1)
+    CURRENT_STATUS=$(echo "$CURRENT_DATA" | cut -d',' -f4 | tr -d '"')
+    CURRENT_SCORE=$(echo "$CURRENT_DATA" | cut -d',' -f5 | tr -d '"')
+    
+    # Calculate elapsed time from submission (both in UTC)
+    CURRENT_TIME=$(date -u +%s)
+    ELAPSED_SECONDS=$((CURRENT_TIME - SUBMISSION_TIME))
+    ELAPSED_MINUTES=$((ELAPSED_SECONDS / 60))
+    REMAINING_SECONDS=$((ELAPSED_SECONDS % 60))
+    
+    # Clear previous line and show progress
+    printf "\r⏱️  Elapsed: %02d:%02d | Status: %-15s" $ELAPSED_MINUTES $REMAINING_SECONDS "$CURRENT_STATUS"
+    
+    # Check if status changed
+    if [ "$CURRENT_STATUS" != "$LAST_STATUS" ]; then
+        echo ""
+        echo "🔄 Status changed: ${LAST_STATUS} -> ${CURRENT_STATUS}"
+        LAST_STATUS="$CURRENT_STATUS"
+    fi
+    
+    # Check if completed
+    if [ "$CURRENT_STATUS" = "SubmissionStatus.COMPLETE" ]; then
+        echo ""
+        echo ""
+        echo "🎉 Submission completed!"
+        echo "⏱️  Total execution time: ${ELAPSED_MINUTES}m ${REMAINING_SECONDS}s"
+        echo "🏆 Public Score: ${CURRENT_SCORE}"
+        echo "📋 Submission File: ${SUBMISSION_FILE}"
+        break
+    fi
+    
+    # Check for error status
+    if [ "$CURRENT_STATUS" = "SubmissionStatus.ERROR" ]; then
+        echo ""
+        echo ""
+        echo "❌ Submission failed with error status"
+        echo "⏱️  Time until error: ${ELAPSED_MINUTES}m ${REMAINING_SECONDS}s"
+        echo "📋 Submission File: ${SUBMISSION_FILE}"
+        exit 1
+    fi
+    
+    # Wait 30 seconds before next check
+    sleep 30
+done
+"""
