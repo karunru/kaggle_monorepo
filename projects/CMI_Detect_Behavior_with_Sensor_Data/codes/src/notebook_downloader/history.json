@@ -1,0 +1,61 @@
+{
+  "downloads": [
+    {
+      "kernel_ref": "test/kernel",
+      "download_time": "2025-01-01T00:00:00",
+      "title": "Test Kernel",
+      "author": "TestUser",
+      "votes": 100,
+      "file_path": "/test/path"
+    },
+    {
+      "kernel_ref": "test/kernel",
+      "download_time": "2025-01-01T00:00:00",
+      "title": "Test Kernel",
+      "author": "TestUser",
+      "votes": 100,
+      "file_path": "/test/path"
+    },
+    {
+      "kernel_ref": "wkdrbwnd1/notebookc94de9fdd9",
+      "download_time": "2025-08-31T16:58:10.200123",
+      "title": "notebookc94de9fdd9",
+      "author": "wkdrbwnd1",
+      "votes": 149,
+      "file_path": "data/downloaded_notebooks/wkdrbwnd1_notebookc94de9fdd9_20250831_165809"
+    },
+    {
+      "kernel_ref": "w5833946/cmi3-submit-single",
+      "download_time": "2025-09-03T13:03:33.046621",
+      "title": "CMI3_submit_single",
+      "author": "Ruby",
+      "votes": 0,
+      "file_path": "data/downloaded_notebooks/w5833946_cmi3-submit-single_20250903_130332"
+    },
+    {
+      "kernel_ref": "forgakki/5foldimu-5foldall",
+      "download_time": "2025-09-03T14:53:48.491468",
+      "title": "5foldIMU+5foldALL",
+      "author": "GO!!!!!",
+      "votes": 0,
+      "file_path": "data/downloaded_notebooks/forgakki_5foldimu-5foldall_20250903_145347"
+    },
+    {
+      "kernel_ref": "forgakki/21th-solution",
+      "download_time": "2025-09-03T14:59:42.105298",
+      "title": "21th Solution",
+      "author": "GO!!!!!",
+      "votes": 0,
+      "file_path": "data/downloaded_notebooks/forgakki_21th-solution_20250903_145941"
+    },
+    {
+      "kernel_ref": "dott1718/cmikn-ensemble3b-re5",
+      "download_time": "2025-09-03T18:49:11.496314",
+      "title": "cmikn-ensemble3b-re5",
+      "author": "dott",
+      "votes": 0,
+      "file_path": "data/downloaded_notebooks/dott1718_cmikn-ensemble3b-re5_20250903_184910"
+    }
+  ],
+  "last_check": "2025-09-03T18:49:11.496324"
+}

@@ -1,0 +1,193 @@
+acls_config: !!python/object:config.ACLSConfig
+  __dict__:
+    acls_alpha: 0.1
+    acls_margin: 10.0
+    acls_neg_lambda: 0.1
+    acls_pos_lambda: 1.0
+    label_smoothing_alpha: 0.1
+    mbls_alpha: 0.1
+    mbls_margin: 10.0
+    mbls_schedule: null
+  __pydantic_extra__: null
+  __pydantic_fields_set__: !!set {}
+  __pydantic_private__: null
+demographics_config: !!python/object:config.DemographicsConfig
+  __dict__:
+    age_max: 60.0
+    age_min: 8.0
+    categorical_embedding_dims:
+      adult_child: 2
+      handedness: 2
+      sex: 2
+    categorical_features:
+    - adult_child
+    - sex
+    - handedness
+    clip_outliers: true
+    elbow_to_wrist_max: 50.0
+    elbow_to_wrist_min: 15.0
+    embedding_dim: 16
+    enabled: true
+    height_max: 195.0
+    height_min: 130.0
+    hn_enabled: false
+    hn_eps: 0.001
+    hn_features:
+    - linear_acc_mag_per_h
+    - linear_acc_mag_per_rS
+    - linear_acc_mag_per_rE
+    - acc_over_centripetal_rS
+    - acc_over_centripetal_rE
+    - alpha_like_rS
+    - alpha_like_rE
+    - v_over_h
+    - v_over_rS
+    - v_over_rE
+    hn_radius_min_max: !!python/tuple
+    - 0.15
+    - 0.9
+    numerical_features:
+    - age
+    - height_cm
+    - shoulder_to_wrist_cm
+    - elbow_to_wrist_cm
+    numerical_scaling_method: minmax
+    shoulder_to_wrist_max: 75.0
+    shoulder_to_wrist_min: 35.0
+  __pydantic_extra__: null
+  __pydantic_fields_set__: !!set {}
+  __pydantic_private__: null
+dropout: 0.1
+ema_config: !!python/object:config.EMAConfig
+  __dict__:
+    beta: 0.9999
+    enabled: true
+    update_after_step: 1000
+    update_every: 10
+    update_model_with_ema_every: 1000
+    use_ema_for_validation: true
+  __pydantic_extra__: null
+  __pydantic_fields_set__: !!set {}
+  __pydantic_private__: null
+id_to_gesture:
+  0: Above ear - pull hair
+  1: Cheek - pinch skin
+  2: Drink from bottle/cup
+  3: Eyebrow - pull hair
+  4: Eyelash - pull hair
+  5: Feel around in tray and pull out an object
+  6: Forehead - pull hairline
+  7: Forehead - scratch
+  8: Glasses on/off
+  9: Neck - pinch skin
+  10: Neck - scratch
+  11: Pinch knee/leg skin
+  12: Pull air toward your face
+  13: Scratch knee/leg skin
+  14: Text on phone
+  15: Wave hello
+  16: Write name in air
+  17: Write name on leg
+input_dim: 20
+learning_rate: 0.0003
+loss_config: !!python/object:config.LossConfig
+  __dict__:
+    alpha: 0.5
+    auto_weight_clamp: !!python/tuple
+    - -10.0
+    - 10.0
+    auto_weighting: none
+    focal_alpha: 1.0
+    focal_gamma: 2.0
+    kl_temperature: 1.0
+    kl_weight: 0.1
+    label_smoothing: 0.1
+    nine_class_head_enabled: true
+    nine_class_loss_weight: 0.2
+    soft_f1_beta: 1.0
+    soft_f1_eps: 1.0e-06
+    type: acls
+    uncertainty_init_value: 0.0
+    use_mixup: true
+  __pydantic_extra__: null
+  __pydantic_fields_set__: !!set {}
+  __pydantic_private__: null
+model_config: !!python/object:config.ModelConfig
+  __dict__:
+    bigru_hidden_size: 128
+    d_ff: 1024
+    d_model: 256
+    dense1_dropout: 0.5
+    dense1_out_features: 256
+    dense2_dropout: 0.3
+    dense2_out_features: 128
+    dropout: 0.1
+    fusion_tau_threshold: 0.5
+    fusion_temperature_18: 1.0
+    fusion_temperature_9: 1.0
+    fusion_temperature_binary: 1.0
+    fusion_weight_hierarchical: 0.6
+    gru_dropout: 0.4
+    imu_block1_out_channels: 64
+    imu_block2_out_channels: 128
+    imu_block_dropout: 0.3
+    input_dim: 20
+    kernel_size: 31
+    n_heads: 8
+    n_layers: 8
+    name: cmi_squeezeformer_bert
+    num_classes: 18
+  __pydantic_extra__: null
+  __pydantic_fields_set__: !!set {}
+  __pydantic_private__: null
+non_target_gestures:
+- Drink from bottle/cup
+- Glasses on/off
+- Pull air toward your face
+- Pinch knee/leg skin
+- Scratch knee/leg skin
+- Write name on leg
+- Text on phone
+- Feel around in tray and pull out an object
+- Write name in air
+- Wave hello
+num_classes: 18
+paths_config: !!python/object:config.PathsConfig
+  __dict__:
+    output_dir: ../../../outputs/exp044
+  __pydantic_extra__: null
+  __pydantic_fields_set__: !!set {}
+  __pydantic_private__: null
+schedule_free_config: !!python/object:config.ScheduleFreeConfig
+  __dict__:
+    batch_norm_calibration_steps: 50
+    enabled: false
+    learning_rate_multiplier: 5.0
+    optimizer_type: RAdamScheduleFree
+    warmup_steps: 1000
+  __pydantic_extra__: null
+  __pydantic_fields_set__: !!set {}
+  __pydantic_private__: null
+scheduler_config: !!python/object:config.SchedulerConfig
+  __dict__:
+    factor: 0.5
+    min_lr: 1.0e-06
+    patience: 5
+    type: cosine
+  __pydantic_extra__: null
+  __pydantic_fields_set__: !!set
+    factor: null
+    min_lr: null
+    patience: null
+    type: null
+  __pydantic_private__: null
+target_gestures:
+- Above ear - pull hair
+- Forehead - pull hairline
+- Forehead - scratch
+- Eyebrow - pull hair
+- Eyelash - pull hair
+- Neck - pinch skin
+- Neck - scratch
+- Cheek - pinch skin
+weight_decay: 1.0e-05

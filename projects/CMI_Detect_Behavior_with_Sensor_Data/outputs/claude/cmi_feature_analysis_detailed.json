@@ -1,0 +1,493 @@
+{
+  "cmi-imu-model": {
+    "feature_columns": {
+      "total_features": 124,
+      "feature_samples": [
+        "acc_x",
+        "acc_y",
+        "acc_z",
+        "rot_w",
+        "rot_x",
+        "rot_y",
+        "rot_z",
+        "linear_acc_x",
+        "linear_acc_y",
+        "linear_acc_z",
+        "linear_acc_mag",
+        "linear_acc_mag_jerk",
+        "acc_mag",
+        "acc_mag_jerk",
+        "acc_mag_jerk_rate",
+        "acc_x_rolling_mean_3",
+        "acc_x_rolling_std_3",
+        "acc_x_rolling_std_3_sqrt",
+        "acc_y_rolling_mean_3",
+        "acc_y_rolling_std_3"
+      ],
+      "sensor_types": {
+        "accelerometer": 66,
+        "other": 58
+      },
+      "statistical_features": {
+        "raw_or_other": 34,
+        "mean": 21,
+        "std": 42,
+        "median": 9,
+        "max": 9,
+        "min": 9
+      },
+      "coordinate_systems": {
+        "x_axis": 40,
+        "y_axis": 31,
+        "z_axis": 31,
+        "other": 17,
+        "magnitude": 5
+      },
+      "time_domain_features": {
+        "window_stats": 90
+      },
+      "frequency_domain_features": {}
+    },
+    "scaler_info": {
+      "main_scaler": {
+        "error": "invalid load key, '\\x08'."
+      }
+    },
+    "gesture_classes": {
+      "num_classes": 18,
+      "classes": [
+        "Above ear - pull hair",
+        "Cheek - pinch skin",
+        "Drink from bottle/cup",
+        "Eyebrow - pull hair",
+        "Eyelash - pull hair",
+        "Feel around in tray and pull out an object",
+        "Forehead - pull hairline",
+        "Forehead - scratch",
+        "Glasses on/off",
+        "Neck - pinch skin",
+        "Neck - scratch",
+        "Pinch knee/leg skin",
+        "Pull air toward your face",
+        "Scratch knee/leg skin",
+        "Text on phone",
+        "Wave hello",
+        "Write name in air",
+        "Write name on leg"
+      ],
+      "class_distribution": {
+        "Above ear - pull hair": 1,
+        "Cheek - pinch skin": 1,
+        "Drink from bottle/cup": 1,
+        "Eyebrow - pull hair": 1,
+        "Eyelash - pull hair": 1,
+        "Feel around in tray and pull out an object": 1,
+        "Forehead - pull hairline": 1,
+        "Forehead - scratch": 1,
+        "Glasses on/off": 1,
+        "Neck - pinch skin": 1,
+        "Neck - scratch": 1,
+        "Pinch knee/leg skin": 1,
+        "Pull air toward your face": 1,
+        "Scratch knee/leg skin": 1,
+        "Text on phone": 1,
+        "Wave hello": 1,
+        "Write name in air": 1,
+        "Write name on leg": 1
+      }
+    }
+  },
+  "cmi-fullfeats-models": {
+    "feature_columns": {
+      "total_features": 136,
+      "feature_samples": [
+        "linear_acc_x",
+        "linear_acc_y",
+        "linear_acc_z",
+        "rot_w",
+        "rot_x",
+        "rot_y",
+        "rot_z",
+        "acc_mag",
+        "rot_angle",
+        "acc_mag_jerk",
+        "rot_angle_vel",
+        "linear_acc_mag",
+        "linear_acc_mag_jerk",
+        "angular_vel_x",
+        "angular_vel_y",
+        "angular_vel_z",
+        "angular_jerk_x",
+        "angular_jerk_y",
+        "angular_jerk_z",
+        "angular_snap_x"
+      ],
+      "sensor_types": {
+        "accelerometer": 16,
+        "other": 120
+      },
+      "statistical_features": {
+        "raw_or_other": 27,
+        "mean": 88,
+        "std": 11,
+        "min": 5,
+        "max": 5
+      },
+      "coordinate_systems": {
+        "x_axis": 8,
+        "y_axis": 8,
+        "z_axis": 8,
+        "other": 108,
+        "magnitude": 4
+      },
+      "time_domain_features": {
+        "window_stats": 9
+      },
+      "frequency_domain_features": {}
+    },
+    "scaler_info": {
+      "main_scaler": {
+        "error": "invalid load key, '\\x08'."
+      },
+      "static_scaler": {
+        "error": "invalid load key, '\\x08'."
+      }
+    },
+    "gesture_classes": {
+      "num_classes": 18,
+      "classes": [
+        "Above ear - pull hair",
+        "Cheek - pinch skin",
+        "Drink from bottle/cup",
+        "Eyebrow - pull hair",
+        "Eyelash - pull hair",
+        "Feel around in tray and pull out an object",
+        "Forehead - pull hairline",
+        "Forehead - scratch",
+        "Glasses on/off",
+        "Neck - pinch skin",
+        "Neck - scratch",
+        "Pinch knee/leg skin",
+        "Pull air toward your face",
+        "Scratch knee/leg skin",
+        "Text on phone",
+        "Wave hello",
+        "Write name in air",
+        "Write name on leg"
+      ],
+      "class_distribution": {
+        "Above ear - pull hair": 1,
+        "Cheek - pinch skin": 1,
+        "Drink from bottle/cup": 1,
+        "Eyebrow - pull hair": 1,
+        "Eyelash - pull hair": 1,
+        "Feel around in tray and pull out an object": 1,
+        "Forehead - pull hairline": 1,
+        "Forehead - scratch": 1,
+        "Glasses on/off": 1,
+        "Neck - pinch skin": 1,
+        "Neck - scratch": 1,
+        "Pinch knee/leg skin": 1,
+        "Pull air toward your face": 1,
+        "Scratch knee/leg skin": 1,
+        "Text on phone": 1,
+        "Wave hello": 1,
+        "Write name in air": 1,
+        "Write name on leg": 1
+      }
+    }
+  },
+  "s-offline-0-8254-15fold": {
+    "feature_columns": {
+      "total_features": 91,
+      "feature_samples": [
+        "acc_x",
+        "acc_y",
+        "acc_z",
+        "rot_w",
+        "rot_x",
+        "rot_y",
+        "rot_z",
+        "linear_acc_x",
+        "linear_acc_y",
+        "linear_acc_z",
+        "linear_acc_mag",
+        "linear_acc_mag_jerk",
+        "acc_mag",
+        "acc_mag_jerk",
+        "acc_mag_jerk_rate",
+        "acc_x_rolling_mean_3",
+        "acc_x_rolling_std_3",
+        "acc_x_rolling_std_3_sqrt",
+        "acc_y_rolling_mean_3",
+        "acc_y_rolling_std_3"
+      ],
+      "sensor_types": {
+        "accelerometer": 48,
+        "other": 43
+      },
+      "statistical_features": {
+        "raw_or_other": 31,
+        "mean": 14,
+        "std": 28,
+        "median": 6,
+        "max": 6,
+        "min": 6
+      },
+      "coordinate_systems": {
+        "x_axis": 29,
+        "y_axis": 23,
+        "z_axis": 23,
+        "other": 11,
+        "magnitude": 5
+      },
+      "time_domain_features": {
+        "window_stats": 60
+      },
+      "frequency_domain_features": {}
+    },
+    "scaler_info": {
+      "main_scaler": {
+        "error": "invalid load key, '\\x08'."
+      }
+    },
+    "gesture_classes": {
+      "num_classes": 18,
+      "classes": [
+        "Above ear - pull hair",
+        "Cheek - pinch skin",
+        "Drink from bottle/cup",
+        "Eyebrow - pull hair",
+        "Eyelash - pull hair",
+        "Feel around in tray and pull out an object",
+        "Forehead - pull hairline",
+        "Forehead - scratch",
+        "Glasses on/off",
+        "Neck - pinch skin",
+        "Neck - scratch",
+        "Pinch knee/leg skin",
+        "Pull air toward your face",
+        "Scratch knee/leg skin",
+        "Text on phone",
+        "Wave hello",
+        "Write name in air",
+        "Write name on leg"
+      ],
+      "class_distribution": {
+        "Above ear - pull hair": 1,
+        "Cheek - pinch skin": 1,
+        "Drink from bottle/cup": 1,
+        "Eyebrow - pull hair": 1,
+        "Eyelash - pull hair": 1,
+        "Feel around in tray and pull out an object": 1,
+        "Forehead - pull hairline": 1,
+        "Forehead - scratch": 1,
+        "Glasses on/off": 1,
+        "Neck - pinch skin": 1,
+        "Neck - scratch": 1,
+        "Pinch knee/leg skin": 1,
+        "Pull air toward your face": 1,
+        "Scratch knee/leg skin": 1,
+        "Text on phone": 1,
+        "Wave hello": 1,
+        "Write name in air": 1,
+        "Write name on leg": 1
+      }
+    }
+  },
+  "cmi-imu-only-models": {
+    "feature_columns": {
+      "total_features": 91,
+      "feature_samples": [
+        "acc_x",
+        "acc_y",
+        "acc_z",
+        "rot_w",
+        "rot_x",
+        "rot_y",
+        "rot_z",
+        "linear_acc_x",
+        "linear_acc_y",
+        "linear_acc_z",
+        "linear_acc_mag",
+        "linear_acc_mag_jerk",
+        "acc_mag",
+        "acc_mag_jerk",
+        "acc_mag_jerk_rate",
+        "acc_x_rolling_mean_3",
+        "acc_x_rolling_std_3",
+        "acc_x_rolling_std_3_sqrt",
+        "acc_y_rolling_mean_3",
+        "acc_y_rolling_std_3"
+      ],
+      "sensor_types": {
+        "accelerometer": 48,
+        "other": 43
+      },
+      "statistical_features": {
+        "raw_or_other": 31,
+        "mean": 14,
+        "std": 28,
+        "median": 6,
+        "max": 6,
+        "min": 6
+      },
+      "coordinate_systems": {
+        "x_axis": 29,
+        "y_axis": 23,
+        "z_axis": 23,
+        "other": 11,
+        "magnitude": 5
+      },
+      "time_domain_features": {
+        "window_stats": 60
+      },
+      "frequency_domain_features": {}
+    },
+    "scaler_info": {
+      "main_scaler": {
+        "error": "invalid load key, '\\x08'."
+      }
+    },
+    "gesture_classes": {
+      "num_classes": 18,
+      "classes": [
+        "Above ear - pull hair",
+        "Cheek - pinch skin",
+        "Drink from bottle/cup",
+        "Eyebrow - pull hair",
+        "Eyelash - pull hair",
+        "Feel around in tray and pull out an object",
+        "Forehead - pull hairline",
+        "Forehead - scratch",
+        "Glasses on/off",
+        "Neck - pinch skin",
+        "Neck - scratch",
+        "Pinch knee/leg skin",
+        "Pull air toward your face",
+        "Scratch knee/leg skin",
+        "Text on phone",
+        "Wave hello",
+        "Write name in air",
+        "Write name on leg"
+      ],
+      "class_distribution": {
+        "Above ear - pull hair": 1,
+        "Cheek - pinch skin": 1,
+        "Drink from bottle/cup": 1,
+        "Eyebrow - pull hair": 1,
+        "Eyelash - pull hair": 1,
+        "Feel around in tray and pull out an object": 1,
+        "Forehead - pull hairline": 1,
+        "Forehead - scratch": 1,
+        "Glasses on/off": 1,
+        "Neck - pinch skin": 1,
+        "Neck - scratch": 1,
+        "Pinch knee/leg skin": 1,
+        "Pull air toward your face": 1,
+        "Scratch knee/leg skin": 1,
+        "Text on phone": 1,
+        "Wave hello": 1,
+        "Write name in air": 1,
+        "Write name on leg": 1
+      }
+    }
+  },
+  "b-offline-0-8855-specialprocess": {
+    "feature_columns": {
+      "total_features": 376,
+      "feature_samples": [
+        "linear_acc_x",
+        "linear_acc_y",
+        "linear_acc_z",
+        "rot_w",
+        "rot_x",
+        "rot_y",
+        "rot_z",
+        "acc_mag",
+        "rot_angle",
+        "acc_mag_jerk",
+        "rot_angle_vel",
+        "linear_acc_mag",
+        "linear_acc_mag_jerk",
+        "angular_vel_x",
+        "angular_vel_y",
+        "angular_vel_z",
+        "angular_jerk_x",
+        "angular_jerk_y",
+        "angular_jerk_z",
+        "angular_snap_x"
+      ],
+      "sensor_types": {
+        "accelerometer": 16,
+        "other": 360
+      },
+      "statistical_features": {
+        "raw_or_other": 347,
+        "mean": 8,
+        "std": 11,
+        "min": 5,
+        "max": 5
+      },
+      "coordinate_systems": {
+        "x_axis": 8,
+        "y_axis": 8,
+        "z_axis": 8,
+        "other": 348,
+        "magnitude": 4
+      },
+      "time_domain_features": {
+        "window_stats": 9
+      },
+      "frequency_domain_features": {}
+    },
+    "scaler_info": {
+      "main_scaler": {
+        "error": "invalid load key, '\\x06'."
+      }
+    },
+    "gesture_classes": {
+      "num_classes": 18,
+      "classes": [
+        "Above ear - pull hair",
+        "Cheek - pinch skin",
+        "Drink from bottle/cup",
+        "Eyebrow - pull hair",
+        "Eyelash - pull hair",
+        "Feel around in tray and pull out an object",
+        "Forehead - pull hairline",
+        "Forehead - scratch",
+        "Glasses on/off",
+        "Neck - pinch skin",
+        "Neck - scratch",
+        "Pinch knee/leg skin",
+        "Pull air toward your face",
+        "Scratch knee/leg skin",
+        "Text on phone",
+        "Wave hello",
+        "Write name in air",
+        "Write name on leg"
+      ],
+      "class_distribution": {
+        "Above ear - pull hair": 1,
+        "Cheek - pinch skin": 1,
+        "Drink from bottle/cup": 1,
+        "Eyebrow - pull hair": 1,
+        "Eyelash - pull hair": 1,
+        "Feel around in tray and pull out an object": 1,
+        "Forehead - pull hairline": 1,
+        "Forehead - scratch": 1,
+        "Glasses on/off": 1,
+        "Neck - pinch skin": 1,
+        "Neck - scratch": 1,
+        "Pinch knee/leg skin": 1,
+        "Pull air toward your face": 1,
+        "Scratch knee/leg skin": 1,
+        "Text on phone": 1,
+        "Wave hello": 1,
+        "Write name in air": 1,
+        "Write name on leg": 1
+      }
+    }
+  }
+}

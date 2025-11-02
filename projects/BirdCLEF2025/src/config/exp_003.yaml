@@ -1,0 +1,93 @@
+seed: 1031
+log_path: ./log/
+config_path: ./config/
+weight_path: ../exp/exp_003
+pred_path: ../exp/exp_003
+data_path: ../data/
+root: ../data/
+datamodule: BirdCLEFDataModule
+n_splits: 5
+epoch: 20
+trainer:
+  accumulate_grad_batches: 8
+  fast_dev_run: false
+  precision: bf16-mixed
+  detect_anomaly: true
+transform:
+  name: get_default_transforms
+  size: 256,256
+strong_transform:
+  name: resizemix
+  params:
+    alpha: 0.1
+    beta: 0.5
+train_loader:
+  batch_size: 200
+  shuffle: true
+  num_workers: 8
+  pin_memory: true
+  drop_last: true
+val_loader:
+  batch_size: 200
+  shuffle: false
+  num_workers: 8
+  pin_memory: true
+  drop_last: false
+model:
+  name: Model
+  backbone: convnextv2_tiny.fcmae_ft_in22k_in1k_384
+  pool_type: avgmax
+  in_chans: 1
+  output_dim: 206
+train_folds:
+- 0
+- 1
+- 2
+- 3
+- 4
+TTA: false
+optimizer:
+  opt: radam_schedule_free
+  lr: 0.0025
+  weight_decay: 0.01
+  betas:
+  - 0.9
+  - 0.999
+  eps: 1.0e-08
+  r: 0.0
+  weight_lr_power: 2.0
+  foreach: true
+scheduler:
+  sched: none
+  num_epochs: 100
+  min_lr: 0.0001
+  warmup_epochs: 0
+  warmup_lr: 0.0001
+  warmup_prefix: false
+loss:
+  name: FocalLossBCE
+  params:
+    alpha: 0.25
+    gamma: 2
+    reduction: mean
+    bce_weight: 1.0
+    focal_weight: 1.0
+early_stopping:
+  patience: 4
+stochastic_weight_avg:
+  swa_lrs: 0.0001
+  swa_epoch_start: 3
+  annealing_epochs: 5
+val:
+  name: stratified_kfold
+  params:
+    id: filename
+    target: primary_label
+    n_splits: 5
+    random_state: 1031
+    force_recreate: false
+sampling:
+  name: none
+  params:
+    random_state: 1031
+exp_num: '003'

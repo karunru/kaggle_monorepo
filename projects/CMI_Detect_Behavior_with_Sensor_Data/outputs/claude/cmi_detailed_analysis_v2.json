@@ -1,0 +1,1063 @@
+{
+  "results": {
+    "cmi-imu-model": {
+      "models": {
+        "singleNet_fold3.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 12388196
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 12388196
+          }
+        },
+        "singleNet_fold2.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 12388196
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 12388196
+          }
+        },
+        "singleNet_fold1.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 12387876
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 12387876
+          }
+        },
+        "singleNet_fold5.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 12388196
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 12388196
+          }
+        },
+        "singleNet_fold4.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 12388196
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 12388196
+          }
+        }
+      },
+      "features": {
+        "feature_columns": {
+          "count": 124,
+          "sample_columns": [
+            "acc_x",
+            "acc_y",
+            "acc_z",
+            "rot_w",
+            "rot_x",
+            "rot_y",
+            "rot_z",
+            "linear_acc_x",
+            "linear_acc_y",
+            "linear_acc_z"
+          ],
+          "feature_types": {
+            "accelerometer": 66,
+            "other": 22,
+            "statistical": 36
+          }
+        },
+        "scaler": {
+          "error": "invalid load key, '\\x08'."
+        },
+        "sequence_maxlen": {
+          "shape": [],
+          "dtype": "int64",
+          "data": 127
+        },
+        "gesture_classes": {
+          "shape": [
+            18
+          ],
+          "dtype": "object",
+          "data": [
+            "Above ear - pull hair",
+            "Cheek - pinch skin",
+            "Drink from bottle/cup",
+            "Eyebrow - pull hair",
+            "Eyelash - pull hair",
+            "Feel around in tray and pull out an object",
+            "Forehead - pull hairline",
+            "Forehead - scratch",
+            "Glasses on/off",
+            "Neck - pinch skin",
+            "Neck - scratch",
+            "Pinch knee/leg skin",
+            "Pull air toward your face",
+            "Scratch knee/leg skin",
+            "Text on phone",
+            "Wave hello",
+            "Write name in air",
+            "Write name on leg"
+          ]
+        }
+      },
+      "summary": {
+        "total_models": 5,
+        "architecture_analysis": {},
+        "security_analysis": {
+          "safe_models": 0,
+          "total_models": 5,
+          "safety_ratio": 0.0
+        },
+        "model_statistics": {}
+      }
+    },
+    "cmi-fullfeats-models": {
+      "models": {
+        "BiNet_fold8.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932528
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932528
+          }
+        },
+        "BiNet_fold1.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932336
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932336
+          }
+        },
+        "BiNet_fold4.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932528
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932528
+          }
+        },
+        "BiNet_fold9.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932528
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932528
+          }
+        },
+        "BiNet_fold6.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932528
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932528
+          }
+        },
+        "BiNet_fold3.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932528
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932528
+          }
+        },
+        "BiNet_fold5.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932528
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932528
+          }
+        },
+        "BiNet_fold2.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932528
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932528
+          }
+        },
+        "BiNet_fold7.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932528
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932528
+          }
+        },
+        "BiNet_fold10.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 22,
+            "file_size": 7932683
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 7932683
+          }
+        }
+      },
+      "features": {
+        "feature_columns": {
+          "count": 136,
+          "sample_columns": [
+            "linear_acc_x",
+            "linear_acc_y",
+            "linear_acc_z",
+            "rot_w",
+            "rot_x",
+            "rot_y",
+            "rot_z",
+            "acc_mag",
+            "rot_angle",
+            "acc_mag_jerk"
+          ],
+          "feature_types": {
+            "accelerometer": 16,
+            "other": 20,
+            "statistical": 100
+          }
+        },
+        "scaler": {
+          "error": "invalid load key, '\\x08'."
+        },
+        "static_scaler": {
+          "error": "invalid load key, '\\x08'."
+        },
+        "sequence_maxlen": {
+          "shape": [],
+          "dtype": "int64",
+          "data": 127
+        },
+        "gesture_classes": {
+          "shape": [
+            18
+          ],
+          "dtype": "object",
+          "data": [
+            "Above ear - pull hair",
+            "Cheek - pinch skin",
+            "Drink from bottle/cup",
+            "Eyebrow - pull hair",
+            "Eyelash - pull hair",
+            "Feel around in tray and pull out an object",
+            "Forehead - pull hairline",
+            "Forehead - scratch",
+            "Glasses on/off",
+            "Neck - pinch skin",
+            "Neck - scratch",
+            "Pinch knee/leg skin",
+            "Pull air toward your face",
+            "Scratch knee/leg skin",
+            "Text on phone",
+            "Wave hello",
+            "Write name in air",
+            "Write name on leg"
+          ]
+        }
+      },
+      "summary": {
+        "total_models": 10,
+        "architecture_analysis": {},
+        "security_analysis": {
+          "safe_models": 0,
+          "total_models": 10,
+          "safety_ratio": 0.0
+        },
+        "model_statistics": {}
+      }
+    },
+    "s-offline-0-8254-15fold": {
+      "models": {
+        "singleNet_fold3.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989732
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989732
+          }
+        },
+        "singleNet_fold2.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989732
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989732
+          }
+        },
+        "singleNet_fold1.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989412
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989412
+          }
+        },
+        "singleNet_fold5.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989732
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989732
+          }
+        },
+        "singleNet_fold4.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989732
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989732
+          }
+        }
+      },
+      "features": {
+        "feature_columns": {
+          "count": 91,
+          "sample_columns": [
+            "acc_x",
+            "acc_y",
+            "acc_z",
+            "rot_w",
+            "rot_x",
+            "rot_y",
+            "rot_z",
+            "linear_acc_x",
+            "linear_acc_y",
+            "linear_acc_z"
+          ],
+          "feature_types": {
+            "accelerometer": 48,
+            "other": 19,
+            "statistical": 24
+          }
+        },
+        "scaler": {
+          "error": "invalid load key, '\\x08'."
+        },
+        "sequence_maxlen": {
+          "shape": [],
+          "dtype": "int64",
+          "data": 127
+        },
+        "gesture_classes": {
+          "shape": [
+            18
+          ],
+          "dtype": "object",
+          "data": [
+            "Above ear - pull hair",
+            "Cheek - pinch skin",
+            "Drink from bottle/cup",
+            "Eyebrow - pull hair",
+            "Eyelash - pull hair",
+            "Feel around in tray and pull out an object",
+            "Forehead - pull hairline",
+            "Forehead - scratch",
+            "Glasses on/off",
+            "Neck - pinch skin",
+            "Neck - scratch",
+            "Pinch knee/leg skin",
+            "Pull air toward your face",
+            "Scratch knee/leg skin",
+            "Text on phone",
+            "Wave hello",
+            "Write name in air",
+            "Write name on leg"
+          ]
+        }
+      },
+      "summary": {
+        "total_models": 5,
+        "architecture_analysis": {},
+        "security_analysis": {
+          "safe_models": 0,
+          "total_models": 5,
+          "safety_ratio": 0.0
+        },
+        "model_statistics": {}
+      }
+    },
+    "cmi-imu-only-models": {
+      "models": {
+        "singleNet_fold3.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989732
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989732
+          }
+        },
+        "singleNet_fold2.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989732
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989732
+          }
+        },
+        "singleNet_fold1.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989412
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989412
+          }
+        },
+        "singleNet_fold5.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989732
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989732
+          }
+        },
+        "singleNet_fold4.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "__main__.CBAM",
+              "torch.nn.modules.rnn.LSTM",
+              "__main__.singleNet",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.transformer.TransformerEncoder",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid"
+            ],
+            "total_unsafe_count": 25,
+            "file_size": 11989732
+          },
+          "architecture": {
+            "error": "Can't get attribute 'singleNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 11989732
+          }
+        }
+      },
+      "features": {
+        "feature_columns": {
+          "count": 91,
+          "sample_columns": [
+            "acc_x",
+            "acc_y",
+            "acc_z",
+            "rot_w",
+            "rot_x",
+            "rot_y",
+            "rot_z",
+            "linear_acc_x",
+            "linear_acc_y",
+            "linear_acc_z"
+          ],
+          "feature_types": {
+            "accelerometer": 48,
+            "other": 19,
+            "statistical": 24
+          }
+        },
+        "scaler": {
+          "error": "invalid load key, '\\x08'."
+        },
+        "sequence_maxlen": {
+          "shape": [],
+          "dtype": "int64",
+          "data": 127
+        },
+        "gesture_classes": {
+          "shape": [
+            18
+          ],
+          "dtype": "object",
+          "data": [
+            "Above ear - pull hair",
+            "Cheek - pinch skin",
+            "Drink from bottle/cup",
+            "Eyebrow - pull hair",
+            "Eyelash - pull hair",
+            "Feel around in tray and pull out an object",
+            "Forehead - pull hairline",
+            "Forehead - scratch",
+            "Glasses on/off",
+            "Neck - pinch skin",
+            "Neck - scratch",
+            "Pinch knee/leg skin",
+            "Pull air toward your face",
+            "Scratch knee/leg skin",
+            "Text on phone",
+            "Wave hello",
+            "Write name in air",
+            "Write name on leg"
+          ]
+        }
+      },
+      "summary": {
+        "total_models": 5,
+        "architecture_analysis": {},
+        "security_analysis": {
+          "safe_models": 0,
+          "total_models": 5,
+          "safety_ratio": 0.0
+        },
+        "model_statistics": {}
+      }
+    },
+    "b-offline-0-8855-specialprocess": {
+      "models": {
+        "BiNet_fold1.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 23,
+            "file_size": 8166834
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 8166834
+          }
+        },
+        "BiNet_fold4.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 23,
+            "file_size": 8167026
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 8167026
+          }
+        },
+        "BiNet_fold3.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 23,
+            "file_size": 8167026
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 8167026
+          }
+        },
+        "BiNet_fold5.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 23,
+            "file_size": 8167026
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 8167026
+          }
+        },
+        "BiNet_fold2.pt": {
+          "security": {
+            "safe": false,
+            "unsafe_globals": [
+              "__main__.BiNet",
+              "torch.nn.modules.pooling.AdaptiveMaxPool1d",
+              "torch.nn.modules.rnn.LSTM",
+              "torch.nn.modules.pooling.AdaptiveAvgPool1d",
+              "torch.nn.modules.batchnorm.BatchNorm1d",
+              "torch.nn.modules.activation.Tanh",
+              "torch.nn.modules.container.ModuleList",
+              "__main__.SEBlock",
+              "torch.nn.modules.activation.Sigmoid",
+              "torch.nn.modules.dropout.Dropout"
+            ],
+            "total_unsafe_count": 23,
+            "file_size": 8167026
+          },
+          "architecture": {
+            "error": "Can't get attribute 'BiNet' on <module '__main__' from '/home/karunru/Home/Kaggle/kaggle_monorepo/projects/CMI_Detect_Behavior_with_Sensor_Data/codes/exp/collision_analysis/cmi_model_analyzer_v2.py'>",
+            "file_size": 8167026
+          }
+        }
+      },
+      "features": {
+        "feature_columns": {
+          "count": 376,
+          "sample_columns": [
+            "linear_acc_x",
+            "linear_acc_y",
+            "linear_acc_z",
+            "rot_w",
+            "rot_x",
+            "rot_y",
+            "rot_z",
+            "acc_mag",
+            "rot_angle",
+            "acc_mag_jerk"
+          ],
+          "feature_types": {
+            "accelerometer": 16,
+            "other": 340,
+            "statistical": 20
+          }
+        },
+        "scaler": {
+          "error": "invalid load key, '\\x06'."
+        },
+        "sequence_maxlen": {
+          "shape": [],
+          "dtype": "int64",
+          "data": 113
+        },
+        "gesture_classes": {
+          "shape": [
+            18
+          ],
+          "dtype": "object",
+          "data": [
+            "Above ear - pull hair",
+            "Cheek - pinch skin",
+            "Drink from bottle/cup",
+            "Eyebrow - pull hair",
+            "Eyelash - pull hair",
+            "Feel around in tray and pull out an object",
+            "Forehead - pull hairline",
+            "Forehead - scratch",
+            "Glasses on/off",
+            "Neck - pinch skin",
+            "Neck - scratch",
+            "Pinch knee/leg skin",
+            "Pull air toward your face",
+            "Scratch knee/leg skin",
+            "Text on phone",
+            "Wave hello",
+            "Write name in air",
+            "Write name on leg"
+          ]
+        }
+      },
+      "summary": {
+        "total_models": 5,
+        "architecture_analysis": {},
+        "security_analysis": {
+          "safe_models": 0,
+          "total_models": 5,
+          "safety_ratio": 0.0
+        },
+        "model_statistics": {}
+      }
+    }
+  },
+  "comparison": {
+    "architecture_comparison": {
+      "singleNet": {
+        "datasets": [],
+        "avg_parameters": 0,
+        "avg_features": 0
+      },
+      "BiNet": {
+        "datasets": [],
+        "avg_parameters": 0,
+        "avg_features": 0
+      }
+    },
+    "feature_comparison": {},
+    "performance_insights": {}
+  }
+}

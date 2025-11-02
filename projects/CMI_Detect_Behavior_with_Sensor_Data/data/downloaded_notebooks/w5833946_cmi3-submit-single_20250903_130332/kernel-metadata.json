@@ -1,0 +1,24 @@
+{
+  "id": "w5833946/cmi3-submit-single",
+  "id_no": 91143169,
+  "title": "CMI3_submit_single",
+  "code_file": "cmi3-submit-single.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [],
+  "kernel_sources": [
+    "w5833946/m21-cnn-gru-train",
+    "w5833946/all-m14-cnn-gru-train"
+  ],
+  "competition_sources": [
+    "cmi-detect-behavior-with-sensor-data"
+  ],
+  "model_sources": []
+}

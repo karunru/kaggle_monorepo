@@ -1,0 +1,212 @@
+{
+  "timestamp": "20250819_035249",
+  "analysis_summary": {
+    "sequence_lengths": [
+      78,
+      95,
+      49,
+      79,
+      70
+    ],
+    "n_change_points": [
+      4,
+      5,
+      4,
+      4,
+      4
+    ],
+    "n_segments": [
+      5,
+      6,
+      5,
+      5,
+      5
+    ],
+    "successful_analyses": 5,
+    "avg_sequence_length": 74.2,
+    "avg_n_change_points": 4.2,
+    "avg_n_segments": 5.2
+  },
+  "feature_importance": {
+    "feature_importance": {
+      "acc_mag": {
+        "importance_score": 2.75,
+        "success_rate": 1.0,
+        "avg_change_points": 1.75,
+        "avg_period_length": 17.5,
+        "total_attempts": 4
+      },
+      "linear_acc_mag_jerk": {
+        "importance_score": 2.5,
+        "success_rate": 1.0,
+        "avg_change_points": 1.5,
+        "avg_period_length": 17.5,
+        "total_attempts": 4
+      },
+      "acc_x": {
+        "importance_score": 2.4,
+        "success_rate": 1.0,
+        "avg_change_points": 1.4,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "rot_angle_vel": {
+        "importance_score": 2.4,
+        "success_rate": 1.0,
+        "avg_change_points": 1.4,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "linear_acc_x": {
+        "importance_score": 2.4,
+        "success_rate": 1.0,
+        "avg_change_points": 1.4,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "linear_acc_y": {
+        "importance_score": 2.4,
+        "success_rate": 1.0,
+        "avg_change_points": 1.4,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "linear_acc_mag": {
+        "importance_score": 2.4,
+        "success_rate": 1.0,
+        "avg_change_points": 1.4,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "angular_vel_x": {
+        "importance_score": 2.4,
+        "success_rate": 1.0,
+        "avg_change_points": 1.4,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "acc_y": {
+        "importance_score": 2.25,
+        "success_rate": 1.0,
+        "avg_change_points": 1.25,
+        "avg_period_length": 17.5,
+        "total_attempts": 4
+      },
+      "acc_mag_jerk": {
+        "importance_score": 2.25,
+        "success_rate": 1.0,
+        "avg_change_points": 1.25,
+        "avg_period_length": 17.5,
+        "total_attempts": 4
+      },
+      "acc_z": {
+        "importance_score": 2.2,
+        "success_rate": 1.0,
+        "avg_change_points": 1.2,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "rot_x": {
+        "importance_score": 2.2,
+        "success_rate": 1.0,
+        "avg_change_points": 1.2,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "rot_y": {
+        "importance_score": 2.2,
+        "success_rate": 1.0,
+        "avg_change_points": 1.2,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "rot_z": {
+        "importance_score": 2.2,
+        "success_rate": 1.0,
+        "avg_change_points": 1.2,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "angular_vel_y": {
+        "importance_score": 2.2,
+        "success_rate": 1.0,
+        "avg_change_points": 1.2,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "angular_vel_z": {
+        "importance_score": 2.2,
+        "success_rate": 1.0,
+        "avg_change_points": 1.2,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "rot_w": {
+        "importance_score": 2.0,
+        "success_rate": 1.0,
+        "avg_change_points": 1.0,
+        "avg_period_length": 17.5,
+        "total_attempts": 4
+      },
+      "rot_angle": {
+        "importance_score": 2.0,
+        "success_rate": 1.0,
+        "avg_change_points": 1.0,
+        "avg_period_length": 17.5,
+        "total_attempts": 4
+      },
+      "linear_acc_z": {
+        "importance_score": 2.0,
+        "success_rate": 1.0,
+        "avg_change_points": 1.0,
+        "avg_period_length": 17.4,
+        "total_attempts": 5
+      },
+      "angular_distance": {
+        "importance_score": 2.0,
+        "success_rate": 1.0,
+        "avg_change_points": 1.0,
+        "avg_period_length": 17.5,
+        "total_attempts": 4
+      }
+    },
+    "top_features": [
+      "acc_mag",
+      "linear_acc_mag_jerk",
+      "acc_x",
+      "rot_angle_vel",
+      "linear_acc_x"
+    ]
+  },
+  "evaluation_summary": {
+    "avg_f1_score": 0.3333333333333333,
+    "avg_phase_accuracy": 0.0,
+    "total_evaluated_sequences": 5
+  },
+  "config": {
+    "features_used": [
+      "acc_x",
+      "acc_y",
+      "acc_z",
+      "rot_w",
+      "rot_x",
+      "rot_y",
+      "rot_z",
+      "acc_mag",
+      "rot_angle",
+      "acc_mag_jerk",
+      "rot_angle_vel",
+      "linear_acc_x",
+      "linear_acc_y",
+      "linear_acc_z",
+      "linear_acc_mag",
+      "linear_acc_mag_jerk",
+      "angular_vel_x",
+      "angular_vel_y",
+      "angular_vel_z",
+      "angular_distance"
+    ],
+    "n_change_points": 2,
+    "auto_window_size": true
+  }
+}

@@ -1,0 +1,75 @@
+input_dim: 20
+num_classes: 18
+learning_rate: 0.0001
+weight_decay: 1.0e-05
+scheduler_config:
+  type: cosine
+  min_lr: 1.0e-06
+  factor: 0.5
+  patience: 5
+loss_config:
+  type: acls
+  alpha: 0.5
+  focal_gamma: 2.0
+  focal_alpha: 1.0
+  soft_f1_beta: 1.0
+  soft_f1_eps: 1.0e-06
+  label_smoothing: 0.1
+  nine_class_head_enabled: true
+  nine_class_loss_weight: 0.2
+  kl_weight: 0.1
+  kl_temperature: 1.0
+  auto_weighting: direct
+  auto_weight_clamp:
+  - -10.0
+  - 10.0
+  uncertainty_init_value: 0.0
+  use_mixup: true
+acls_config:
+  label_smoothing_alpha: 0.1
+  mbls_margin: 10.0
+  mbls_alpha: 0.1
+  mbls_schedule: null
+  acls_pos_lambda: 1.0
+  acls_neg_lambda: 0.1
+  acls_alpha: 0.1
+  acls_margin: 10.0
+target_gestures:
+- Above ear - pull hair
+- Forehead - pull hairline
+- Forehead - scratch
+- Eyebrow - pull hair
+- Eyelash - pull hair
+- Neck - pinch skin
+- Neck - scratch
+- Cheek - pinch skin
+non_target_gestures:
+- Drink from bottle/cup
+- Glasses on/off
+- Pull air toward your face
+- Pinch knee/leg skin
+- Scratch knee/leg skin
+- Write name on leg
+- Text on phone
+- Feel around in tray and pull out an object
+- Write name in air
+- Wave hello
+id_to_gesture:
+  0: Above ear - pull hair
+  1: Cheek - pinch skin
+  2: Drink from bottle/cup
+  3: Eyebrow - pull hair
+  4: Eyelash - pull hair
+  5: Feel around in tray and pull out an object
+  6: Forehead - pull hairline
+  7: Forehead - scratch
+  8: Glasses on/off
+  9: Neck - pinch skin
+  10: Neck - scratch
+  11: Pinch knee/leg skin
+  12: Pull air toward your face
+  13: Scratch knee/leg skin
+  14: Text on phone
+  15: Wave hello
+  16: Write name in air
+  17: Write name on leg

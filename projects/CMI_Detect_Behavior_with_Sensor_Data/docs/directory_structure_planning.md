@@ -1,0 +1,21 @@
+- data
+  - kaggleのデータセットなどのデータはここに置く
+- deps
+  - kaggle deps
+- docs
+  - claude用とか
+- exp
+  - 各実験のコードはここに置く
+- outputs
+  - claude
+    - claude output
+  - exp_xxx
+    - logs, weights, ...
+- requirements
+  - kaggle requirements
+- src
+  - 各実験で共通するコードはここに置く
+- sub
+  - kaggle submission
+- tests
+  - test

@@ -1,0 +1,8 @@
+- https://www.kaggle.com/datasets/yuemingyue/cmi-imu-model
+- https://www.kaggle.com/datasets/yxw666/cmi-fullfeats-models
+- https://www.kaggle.com/datasets/yxw666/b-offline-0-8855-specialprocess
+- https://www.kaggle.com/datasets/banshanxingyu/kdxf-collisiondetect
+- https://www.kaggle.com/datasets/banshanxingyu/s-offline-0-8254-15fold
+- https://www.kaggle.com/datasets/banshanxingyu/cmi-imu-only-models
+- https://www.kaggle.com/datasets/banshanxingyu/s-offline-0-8254-15fold
+- https://www.kaggle.com/datasets/kurisew/imu-only-datas

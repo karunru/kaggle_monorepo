@@ -1,0 +1,49 @@
+EXP014 Model Architecture Statistics
+==================================================
+
+Configuration:
+  Experiment: exp014_minirocket_integration
+  Input dimension: 352
+  Model dimension: 256
+  Number of layers: 8
+  Number of heads: 8
+  Feed-forward dimension: 1024
+  Number of classes: 18
+  Dropout rate: 0.1
+  Demographics enabled: True
+  MiniRocket enabled: True
+  MiniRocket kernels: 336
+
+Parameter Statistics:
+  Total parameters: 12,326,607
+  Trainable parameters: 12,326,607
+  Non-trainable parameters: 0
+
+Input/Output Shapes:
+  Input shape: torch.Size([2, 352, 200])
+  Multiclass output shape: torch.Size([2, 18])
+  Binary output shape: torch.Size([2, 1])
+  Demographics features:
+    adult_child: torch.Size([2]) (torch.int64)
+    sex: torch.Size([2]) (torch.int64)
+    handedness: torch.Size([2]) (torch.int64)
+    age: torch.Size([2]) (torch.float32)
+    height_cm: torch.Size([2]) (torch.float32)
+    shoulder_to_wrist_cm: torch.Size([2]) (torch.float32)
+    elbow_to_wrist_cm: torch.Size([2]) (torch.float32)
+
+Feature Breakdown:
+  Base IMU features: 16
+  MiniRocket features: 336
+  MiniRocket target time series: 9
+    1. linear_acc_x
+    2. linear_acc_y
+    3. linear_acc_z
+    4. linear_acc_mag
+    5. linear_acc_mag_jerk
+    6. angular_vel_x
+    7. angular_vel_y
+    8. angular_vel_z
+    9. angular_distance
+  Total input features: 352
+  Demographics embedding dimension: 16
