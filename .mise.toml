@@ -84,3 +84,118 @@ rm projects/${PROJECT_NAME}/**/.gitkeep
 rm projects/${PROJECT_NAME}/.gitkeep
 echo "Project ${PROJECT_NAME} created from template and added to workspace members"
 """
+
+[tasks.subtree-init]
+description = "Initialize a project as a git subtree with a private GitHub repository"
+run = """
+PROJECT_NAME={{arg(name='project_name', var=true)}}
+GITHUB_USER={{arg(name='github_user', default='karunru', var=true)}}
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+PROJECT_DIR=${REPO_ROOT}/projects/${PROJECT_NAME}
+REMOTE_NAME="subtree/${PROJECT_NAME}"
+REMOTE_URL="git@github.com:${GITHUB_USER}/${PROJECT_NAME}.git"
+
+# Check if project directory exists
+if [ ! -d "${PROJECT_DIR}" ]; then
+  echo "Error: Project directory ${PROJECT_DIR} does not exist"
+  echo "Please run 'mise run new ${PROJECT_NAME}' first"
+  exit 1
+fi
+
+# Check if gh CLI is installed
+if ! command -v gh &> /dev/null; then
+  echo "Error: GitHub CLI (gh) is not installed"
+  echo "Please install it: https://cli.github.com/"
+  exit 1
+fi
+
+# Check if GitHub repository already exists
+if gh repo view ${GITHUB_USER}/${PROJECT_NAME} &> /dev/null; then
+  echo "Error: GitHub repository ${GITHUB_USER}/${PROJECT_NAME} already exists"
+  exit 1
+fi
+
+# Check if remote already exists in git config
+if git remote | grep -q "^${REMOTE_NAME}$"; then
+  echo "Error: Remote ${REMOTE_NAME} already exists"
+  echo "This project may already be configured as a subtree"
+  exit 1
+fi
+
+echo "Initializing ${PROJECT_NAME} as a git subtree..."
+
+# Initialize git repository in project directory
+cd ${PROJECT_DIR}
+git init
+git add .
+git commit -m "Initial commit from kaggle_monorepo template"
+
+# Create private GitHub repository and push
+echo "Creating private GitHub repository: ${GITHUB_USER}/${PROJECT_NAME}"
+gh repo create ${GITHUB_USER}/${PROJECT_NAME} --private --source=. --remote=origin --push
+
+# Return to monorepo root
+cd ${REPO_ROOT}
+
+# Add the project as a subtree
+echo "Adding ${PROJECT_NAME} as a subtree to monorepo..."
+git remote add ${REMOTE_NAME} ${REMOTE_URL}
+git subtree add --prefix=projects/${PROJECT_NAME} ${REMOTE_NAME} main --squash
+
+echo ""
+echo "✅ Success! Project ${PROJECT_NAME} is now a git subtree"
+echo "   - Private repository: https://github.com/${GITHUB_USER}/${PROJECT_NAME}"
+echo "   - Remote name: ${REMOTE_NAME}"
+echo ""
+echo "Next steps:"
+echo "  - Push changes to subtree: mise run subtree-push ${PROJECT_NAME}"
+echo "  - Pull changes from subtree: mise run subtree-pull ${PROJECT_NAME}"
+echo "  - Change visibility on GitHub when competition ends"
+"""
+
+[tasks.subtree-push]
+description = "Push monorepo changes to the project's subtree repository"
+run = """
+PROJECT_NAME={{arg(name='project_name', var=true)}}
+GITHUB_USER={{arg(name='github_user', default='karunru', var=true)}}
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+REMOTE_NAME="subtree/${PROJECT_NAME}"
+
+# Check if remote exists
+if ! git remote | grep -q "^${REMOTE_NAME}$"; then
+  echo "Error: Remote ${REMOTE_NAME} does not exist"
+  echo "Please run 'mise run subtree-init ${PROJECT_NAME}' first"
+  exit 1
+fi
+
+echo "Pushing changes from monorepo to ${PROJECT_NAME} subtree repository..."
+git subtree push --prefix=projects/${PROJECT_NAME} ${REMOTE_NAME} main
+
+echo ""
+echo "✅ Changes pushed to https://github.com/${GITHUB_USER}/${PROJECT_NAME}"
+"""
+
+[tasks.subtree-pull]
+description = "Pull changes from the project's subtree repository to monorepo"
+run = """
+PROJECT_NAME={{arg(name='project_name', var=true)}}
+GITHUB_USER={{arg(name='github_user', default='karunru', var=true)}}
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+REMOTE_NAME="subtree/${PROJECT_NAME}"
+
+# Check if remote exists
+if ! git remote | grep -q "^${REMOTE_NAME}$"; then
+  echo "Error: Remote ${REMOTE_NAME} does not exist"
+  echo "Please run 'mise run subtree-init ${PROJECT_NAME}' first"
+  exit 1
+fi
+
+echo "Pulling changes from ${PROJECT_NAME} subtree repository to monorepo..."
+git subtree pull --prefix=projects/${PROJECT_NAME} ${REMOTE_NAME} main --squash
+
+echo ""
+echo "✅ Changes pulled from https://github.com/${GITHUB_USER}/${PROJECT_NAME}"
+"""
